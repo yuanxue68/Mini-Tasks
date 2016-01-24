@@ -14,7 +14,7 @@ router.post("/local", function(req, res, next){
 
     //user has authenticated correctly thus we create a JWT token 
     var token = jwt.sign(user, SECRET, {
-          expiresInMinutes: 1440
+          expiresIn: 604800
         });
     res.json({ token : token });
 
