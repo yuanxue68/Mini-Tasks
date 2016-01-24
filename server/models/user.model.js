@@ -4,15 +4,21 @@ var mongoose = require('mongoose');
 	SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-	username: { type: String, required: true, index: {unique:true} },
-	password: { type: String, required: true }
+	local:{
+		username: { type: String, index: {unique:true} },
+		password: { type: String }
+	},
+	facebook: {
+    id:{ type: String, index: {unique:true} },
+    token: String,
+  },
+  name: String,
+  email: String
 });
 
 UserSchema.pre('save', function(next){
-	console.log("here")
 	var user = this;
-
-	if(!user.isModified('password')){
+	if(!user.isModified('local.password')){
 		return next();
 	}
 
@@ -20,18 +26,36 @@ UserSchema.pre('save', function(next){
 		if(err){
 			return next(err);
 		}
-		console.log("here")
-		bcrypt.hash(user.password, salt, function(err, hash){
+
+		bcrypt.hash(user.local.password, salt, function(err, hash){
 			if(err){
 				return next();
 			}
-
-			user.password = hash;
-			console.log("here")
+			user.local.password = hash;
 			next();
 		})
-	})
+	});
 
 });
+
+UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.local.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
+
+UserSchema.methods.toJSON = function() {
+
+	if(!this){
+		return {};
+	}
+  var obj = this.toObject();
+  if(obj.local)
+  	delete obj.local.password;
+  if(obj.facebook)
+  	delete obj.facebook.token;
+  return obj;
+}
 
 module.exports = mongoose.model('User', UserSchema);
