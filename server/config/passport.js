@@ -66,7 +66,7 @@ passport.use(new BearerStrategy(function(token, done){
   try {
     jwt.verify(token, authConfig.SECRET, function(err,decoded){
       if (err){
-        return res.status(401).send({message:"Failed to authenticate token"});
+        return done(null, false);
       } else {
         var query;
         if(decoded.username){
