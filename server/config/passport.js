@@ -37,20 +37,25 @@ passport.use(new FacebookStrategy({
     }
 
     if(user) {
+      user.token = jwt.sign({
+        facebookId: user.facebook.id
+      },authConfig.SECRET,{
+        expiresInMinutes: 1440
+      });
       return done(null, user);
     } else {
-      var newUser = new User();
+      var user = new User();
 
-      console.log(profile);
-      newUser.facebook.id = profile.id;
-      newUser.facebook.token = accessToken;
-      newUser.name = profile.displayName;
+      user.facebook.id = profile.id;
+      user.facebook.token = accessToken;
+      user.name = profile.displayName;
 
-      newUser.save(function(err, newUser){
+      user.save(function(err, newUser){
         if(err){
           return done(err);
         }
-        newUser.my_token = jwt.sign({
+
+        newUser.token = jwt.sign({
           facebookId: newUser.facebook.id
         },authConfig.SECRET,{
           expiresInMinutes: 1440

@@ -16,7 +16,7 @@ router.post("/local", function(req, res, next){
     var token = jwt.sign(user, SECRET, {
           expiresIn: 604800
         });
-    res.json({ token : token });
+    res.cookie("yulloToken",token).json({ token : token });
 
   })(req, res, next);
 });
@@ -27,8 +27,8 @@ router.get('/facebook',
 
 router.get('/facebook/callback', passport.authenticate('facebook', {session: false, failureRedirect : '/'}), function(req, res) {
  // The token we have created on FacebookStrategy above 
- var token = req.user.my_token;
- res.json({ token: token });
+ var token = req.user.token;
+ res.cookie("yulloToken",token).redirect('/');
 });
 
 module.exports = router;

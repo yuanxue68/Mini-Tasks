@@ -10,6 +10,14 @@
   <body>
     <div id="root">
     </div>
+    <script type="text/javascript">
+      /* from facebook :
+      "This week, we started adding a fragment #_=_ to the redirect_uri when this field is left blank. Please ensure that your app can handle this behavior."
+      */
+      if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = '';
+      }
+    </script>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./dist/bundle.js"></script>
