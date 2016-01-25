@@ -21,11 +21,11 @@ router.post("/local", function(req, res, next){
   })(req, res, next);
 });
 
-router.get('/auth/facebook', 
-  passport.authenticate('facebook', { scope : 'email' }
-));
+router.get('/facebook', 
+  passport.authenticate('facebook', { session: false, scope: ["email"] })
+);
 
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {session: false, failureRedirect : '/'}), function(req, res) {
+router.get('/facebook/callback', passport.authenticate('facebook', {session: false, failureRedirect : '/'}), function(req, res) {
  // The token we have created on FacebookStrategy above 
  var token = req.user.my_token;
  res.json({ token: token });

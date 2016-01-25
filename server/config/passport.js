@@ -28,7 +28,9 @@ passport.use(new LocalStrategy(function(username, password, done){
 passport.use(new FacebookStrategy({
   clientID: authConfig.facebookAuth.clientID,
   clientSecret: authConfig.facebookAuth.clientSecret,
+  callbackURL: authConfig.facebookAuth.callbackURL
 }, function(accessToken, refreshToken, profile, done){
+  console.log(profile);
   User.findOne({"facebook.id":profile.id}, function(err, user){
     if(err) {
       return done(err);
@@ -39,16 +41,16 @@ passport.use(new FacebookStrategy({
     } else {
       var newUser = new User();
 
+      console.log(profile);
       newUser.facebook.id = profile.id;
-      newUser.facebook.token = token;
-      newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
-      newUser.email = profile.emails[0].value;
+      newUser.facebook.token = accessToken;
+      newUser.name = profile.displayName;
 
       newUser.save(function(err, newUser){
         if(err){
           return done(err);
         }
-        user.my_token = jwt.sign({
+        newUser.my_token = jwt.sign({
           facebookId: newUser.facebook.id
         },authConfig.SECRET,{
           expiresInMinutes: 1440
