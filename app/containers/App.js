@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
+import Header from './../components/Header'
 
 class App extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class App extends Component {
     const {children} = this.props
 
     return(
-      <div className="body">
+      <div>
+        <Header/>
         {children}
       </div>
     )

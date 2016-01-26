@@ -12,7 +12,8 @@
     </div>
     <script type="text/javascript">
       /* from facebook :
-      "This week, we started adding a fragment #_=_ to the redirect_uri when this field is left blank. Please ensure that your app can handle this behavior."
+      "we started adding a fragment #_=_ to the redirect_uri when this field is left blank. Please ensure that your app can handle this behavior."
+      remove the #_=_ when facebook append it so it doesnt mess up the app
       */
       if (window.location.hash && window.location.hash == '#_=_') {
         window.location.hash = '';
