@@ -7,7 +7,8 @@ export default class SignUpForm extends Component {
 	
 	render(){
 		return (
-			<div>
+			<div className="col-md-8 col-md-offset-2">
+				<h5>Sign Up</h5>
 				<div className="form-group">
           <label>Username *</label>
           <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Username"/>
@@ -26,9 +27,9 @@ export default class SignUpForm extends Component {
         </div>
         <div className="form-group">
           <label>Describe Yourself</label>
-          <textarea type="password" rows="5" className="form-control" id="exampleInputPassword1" placeholder="Tell the world about yourself"/>
+          <textarea type="password" rows="3" className="form-control" id="exampleInputPassword1" placeholder="Tell the world about yourself"/>
         </div>
-        <button type="submit" className="btn btn-default">Sign Up</button>
+        <button type="submit" className="btn btn-primary">Sign Up</button>
 			</div>
 		)
 	}

@@ -13,6 +13,7 @@ var UserSchema = new Schema({
     token: String,
   },
   name: String,
+  discription: String,
   email: String
 });
 

@@ -10,6 +10,7 @@ var	router = express.Router();
 router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("local.username","empty user name").notEmpty();
+		req.checkBody("name","empty display name").notEmpty();
 		req.checkBody("local.password","password need to be 6+ characters").notEmpty().len(6);
 	} else if(req.method === "GET"){
 

@@ -7,7 +7,8 @@ export default class LoginForm extends Component {
   
   render(){
     return (
-      <div>
+      <div className="col-md-8 col-md-offset-2">
+        <h5>Sign In</h5>
         <div className="form-group">
           <label>Username</label>
           <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email"/>
@@ -16,7 +17,7 @@ export default class LoginForm extends Component {
           <label>Password</label>
           <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
         </div>
-        <button type="submit" className="btn btn-default">Login</button>
+        <button type="submit" className="btn btn-primary">Login</button>
       </div>
     )
   }
