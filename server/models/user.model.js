@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
 
 var UserSchema = new Schema({
 	local:{
-		username: { type: String, index: {unique:true} },
+		username: { type: String, index: { unique: true } },
 		password: { type: String }
 	},
 	facebook: {
-    id:{ type: String, index: {unique:true} },
+    id:{ type: String, index: true },
     token: String,
   },
   name: String,

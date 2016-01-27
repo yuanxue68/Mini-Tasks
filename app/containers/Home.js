@@ -4,9 +4,10 @@ import {Link} from 'react-router'
 export default class Home extends Component {
 	
 	render(){
+		const {dispatch} = this.props
 		return (
 			<div className="container">
-				<div className="btn btn-info">Login With Facebook</div>
+				<a className="btn btn-info"href="/api/auth/facebook">Login With Facebook</a>
 				<Link className="btn btn-default" to="/login">Login With Yullo Account</Link>
 				<Link className="btn btn-danger" to="/signup">Sign Up With Yullo</Link>
 				<div>Hello</div>

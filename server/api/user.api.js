@@ -2,8 +2,10 @@ var express = require('express');
 var	mongoose = require('mongoose');
 var passport = require('passport');
 var	User = require('./../models/user.model');
+var jwt = require('jsonwebtoken');
 var	util = require('util');
 var	errorMsg = require('./../constants/errors.constants').userResourceErrors;
+var SECRET=require('./../config/authConfig').SECRET;
 
 var	router = express.Router();
 //validate params
@@ -18,7 +20,7 @@ router.use(function(req, res, next){
 
 	var errors = req.validationErrors();
   if (errors) {
-    res.send("There have been validation errors: " + util.inspect(errors), 400);
+    res.status(400).send("There have been validation errors: " + util.inspect(errors));
   }
 
 	next();
@@ -29,9 +31,16 @@ router.post("/",function(req,res){
 
 	newUser.save(function(err, user){
 		if(err){
-			res.send(errorMsg.USER_CREATION_ERROR);
+			if(err.code === 11000){
+				res.status(400).send(errorMsg.DUPLICATE_USER_ERROR);
+			} else{
+				res.status(400).send(errorMsg.USER_CREATION_ERROR);
+			}
 		}
-		res.send(user);
+    var token = jwt.sign(user, SECRET, {
+      expiresIn: 604800
+    });
+		res.cookie("yulloToken",token).send(user);
 	});
 
 });

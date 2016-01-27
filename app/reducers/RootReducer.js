@@ -31,7 +31,7 @@ function notificationMessage(state = null, action) {
 	return state
 }
 
-function authed(state = {authed:false}, action) {
+function authentication(state = {authed:false}, action) {
 	const {type} = action
 	switch (type) {
 		case ActionTypes.SIGN_UP_FAILURE:

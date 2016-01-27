@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import Header from './../components/Header'
+import { resetErrorMessage, resetNotificationMessage } from './../actions/RootActions'
 
 class App extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class App extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1 warning">
+        <div className="col-md-10 col-md-offset-1 alert alert-danger">
           <span>{errorMessage}</span>
           <button type="button" className="close" onClick={ this.handleDismissErrorClick } >
             <span aria-hidden="true">&times;</span>
@@ -51,7 +52,7 @@ class App extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1 notification">
+        <div className="col-md-10 col-md-offset-1 alert alert-info">
           <span>{notificationMessage}</span>
           <button type="button" className="close" onClick={ this.handleDismissNotificationClick } >
             <span aria-hidden="true">&times;</span>
@@ -67,6 +68,8 @@ class App extends Component {
     return(
       <div>
         <Header/>
+        {this.renderErrorMessage()}
+        {this.renderNotification()}
         {children}
       </div>
     )
@@ -78,7 +81,7 @@ function mapStateToProps (state) {
   return {
     errorMessage: state.errorMessage,
     notificationMessage: state.notificationMessage,
-    authentication
+    authentication: state.authentication
   }
 }
 

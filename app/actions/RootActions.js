@@ -1,7 +1,22 @@
+export const CREATE_ERROR_MESSAGE = 'CREATE_ERROR_MESSAGE'
+export const CREATE_NOTIFICATION_MESSAGE = 'CREATE_NOTIFICATION_MESSAGE'
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 export const RESET_NOTIFICATION_MESSAGE = 'RESET_NOTIFICATION_MESSAGE'
 
-// Resets the currently visible error message.
+export function createErrorMessage(error){
+  return {
+    type: CREATE_ERROR_MESSAGE,
+    error
+  }
+}
+
+export function createNotificationMessage(notification){
+  return {
+    type: CREATE_NOTIFICATION_MESSAGE,
+    notification
+  }
+}
+
 export function resetErrorMessage() {
   return {
     type: RESET_ERROR_MESSAGE
@@ -89,13 +104,11 @@ export function userSignIn(userInfo){
     dispatch(signInRequest())
 
     return $.ajax({
-      url:"/api/token",
+      url:"/api/auth/local",
       dataType:'json',
       cache:false,
-      method:'GET',
+      method:'POST',
       contentType: "application/json",
-      username: userInfo.email,
-      password: userInfo.password,
       data:JSON.stringify(userInfo)
     }).done((data) => {
       dispatch(signInSuccess(data))
@@ -124,8 +137,6 @@ export function userSignOut(){
       cache:false,
       method:'GET',
       contentType: "application/json",
-      username: "",
-      password: "",
     }).done((data) => {
       dispatch(signOutRequest())
     }).fail((xhr, status, err) => {

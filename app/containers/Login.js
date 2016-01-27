@@ -1,16 +1,26 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import { userSignIn, createErrorMessage } from './../actions/RootActions'
 import LoginForm from './../components/LoginForm'
 
-export default class Login extends Component {
+class Login extends Component {
 	constructor(props){
 		super(props)
 	}
 	
 	render(){
+		const {dispatch} = this.props
 		return (
 			<div className="container">
-				<LoginForm/>
+				<LoginForm onUserSignIn={ (userInfo)=>dispatch(userSignIn(userInfo)) }/>
 			</div>
 		)
 	}
 }
+
+function mapStateToProps (state) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps)(Login)

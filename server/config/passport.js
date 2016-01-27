@@ -7,9 +7,10 @@ var authConfig = require('./authConfig');
 var jwt = require('jsonwebtoken');
 
 passport.use(new LocalStrategy(function(username, password, done){
+  console.log(username+","+password);
   User.findOne({"local.username":username}, function(err, user){
     if(!user){
-      return done(null, false, { message: "Incorrect Password" });
+      return done(null, false, "Incorrect Password");
     }
 
     user.comparePassword(password, function(err, match){
