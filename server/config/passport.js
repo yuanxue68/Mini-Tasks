@@ -4,10 +4,9 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('./../models/user.model');
 var authConfig = require('./authConfig');
-var jwt = require('jsonwebtoken');
+var utils=require('./../utils/utils');
 
 passport.use(new LocalStrategy(function(username, password, done){
-  console.log(username+","+password);
   User.findOne({"local.username":username}, function(err, user){
     if(!user){
       return done(null, false, "Incorrect Password");
@@ -38,11 +37,7 @@ passport.use(new FacebookStrategy({
     }
 
     if(user) {
-      user.token = jwt.sign({
-        facebookId: user.facebook.id
-      },authConfig.SECRET,{
-        expiresInMinutes: 1440
-      });
+      user.token = utils.createToken(user);
       return done(null, user);
     } else {
       var user = new User();
@@ -56,11 +51,7 @@ passport.use(new FacebookStrategy({
           return done(err);
         }
 
-        newUser.token = jwt.sign({
-          facebookId: newUser.facebook.id
-        },authConfig.SECRET,{
-          expiresInMinutes: 1440
-        });
+        newUser.token = utils.createToken(user);
 
         return done(null, newUser);
       })

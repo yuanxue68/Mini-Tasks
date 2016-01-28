@@ -1,6 +1,7 @@
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var express = require('express');
+var utils=require('./../utils/utils');
 
 var router = express.Router();
 var SECRET=require('./../config/authConfig').SECRET;
@@ -13,9 +14,7 @@ router.post("/local", function(req, res, next){
     }
 
     //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, SECRET, {
-          expiresIn: 604800
-        });
+    var token = utils.createToken(user);
     res.cookie("yulloToken",token).json(user);
 
   })(req, res, next);
