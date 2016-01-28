@@ -16,7 +16,7 @@ router.post("/local", function(req, res, next){
     var token = jwt.sign(user, SECRET, {
           expiresIn: 604800
         });
-    res.cookie("yulloToken",token).json({ token : token });
+    res.cookie("yulloToken",token).json(user);
 
   })(req, res, next);
 });

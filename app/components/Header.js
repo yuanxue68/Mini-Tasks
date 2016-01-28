@@ -28,17 +28,12 @@ export default class Header extends Component{
 		      </div>
 					<div className="collapse navbar-collapse" id="login-nav">
 						<ul className="nav navbar-nav navbar-right">
-			        <li><a href="#" onClick={this.deleteCookie.bind(null, "yulloToken")}>Logout</a></li>
+			        <li><a href="#" onClick={this.props.onUserSignOut}>Logout</a></li>
 			      </ul>
 					</div>
 				</nav>
 			</div>
 		)
 	}
-
-	deleteCookie(name) {
-		console.log(name)
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-	};
 
 }

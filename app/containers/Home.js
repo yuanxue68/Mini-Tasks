@@ -1,25 +1,26 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {Link} from 'react-router'
+import {getCookie} from './../utils/Utils'
+import LoggedOutHome from './../components/LoggedOutHome'
+import BoardList from './../components/BoardList'
 
 export default class Home extends Component {
 	
 	render(){
-		const {dispatch} = this.props
+		var HomePage = this.props.authentication.authed ? <BoardList/> : <LoggedOutHome/>
 		return (
-			<div className="container">
-				<a className="btn btn-info"href="/api/auth/facebook">Login With Facebook</a>
-				<Link className="btn btn-default" to="/login">Login With Yullo Account</Link>
-				<Link className="btn btn-danger" to="/signup">Sign Up With Yullo</Link>
-				<div>Hello</div>
-				<div>{this.getCookie("yulloToken")}</div>
-				<div>{document.cookie}</div>
+			<div>
+				{HomePage}
 			</div>
 		)
 	}
-
-	getCookie(name) {
-	  var value = "; " + document.cookie;
-	  var parts = value.split("; " + name + "=");
-	  if (parts.length == 2) return parts.pop().split(";").shift();
-	}
 }
+
+function mapStateToProps (state) {
+  return {
+    authentication: state.authentication
+  }
+}
+
+export default connect(mapStateToProps)(Home)

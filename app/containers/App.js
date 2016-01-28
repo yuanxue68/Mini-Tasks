@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import Header from './../components/Header'
-import { resetErrorMessage, resetNotificationMessage } from './../actions/RootActions'
+import { resetErrorMessage, resetNotificationMessage, userSignOut } from './../actions/RootActions'
 
 class App extends Component {
   constructor(props) {
@@ -63,11 +63,11 @@ class App extends Component {
   }
 
   render(){
-    const {children} = this.props
+    const {children, dispatch} = this.props
 
     return(
       <div>
-        <Header/>
+        <Header onUserSignOut={()=> dispatch(userSignOut())}/>
         {this.renderErrorMessage()}
         {this.renderNotification()}
         {children}

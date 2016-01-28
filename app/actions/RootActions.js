@@ -1,3 +1,6 @@
+import {pushState} from 'redux-router'
+import {deleteCookie} from './../utils/Utils'
+
 export const CREATE_ERROR_MESSAGE = 'CREATE_ERROR_MESSAGE'
 export const CREATE_NOTIFICATION_MESSAGE = 'CREATE_NOTIFICATION_MESSAGE'
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
@@ -67,7 +70,10 @@ export function userSignUp(userInfo){
       contentType: "application/json",
       data:JSON.stringify(userInfo)
     }).done((data) => {
-      dispatch(signUpSuccess(data))
+      Promise.all([
+        dispatch(signInSuccess(data)),
+        dispatch(pushState(null,"/",""))
+      ])
     }).fail((xhr, status, err) => {
       dispatch(signUpFailure(xhr.responseText))
     })
@@ -92,10 +98,10 @@ function signInFailure(error){
   }
 }
 
-function signInSuccess(token){
+function signInSuccess(userInfo){
   return {
     type: SIGN_IN_SUCCESS,
-    token
+    userInfo
   }
 }
 
@@ -111,7 +117,10 @@ export function userSignIn(userInfo){
       contentType: "application/json",
       data:JSON.stringify(userInfo)
     }).done((data) => {
-      dispatch(signInSuccess(data))
+      Promise.all([
+        dispatch(signInSuccess(data)),
+        dispatch(pushState(null,"/",""))
+      ])
     }).fail((xhr, status, err) => {
       dispatch(signInFailure(xhr.responseText))
     })
@@ -128,19 +137,10 @@ function signOutRequest(){
 
 export function userSignOut(){
   return function(dispatch){
-    localStorage.removeItem("username")
-    localStorage.removeItem("token")
-
-    return $.ajax({
-      url:"/api/token",
-      dataType:'json',
-      cache:false,
-      method:'GET',
-      contentType: "application/json",
-    }).done((data) => {
-      dispatch(signOutRequest())
-    }).fail((xhr, status, err) => {
-      dispatch(signOutRequest())
-    })
+    deleteCookie("yulloToken")
+    return Promise.all([
+        dispatch(signOutRequest()),
+        dispatch(pushState(null,"/",""))
+      ])
   }
 }
