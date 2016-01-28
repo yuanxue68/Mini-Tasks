@@ -7,7 +7,7 @@ var router = express.Router();
 var SECRET=require('./../config/authConfig').SECRET;
 
 router.post("/local", function(req, res, next){
-  passport.authenticate('local', function(err, user, info) {
+  passport.authenticate(['bearer','local'], function(err, user, info) {
     if (err) { return next(err) }
     if (!user) {
       return res.status(401).send("Incorrect password");

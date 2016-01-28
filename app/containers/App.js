@@ -2,13 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import Header from './../components/Header'
-import { resetErrorMessage, resetNotificationMessage, userSignOut } from './../actions/RootActions'
+import { resetErrorMessage, resetNotificationMessage, userSignOut, userSignIn } from './../actions/RootActions'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.handleDismissErrorClick = this.handleDismissErrorClick.bind(this)
     this.handleDismissNotificationClick = this.handleDismissNotificationClick.bind(this)
+  }
+
+  componentWillMount(){
+    const { dispatch } = this.props
+    dispatch(userSignIn({}, false))
   }
 
   handleDismissErrorClick(e) {

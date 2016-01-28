@@ -1,5 +1,5 @@
 import {pushState} from 'redux-router'
-import {deleteCookie} from './../utils/Utils'
+import {deleteCookie, getCookie} from './../utils/Utils'
 
 export const CREATE_ERROR_MESSAGE = 'CREATE_ERROR_MESSAGE'
 export const CREATE_NOTIFICATION_MESSAGE = 'CREATE_NOTIFICATION_MESSAGE'
@@ -105,7 +105,7 @@ function signInSuccess(userInfo){
   }
 }
 
-export function userSignIn(userInfo){
+export function userSignIn(userInfo, showFail = true){
   return function(dispatch){
     dispatch(signInRequest())
 
@@ -114,6 +114,7 @@ export function userSignIn(userInfo){
       dataType:'json',
       cache:false,
       method:'POST',
+      headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
       contentType: "application/json",
       data:JSON.stringify(userInfo)
     }).done((data) => {
@@ -122,7 +123,9 @@ export function userSignIn(userInfo){
         dispatch(pushState(null,"/",""))
       ])
     }).fail((xhr, status, err) => {
-      dispatch(signInFailure(xhr.responseText))
+      if(showFail){
+        dispatch(signInFailure(xhr.responseText))
+      }
     })
   }
 }

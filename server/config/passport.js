@@ -4,6 +4,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('./../models/user.model');
 var authConfig = require('./authConfig');
+var jwt = require('jsonwebtoken');
 var utils=require('./../utils/utils');
 
 passport.use(new LocalStrategy(function(username, password, done){
@@ -63,6 +64,7 @@ passport.use(new BearerStrategy(function(token, done){
   try {
     jwt.verify(token, authConfig.SECRET, function(err,decoded){
       if (err){
+        console.log(err)
         return done(null, false);
       } else {
         var query;
