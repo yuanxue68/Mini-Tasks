@@ -79,7 +79,7 @@ passport.use(new BearerStrategy(function(token, done){
             return done(null, false); 
           }
           else {
-            return done(null, user); //allows the call chain to continue to the intented route
+            return done(null, user.toJSON()); //allows the call chain to continue to the intented route
           }
         });
       }

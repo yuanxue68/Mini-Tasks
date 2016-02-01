@@ -3,12 +3,15 @@ var router = express.Router();
 var util = require('util');
 var passport = require('passport');
 var Board = require('./../models/board.model');
+var myUtils = require('./../utils/utils');
 
 router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("name","Your Board must have a name").notEmpty();
 		req.checkBody("owner","Your Board must have a owner").notEmpty();
-	} 
+	} else if (req.method === "GET"){
+		req.checkQuery("owner", "You must specify a username").notEmpty();
+	}
 
 	var errors = req.validationErrors();
   if (errors) {
@@ -18,23 +21,31 @@ router.use(function(req, res, next){
 	next();
 });
 
+
 router.post("/", passport.authenticate('bearer', { session: false }), function(req, res){
+
+	req.userId = myUtils.getUserId(req.user);
+	if(req.userId !== req.body.owner){
+		return res.status(400).send("you can not create a board under someone else's name");
+	}
 	var newBoard = new Board(req.body);
 	newBoard.save(function(err, board){
 		if(err){
 			res.status(400).send("an error has occured while creating your board");
+		} else {
+			res.json(board);
 		}
-
-		res.json(board);
 	})
+
 });
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req, res){
-	var boardQuery = {};
-	if(req.query.owner){
-		boardQuery = {owner:req.query.owner};
+	req.userId = myUtils.getUserId(req.user);
+	if(req.userId !== req.query.owner){
+		return res.status(400).send("you do not have permission to view this board");
 	}
-	Board.find(boardQuery, function(err, boards){
+
+	Board.find({owner:req.query.owner}, function(err, boards){
 		if(err){
 			res.status(400).send("an error has occured while getting your board");
 		} else {
@@ -44,6 +55,7 @@ router.get("/", passport.authenticate('bearer', { session: false }), function(re
 });
 
 router.put("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
+	req.userId = myUtils.getUserId(req.user);
 	var id = req.params.id;
 	var newValues = {};
 
@@ -54,25 +66,42 @@ router.put("/:id", passport.authenticate('bearer', { session: false }), function
 		newValues.description = req.body.description;
 	}
 
-	Board.update({_id:id}, {$set: newValues}, function(err, status){
-		if(err){
-			res.status(400).send("an error has occured while editing your board");
-		} else {
-			res.json(status);
-		}
+	verifyBoardOwner(id, req, res, function(){
+		Board.update({_id:id}, {$set: newValues}, function(err, status){
+			if(err){
+				res.status(400).send("an error has occured while editing your board");
+			} else {
+				res.json(status);
+			}
+		});
 	});
 });
 
 router.delete("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
+	req.userId = myUtils.getUserId(req.user);
 	var id = req.params.id;
-
-	Board.remove({_id:id}, function(err, status){
-		if(err){
-			res.status(400).send("an error has occured while deleting your board");
-		} else {
-			res.json(status);
-		}
+	verifyBoardOwner(id, req, res, function(){
+		Board.remove({_id:id}, function(err, status){
+			if(err){
+				res.status(400).send("an error has occured while deleting your board");
+			} else {
+				res.json(status);
+			}
+		});
 	})
 });
+
+//check if the board is owned by the logged in user
+function verifyBoardOwner(id, req, res, cb){
+	Board.findById(id, function(err, board){
+		if(err){
+			res.status(400).send("an error has occured while editing your board");
+		} else if(board.owner !== req.userId){
+			res.status(400).send("you dont have the permission to edit this board");
+		} else {
+			cb();
+		}
+	});
+};
 
 module.exports = router;

@@ -8,5 +8,12 @@ module.exports = {
     }, SECRET, {
       expiresIn: 604800
     });
+  },
+  getUserId: function(user){
+  	if(user.local.username){
+  		return user.local.username;
+  	} else {
+  		return user.facebook.id;
+  	}
   }
 };
