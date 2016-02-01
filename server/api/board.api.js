@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var util = require('util');
-var Board = require('./../models/board.model')
+var passport = require('passport');
+var Board = require('./../models/board.model');
 
 router.use(function(req, res, next){
 	if(req.method === "POST"){
@@ -17,7 +18,7 @@ router.use(function(req, res, next){
 	next();
 });
 
-router.post("/", function(req, res){
+router.post("/", passport.authenticate('bearer', { session: false }), function(req, res){
 	var newBoard = new Board(req.body);
 	newBoard.save(function(err, board){
 		if(err){
@@ -28,7 +29,7 @@ router.post("/", function(req, res){
 	})
 });
 
-router.get("/", function(req, res){
+router.get("/", passport.authenticate('bearer', { session: false }), function(req, res){
 	var boardQuery = {};
 	if(req.query.owner){
 		boardQuery = {owner:req.query.owner};
@@ -42,7 +43,7 @@ router.get("/", function(req, res){
 	});
 });
 
-router.put("/:id", function(req, res){
+router.put("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.id;
 	var newValues = {};
 
@@ -53,13 +54,25 @@ router.put("/:id", function(req, res){
 		newValues.description = req.body.description;
 	}
 
-	Board.update({_id:id}, {$set: newValues}, function(err, board){
+	Board.update({_id:id}, {$set: newValues}, function(err, status){
 		if(err){
 			res.status(400).send("an error has occured while editing your board");
+		} else {
+			res.json(status);
 		}
-
-		res.json(board);
 	});
+});
+
+router.delete("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
+	var id = req.params.id;
+
+	Board.remove({_id:id}, function(err, status){
+		if(err){
+			res.status(400).send("an error has occured while deleting your board");
+		} else {
+			res.json(status);
+		}
+	})
 });
 
 module.exports = router;
