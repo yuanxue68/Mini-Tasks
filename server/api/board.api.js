@@ -3,6 +3,7 @@ var router = express.Router();
 var util = require('util');
 var passport = require('passport');
 var Board = require('./../models/board.model');
+var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 var myUtils = require('./../utils/utils');
 
 router.use(function(req, res, next){
@@ -90,18 +91,5 @@ router.delete("/:id", passport.authenticate('bearer', { session: false }), funct
 		});
 	})
 });
-
-//check if the board is owned by the logged in user
-function verifyBoardOwner(id, req, res, cb){
-	Board.findById(id, function(err, board){
-		if(err){
-			res.status(400).send("an error has occured while editing your board");
-		} else if(board.owner !== req.userId){
-			res.status(400).send("you dont have the permission to edit this board");
-		} else {
-			cb();
-		}
-	});
-};
 
 module.exports = router;
