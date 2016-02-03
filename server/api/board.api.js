@@ -16,7 +16,7 @@ router.use(function(req, res, next){
 
 	var errors = req.validationErrors();
   if (errors) {
-    res.status(400).send("There have been validation errors: " + util.inspect(errors));
+    return res.status(400).send("There have been validation errors: " + util.inspect(errors));
   }
 
 	next();
@@ -40,7 +40,7 @@ router.post("/", passport.authenticate('bearer', { session: false }), function(r
 
 });
 
-router.get("/", passport.authenticate('bearer', { session: false }), function(req, res){
+router.get("/", passport.authenticate('bearer', { session: false }), function(req, res, next){
 	req.userId = myUtils.getUserId(req.user);
 	if(req.userId !== req.query.owner){
 		return res.status(400).send("you do not have permission to view this board");

@@ -1,3 +1,5 @@
+import {getCookie} from './../utils/Utils'
+
 export const GET_BOARDS_SUCCESS = 'GET_BOARDS_SUCCESS'
 export const GET_BOARDS_FAILURE = 'GET_BOARDS_FAILURE'
 
@@ -15,15 +17,16 @@ function getBoardsFailure(error){
 	}
 }
 
-export function getBoards(boardId){
+export function getBoards(owner){
 	return function(dispatch){
 		return $.ajax({
-			url: '/api/boards/'+boardId,
+			url: '/api/boards/',
 			method: 'GET',
+			data:owner,
 			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
 		}).done((boardList)=>{
 			dispatch(getBoardsSuccess(boardList))
-		}).fails((xhr, status, err)=>{
+		}).fail((xhr, status, err)=>{
 			dispatch(getBoardsFailure(xhr.responseText))
 		})
 	}
@@ -38,7 +41,7 @@ export function createBoard(boardInfo){
 			url:'/api/board',
 			method:'POST',
 			contentType: 'application/json',
-			data: JSON.Stringify(boardInfo),
+			data: JSON.stringify(boardInfo),
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
 		}).done(()=>{
 			dispatch(createBoardSucess(boardInfo))
@@ -116,10 +119,10 @@ export function editboard(boardInfo){
 			url: 'api/boards/'+boardInfo._id,
 			method: 'PUT',
 			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			data: JSON.Stringify(boardInfo)
+			data: JSON.stringify(boardInfo)
 		}).done((data)=>{
 			dispatch(editBoardSuccess(boardInfo))
-		}).faile((xhr, status, err)=>{
+		}).fail((xhr, status, err)=>{
 			dispatch(editBoardFailure(xhr.responseText))
 		})
 	}

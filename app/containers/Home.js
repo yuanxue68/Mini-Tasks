@@ -13,7 +13,9 @@ export default class Home extends Component {
 		const {dispatch} = this.props
 		if(this.props.authentication.authed){
 			HomePage = <BoardList
-			onGetBoards={(boardId)=>dispatch(getBoards(boardId))}
+			boardList={this.props.boardList}
+			authentication={this.props.authentication}
+			onGetBoards={(owner)=>dispatch(getBoards(owner))}
 			onEditBoard={(boardInfo)=>dispatch(editBoard(boardInfo))}
 			onDeleteBoard={(boardId)=>dispatch(deleteBoard(boardId))}
 			onCreateBoard={(boardInfo)=>dispatch(createBoard(boardInfo))}/>
@@ -31,7 +33,8 @@ export default class Home extends Component {
 
 function mapStateToProps (state) {
   return {
-    authentication: state.authentication
+    authentication: state.authentication,
+    boardList: state.boardList
   }
 }
 
