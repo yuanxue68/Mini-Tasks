@@ -10,7 +10,7 @@ export default function boardList (state = [], action){
 		case ActionTypes.DELETE_BOARD_SUCCESS:
 			var newState = []
 			state.forEach(function(board){
-				if(board._id === action.boardId){
+				if(board._id !== action.boardId){
 					newState.push(board)
 				}
 			})

@@ -38,7 +38,7 @@ export const CREATE_BOARD_FAILURE = 'CREATE_BOARD_FAILURE'
 export function createBoard(boardInfo){
 	return function(dispatch){
 		return $.ajax({
-			url:'/api/board',
+			url:'/api/boards',
 			method:'POST',
 			contentType: 'application/json',
 			data: JSON.stringify(boardInfo),
@@ -46,21 +46,21 @@ export function createBoard(boardInfo){
 		}).done(()=>{
 			dispatch(createBoardSucess(boardInfo))
 		}).fail((xhr, status, err)=>{
-			dispatch(signInFailure(xhr.responseText))
+			dispatch(createBoardFailure(xhr.responseText))
 		})
 	}
 }
 
 function createBoardSucess(boardInfo){
 	return {
-		type: CREATE_NEW_BOARD_SUCCESS,
+		type: CREATE_BOARD_SUCCESS,
 		boardInfo
 	}
 }
 
 function createBoardFailure(error){
 	return {
-		type: CREATE_NEW_BOARD_FAILURE,
+		type: CREATE_BOARD_FAILURE,
 		error
 	}
 }

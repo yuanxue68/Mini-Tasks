@@ -7,3 +7,19 @@ export function getCookie(name) {
   var parts = value.split("; " + name + "=");
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
+
+export function openModal(element){
+	$(element).modal()
+}
+
+export function closeModal(element){
+	$(element).modal('hide')
+}
+
+export function getUserId(user){
+	if(user.local.username){
+		return user.local.username;
+	} else {
+		return user.facebook.id;
+	}
+}

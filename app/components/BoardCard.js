@@ -5,8 +5,11 @@ export default class BoardCard extends Component {
 		const {board} = this.props
 
 		return (
-			<div>
-				{JSON.stringify(board)}
+			<div className="well">
+				<button type="button" className="close"><span onClick={this.props.onDeleteBoard.bind(null, this.props.board._id)}>&times;</span></button>
+				<div>name: {board.name}</div>
+				<label>Description:</label>
+				<div>{board.Description}</div>
 			</div>
 		)
 	}
