@@ -22,7 +22,7 @@ router.use(function(req, res, next){
 	next();
 });
 
-router.post('/:boardId/itemList', passport.authenticate('bearer', { session: false }), function(req, res){
+router.post('/:boardId', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	console.log(boardId);
@@ -42,7 +42,7 @@ router.post('/:boardId/itemList', passport.authenticate('bearer', { session: fal
 	});
 });
 
-router.get('/:boardId/itemList', passport.authenticate('bearer', { session: false }), function(req, res){
+router.get('/:boardId', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	verifyBoardOwner(boardId, req, res, function(){
@@ -65,7 +65,7 @@ router.get('/:boardId/itemList', passport.authenticate('bearer', { session: fals
 	});
 });
 
-router.put('/:boardId/itemList/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+router.put('/:boardId/list/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	var newValues = {};
@@ -89,7 +89,7 @@ router.put('/:boardId/itemList/:id', passport.authenticate('bearer', { session: 
 	});
 });
 
-router.delete('/:boardId/itemList/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+router.delete('/:boardId/list/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	var id = req.params.id;

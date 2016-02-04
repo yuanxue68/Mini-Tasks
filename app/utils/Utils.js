@@ -17,7 +17,7 @@ export function closeModal(element){
 }
 
 export function getUserId(user){
-	if(user.local.username){
+	if(user.local && user.local.username){
 		return user.local.username;
 	} else {
 		return user.facebook.id;

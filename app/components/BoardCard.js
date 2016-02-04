@@ -7,7 +7,7 @@ export default class BoardCard extends Component {
 		return (
 			<div className="well">
 				<button type="button" className="close"><span onClick={this.props.onDeleteBoard.bind(null, this.props.board._id)}>&times;</span></button>
-				<div>name: {board.name}</div>
+				<div>Name: {board.name}</div>
 				<label>Description:</label>
 				<div>{board.Description}</div>
 			</div>

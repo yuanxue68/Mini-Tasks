@@ -41,6 +41,7 @@ router.post("/", passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req, res, next){
+	debugger
 	req.userId = myUtils.getUserId(req.user);
 	if(req.userId !== req.query.owner){
 		return res.status(400).send("you do not have permission to view this board");

@@ -10,7 +10,7 @@ module.exports = {
     });
   },
   getUserId: function(user){
-  	if(user.local.username){
+  	if(user.local && user.local.username){
   		return user.local.username;
   	} else {
   		return user.facebook.id;
