@@ -31,7 +31,6 @@ passport.use(new FacebookStrategy({
   clientSecret: authConfig.facebookAuth.clientSecret,
   callbackURL: authConfig.facebookAuth.callbackURL
 }, function(accessToken, refreshToken, profile, done){
-  console.log(profile);
   User.findOne({"facebook.id":profile.id}, function(err, user){
     if(err) {
       return done(err);
@@ -67,13 +66,15 @@ passport.use(new BearerStrategy(function(token, done){
         return done(null, false);
       } else {
         var query;
-        if(decoded.username){
-          query = { username: decoded.username };
+        if(decoded.user && decoded.user.local && decoded.user.local.username){
+          query = { "local.username": decoded.user.local.username };
+        } else if(decoded.user && decoded.user.facebook && decoded.user.facebook.id){
+          query = { "facebook.id": decoded.user.facebook.id };
         } else {
-          query = { "facebook.id": decoded.facebookId };
+          return done(null, false);
         }
-
         User.findOne(query, function (err, user) {
+          debugger
           if (err) { return done(err); }
           if (!user) {
             return done(null, false); 

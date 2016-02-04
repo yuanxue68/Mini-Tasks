@@ -11,8 +11,8 @@ class App extends Component {
     this.handleDismissNotificationClick = this.handleDismissNotificationClick.bind(this)
   }
 
-  componentWillMount(){
-    const { dispatch } = this.props
+  componentDidMount(){
+    const { dispatch, authentication } = this.props
     dispatch(userSignIn({}, false))
   }
 
