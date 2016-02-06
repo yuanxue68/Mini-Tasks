@@ -25,6 +25,7 @@ app.use(passport.initialize());
 app.use('/api/users', require('./server/api/user.api'));
 app.use('/api/auth', require('./server/api/auth.api'));
 app.use('/api/boards', require('./server/api/board.api'));
+app.use('/api/items', require('./server/api/item.api'));
 
 
 app.listen(port, function(error) {

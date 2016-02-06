@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Item = new Schema({
-	name: {type: String, required: true},
-	listId: {required: true, type: String},
+	name: {required: true, type: String},
+	itemListId: {required: true, type: String},
+	boardId: {required: true, type: String},
 	description: String,
 	dueDate: Date
 });

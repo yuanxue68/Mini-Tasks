@@ -36,7 +36,10 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 			if(err){
 				return res.status(400).send("unable to save the list");
 			} 
-			res.json(itemList);
+			res.json({
+				itemList:itemList,
+				items: []
+			});
 		});
 	});
 });
@@ -50,9 +53,10 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 				return res.status(400).send("an error has occured while getting the item lists");
 			}
 			var query = constructItemQuery(itemLists);
-			console.log(itemLists)
-			Item.aggregate([{$match: query}, {$sort: {listId: -1}}], function(err, items){
-				console.log(query);
+			Item.aggregate([
+				{$match: query}, 
+				{$group : { _id : "$itemListId", items: { $push: "$$ROOT" } } }
+				]).exec(function(err, items){
 				if(err){
 					return res.status(400).send("an error has occured while getting the items");
 				}
@@ -112,7 +116,7 @@ function constructItemQuery(itemLists){
 
 	var query = {$or: []};
 	itemLists.forEach(function(list){
-		query.$or.push({_id:list._id});
+		query.$or.push({itemListId:list._id.toString()});
 	});
 	return query;
 };

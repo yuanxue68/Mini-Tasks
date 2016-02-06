@@ -23,7 +23,18 @@ export function getItemLists(boardId){
 			url: '/api/boards/'+boardId+"/itemLists",
 			method: 'GET',
 			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((itemLists)=>{
+		}).done((data)=>{
+			var itemLists = []
+			//nest items related to an item list inside an itemlist object
+			data.itemLists.forEach(function(itemList){
+				itemList.items=[]
+				data.items.forEach(function(item){
+					if(item._id === itemList._id){
+						itemList.items = item.items;
+					}
+				})
+				itemLists.push(itemList)
+			})
 			dispatch(getItemListsSuccess(itemLists))
 		}).fail((xhr, status, err)=>{
 			dispatch(getItemListsFailure(xhr.responseText))
@@ -31,16 +42,22 @@ export function getItemLists(boardId){
 	}
 }
 
+function organizeItemLists(data){
+	data.itemLists.forEach(function(itemList){
+
+	});
+}
+
 export const CREATE_ITEMLIST_SUCCESS = 'CREATE_ITEMLIST_SUCCESS'
 export const CREATE_ITEMLIST_FAILURE = 'CREATE_ITEMLIST_FAILURE'
 
-export function createItemListInfo(itemListInfo){
+export function createItemList(itemListInfo, boardId){
 	return function(dispatch){
 		return $.ajax({
-			url:'/api/itemLists',
+			url:'/api/boards/'+boardId+"/itemLists",
 			method:'POST',
 			contentType: 'application/json',
-			data: JSON.stringify(ItemListInfo),
+			data: JSON.stringify(itemListInfo),
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
 		}).done((itemListInfo)=>{
 			dispatch(createItemListSucess(itemListInfo))

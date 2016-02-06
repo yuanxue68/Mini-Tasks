@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
+import BoardPage from './../components/BoardPage'
+import ListCreationModal from './../components/ListCreationModal'
 
 export default class Board extends Component {
 	componentDidMount(){
@@ -10,8 +12,13 @@ export default class Board extends Component {
 	}
 
 	render (){
+		const {dispatch} = this.props
 		return (
-			<div>my boad</div>
+			<div>
+				<ListCreationModal {...this.props}
+				onCreateItemList={(itemListsInfo, boardId)=>dispatch(createItemList(itemListsInfo, boardId))}/>
+				<BoardPage {...this.props} />
+			</div>
 		)
 	}
 }
