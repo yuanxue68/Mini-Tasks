@@ -43,7 +43,7 @@ export function createBoard(boardInfo){
 			contentType: 'application/json',
 			data: JSON.stringify(boardInfo),
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done(()=>{
+		}).done((boardInfo)=>{
 			dispatch(createBoardSucess(boardInfo))
 		}).fail((xhr, status, err)=>{
 			dispatch(createBoardFailure(xhr.responseText))

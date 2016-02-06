@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true}); //so that it can get params from parent router
 var passport = require('passport');
 var util = require('util');
 var myUtils = require('./../utils/utils');
@@ -7,7 +7,7 @@ var ItemList = require('./../models/itemList.model');
 var Item = require('./../models/item.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 
-
+//this router this nested within itemList router
 router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("name","Your list must have a name").notEmpty();
@@ -22,11 +22,10 @@ router.use(function(req, res, next){
 	next();
 });
 
-router.post('/:boardId', passport.authenticate('bearer', { session: false }), function(req, res){
+router.post('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
-	console.log(boardId);
-	console.log(req.body);
+
 	if(boardId !== req.body.boardId){
 		return res.status(401).send("you dont have the permission to modify this list");
 	}
@@ -42,7 +41,7 @@ router.post('/:boardId', passport.authenticate('bearer', { session: false }), fu
 	});
 });
 
-router.get('/:boardId', passport.authenticate('bearer', { session: false }), function(req, res){
+router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	verifyBoardOwner(boardId, req, res, function(){
@@ -51,8 +50,9 @@ router.get('/:boardId', passport.authenticate('bearer', { session: false }), fun
 				return res.status(400).send("an error has occured while getting the item lists");
 			}
 			var query = constructItemQuery(itemLists);
-
+			console.log(itemLists)
 			Item.aggregate([{$match: query}, {$sort: {listId: -1}}], function(err, items){
+				console.log(query);
 				if(err){
 					return res.status(400).send("an error has occured while getting the items");
 				}
@@ -65,7 +65,7 @@ router.get('/:boardId', passport.authenticate('bearer', { session: false }), fun
 	});
 });
 
-router.put('/:boardId/list/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	var newValues = {};
@@ -89,7 +89,7 @@ router.put('/:boardId/list/:id', passport.authenticate('bearer', { session: fals
 	});
 });
 
-router.delete('/:boardId/list/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+router.delete('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var boardId = req.params.boardId;
 	var id = req.params.id;
@@ -106,6 +106,10 @@ router.delete('/:boardId/list/:id', passport.authenticate('bearer', { session: f
 });
 
 function constructItemQuery(itemLists){
+	if(!Array.isArray(itemLists) || itemLists.length<1){
+		return {};
+	}
+
 	var query = {$or: []};
 	itemLists.forEach(function(list){
 		query.$or.push({_id:list._id});

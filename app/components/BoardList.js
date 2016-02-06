@@ -21,9 +21,11 @@ export default class Home extends Component {
 		}) 
 		return (
 			<div className="container">
+				<h3>My Boards</h3>
 				<div className="clearfix" >
-				    <button type="button" onClick={openModal.bind(null, "#boardCreationModal")} className="btn btn-primary pull-right">Add</button>
+				    <button type="button" onClick={openModal.bind(null, "#boardCreationModal")} className="btn btn-primary pull-right">New Board</button>
 				</div>
+				<br/>
 				<BoardCreationModal authentication={authentication} onCreateBoard={this.props.onCreateBoard}/>
 				{BoardList}
 			</div>

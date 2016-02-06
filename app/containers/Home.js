@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {getCookie} from './../utils/Utils'
 import LoggedOutHome from './../components/LoggedOutHome'
 import BoardList from './../components/BoardList'
 import {createBoard, deleteBoard, editBoard, getBoards} from './../actions/BoardListActions'
@@ -17,7 +16,7 @@ export default class Home extends Component {
 			authentication={this.props.authentication}
 			onGetBoards={(owner)=>dispatch(getBoards(owner))}
 			onEditBoard={(boardInfo)=>dispatch(editBoard(boardInfo))}
-			onDeleteBoard={(boardId)=>dispatch(deleteBoard(boardId))}
+			onDeleteBoard={(boardId, e)=>{e.preventDefault(); dispatch(deleteBoard(boardId))}}
 			onCreateBoard={(boardInfo)=>dispatch(createBoard(boardInfo))}/>
 		} else {
 			HomePage = <LoggedOutHome/>
