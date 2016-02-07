@@ -11,6 +11,7 @@ export default class ItemLists extends Component{
 		if(itemLists){
 			var listComponent = itemLists.map(function(itemList, index){
 				return <ItemList 
+						index={index}
 						key={index} itemList={itemList} 
 						onCreateItem={onCreateItem}
 						onDeleteItem={onDeleteItem}

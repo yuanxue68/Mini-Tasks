@@ -32,6 +32,7 @@ export default class ListCreationModal extends Component{
 
 	createItemList(){
 		var name = $("#itemListName").val()
+		$("#itemListName").val("")
 		if((!name)){
 			return
 		}

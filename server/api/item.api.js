@@ -15,7 +15,7 @@ router.use(function(req, res, next){
 
 	var errors = req.validationErrors();
   if (errors) {
-    res.status(400).send("There have been validation errors: " + util.inspect(errors));
+    return res.status(400).send("There have been validation errors: " + util.inspect(errors));
   }
 
 	next();
