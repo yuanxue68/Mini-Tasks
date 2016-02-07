@@ -36,10 +36,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 			if(err){
 				return res.status(400).send("unable to save the list");
 			} 
-			res.json({
-				itemList:itemList,
-				items: []
-			});
+			res.json(itemList);
 		});
 	});
 });

@@ -1,5 +1,6 @@
 import {getCookie} from './../utils/Utils'
 
+/*
 export const GET_ITEMLISTS_SUCCESS = 'GET_ITEMLISTS_SUCCESS'
 export const GET_ITEMLISTS_FAILURE = 'GET_ITEMLISTS_FAILURE'
 
@@ -46,73 +47,74 @@ function organizeItemLists(data){
 	data.itemLists.forEach(function(itemList){
 
 	});
-}
+}*/
 
-export const CREATE_ITEMLIST_SUCCESS = 'CREATE_ITEMLIST_SUCCESS'
-export const CREATE_ITEMLIST_FAILURE = 'CREATE_ITEMLIST_FAILURE'
+export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS'
+export const CREATE_ITEM_FAILURE = 'CREATE_ITEM_FAILURE'
 
-export function createItemList(itemListInfo, boardId){
+export function createItem(item){
 	return function(dispatch){
 		return $.ajax({
-			url:'/api/boards/'+boardId+"/itemLists",
+			url:'/api/items',
 			method:'POST',
 			contentType: 'application/json',
-			data: JSON.stringify(itemListInfo),
+			data: JSON.stringify(item),
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((itemListInfo)=>{
-			itemListInfo.items=[]
-			dispatch(createItemListSucess(itemListInfo))
+		}).done((item)=>{
+			dispatch(createItemSuccess(item))
 		}).fail((xhr, status, err)=>{
-			dispatch(createItemListFailure(xhr.responseText))
+			dispatch(createItemFailure(xhr.responseText))
 		})
 	}
 }
 
-function createItemListSucess(itemListInfo){
+function createItemSuccess(item){
 	return {
-		type: CREATE_ITEMLIST_SUCCESS,
-		itemListInfo
+		type: CREATE_ITEM_SUCCESS,
+		item
 	}
 }
 
-function createItemListFailure(error){
+function createItemFailure(error){
 	return {
-		type: CREATE_ITEMLIST_FAILURE,
+		type: CREATE_ITEM_FAILURE,
 		error
 	}
 }
 
-export const DELETE_ITEMLIST_SUCCESS = 'DELETE_ITEMLIST_SUCCESS'
-export const DELETE_ITEMLIST_FAILURE = 'DELETE_ITEMLIST_FAILURE'
+export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS'
+export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE'
 
-export function deleteItemList(itemListId, boardId){
+export function deleteItem(itemId, itemListId){
 	return function(dispatch){
 		return $.ajax({
-			url: 'api/boards/'+boardId+"/itemLists/"+itemListId,
+			url: 'api/items/'+itemId,
 			method: 'DELETE',
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
 		}).done(()=>{
-			dispatch(deleteItemListSuccess(itemListId))
+			dispatch(deleteItemSuccess(itemId, itemListId))
 		}).fail((xhr, status, err)=>{
-			dispatch(deleteItemListFailure(xhr.responseText))
+			dispatch(deleteItemFailure(xhr.responseText))
 		})
 	}
 }
 
-function deleteItemListSuccess(itemListId){
+function deleteItemSuccess(itemId, itemListId){
 	return {
-		type: DELETE_ITEMLIST_SUCCESS,
+		type: DELETE_ITEM_SUCCESS,
+		itemId,
 		itemListId
 	}
 }
 
-function deleteItemListFailure(error){
+function deleteItemFailure(error){
 	return{
-		type: DELETE_ITEMLIST_FAILURE,
+		type: DELETE_ITEM_FAILURE,
 		error
 	}
 }
 
+/*
 export const EDIT_ITEMLIST_SUCCESS = 'EDIT_ITEMLIST_SUCCESS'
 export const EDIT_ITEMLIST_FAILURE = 'EDIT_ITEMLIST_FAILURE'
 
@@ -143,4 +145,4 @@ export function editItemList(itemListInfo){
 			dispatch(editItemListFailure(xhr.responseText))
 		})
 	}
-}
+}*/

@@ -7,10 +7,15 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemLists} = this.props
+		const {itemLists, router, onDeleteItemList, onCreateItem, onDeleteItem} = this.props
 		if(itemLists){
 			var listComponent = itemLists.map(function(itemList, index){
-				return <ItemList key={index} itemList={itemList} />
+				return <ItemList 
+						key={index} itemList={itemList} 
+						onCreateItem={onCreateItem}
+						onDeleteItem={onDeleteItem}
+						router={router} 
+						onDeleteItemList={onDeleteItemList}/>
 			});
 		}
 		
