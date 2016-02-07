@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ItemList from './ItemList'
 
 export default class ItemLists extends Component{
 	constructor(props){
@@ -7,9 +8,12 @@ export default class ItemLists extends Component{
 
 	render(){
 		const {itemLists} = this.props
-		var listComponent = itemLists.forEach(function(itemList){
-			return <ItemList itemList={itemList} />
-		});
+		if(itemLists){
+			var listComponent = itemLists.map(function(itemList, index){
+				return <ItemList key={index} itemList={itemList} />
+			});
+		}
+		
 		return (
 			<div>
 				{listComponent}

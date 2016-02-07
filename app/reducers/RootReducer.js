@@ -2,7 +2,7 @@ import { routerStateReducer as router } from 'redux-router'
 import { combineReducers } from 'redux'
 import * as ActionTypes from './../actions/RootActions'
 import boardList from './../reducers/BoardListReducer'
-import itemList from './../reducers/ItemListReducer'
+import itemLists from './../reducers/ItemListReducer'
 
 const rootReducer = combineReducers({
 	router,
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
 	notificationMessage,
 	authentication,
 	boardList,
-	itemList
+	itemLists
 })
 export default rootReducer
 

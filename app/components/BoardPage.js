@@ -10,7 +10,7 @@ export default class BoardPage extends Component {
 				<div className="clearfix" >
 				    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary pull-right">New List</button>
 				</div>
-				{/*<ItemLists/>*/}
+				<ItemLists {...this.props}/>
 			</div>
 		)
 	}
