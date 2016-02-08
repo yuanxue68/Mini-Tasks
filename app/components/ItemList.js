@@ -14,13 +14,13 @@ export default class ItemLists extends Component{
 		})
 		var inputId = "itemName"+index
 		return (
-			<div className ="col-md-3 well">
+			<div className ="col-md-3">
 				<h4>{itemList.name}</h4>
 				{items}
 				<div className="input-group">
 					<input id={inputId} type="text" className="form-control"/>
 					<span className="input-group-btn">
-						<button className="btn btn-inverse" onClick={this.createItem}>Add</button>
+						<button className="btn btn-info" onClick={this.createItem}>Add</button>
 					</span>
 				</div>
 				<div>

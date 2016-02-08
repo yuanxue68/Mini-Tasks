@@ -9,7 +9,7 @@ export default class Header extends Component{
 	render() {
 		return (
 			<div>
-				<nav className="navbar navbar-default navbar-embossed">
+				<nav className="navbar navbar-inverse" role="navigation">
 					<div className="navbar-header">
 						<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#login-nav">
 							<span className="sr-only">Toggle navigation</span>

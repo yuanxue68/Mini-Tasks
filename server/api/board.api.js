@@ -85,11 +85,12 @@ router.delete("/:id", passport.authenticate('bearer', { session: false }), funct
 	req.userId = myUtils.getUserId(req.user);
 	var id = req.params.id;
 	verifyBoardOwner(id, req, res, function(){
-		Board.remove({_id:id}, function(err, status){
+		Board.findOne({_id:id}, function(err, doc){
 			if(err){
 				res.status(400).send("an error has occured while deleting your board");
 			} else {
-				res.json(status);
+				doc.remove();
+				res.json(doc);
 			}
 		});
 	})

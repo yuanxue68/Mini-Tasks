@@ -74,7 +74,6 @@ passport.use(new BearerStrategy(function(token, done){
           return done(null, false);
         }
         User.findOne(query, function (err, user) {
-          debugger
           if (err) { return done(err); }
           if (!user) {
             return done(null, false); 

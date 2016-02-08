@@ -1,0 +1,15 @@
+//fix flat ui 
+.navbar-inverse .nav > li > a {
+	border-bottom: 0px;
+  border-left: 0px !important;
+}
+
+.navbar-inverse .navbar-brand {
+  border-bottom: 0px;
+  border-right: 0px;
+}
+
+.navbar.navbar-inverse .navbar-form {
+  border-left: 0px;
+  border-bottom: 0px;
+}
