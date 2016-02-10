@@ -8,13 +8,24 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemList, router, onDeleteItem, index} = this.props
+		const {itemList, router, onDeleteItem, index, isOver} = this.props
+		var overLay = isOver ? <div style={{
+						position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+            opacity: 0.5,
+            backgroundColor: 'yellow',
+          }} /> : null
 		var items = itemList.items.map(function(item, index){
 			return <Item key={index} item={item} onDeleteItem={onDeleteItem}/>
 		})
 		var inputId = "itemName"+index
 		return (
 			<div className ="col-md-3">
+				{overLay}
 				<h4>{itemList.name}</h4>
 				{items}
 				<div className="input-group">

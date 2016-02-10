@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {openModal} from './../utils/Utils'
 import ItemLists from './ItemLists'
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-export default class BoardPage extends Component {
+class BoardPage extends Component {
 	
 	render(){
 		return(
@@ -16,3 +18,5 @@ export default class BoardPage extends Component {
 		)
 	}
 }
+
+export default DragDropContext(HTML5Backend)(BoardPage);

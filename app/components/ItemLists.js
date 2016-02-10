@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ItemList from './ItemList'
+import ItemListContainer from './../containers/ItemListContainer'
 
 export default class ItemLists extends Component{
 	constructor(props){
@@ -16,17 +16,17 @@ export default class ItemLists extends Component{
 				console.log(i)
 				listComponent.push(
 					<div className="row" index={i}>
-						<ItemList index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
-						<ItemList index={i+1} key={i+1} itemList={itemLists[i+1]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
-						<ItemList index={i+2} key={i+2} itemList={itemLists[i+2]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
-						<ItemList index={i+3} key={i+3} itemList={itemLists[i+3]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
+						<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
+						<ItemListContainer index={i+1} key={i+1} itemList={itemLists[i+1]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
+						<ItemListContainer index={i+2} key={i+2} itemList={itemLists[i+2]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
+						<ItemListContainer index={i+3} key={i+3} itemList={itemLists[i+3]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>
 					</div>
 				)
 			}
 			//include the remainder of Itemlist 
 			var remainingList = []
 			for (i; i<itemLists.length; i++){
-				remainingList.push(<ItemList index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>)
+				remainingList.push(<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList}/>)
 			}
 			listComponent.push(<div className="row" index={i+1}>{remainingList}</div>)
 		}
