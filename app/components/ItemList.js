@@ -28,15 +28,14 @@ export default class ItemLists extends Component{
 				{overLay}
 				<h4>{itemList.name}</h4>
 				{items}
+				<div>
+					<button type="button" className="btn btn-xs btn-danger" onClick={this.props.onDeleteItemList.bind(null, itemList._id, router.params.boardId)}>Remove List</button>
+				</div>
 				<div className="input-group">
 					<input id={inputId} type="text" className="form-control"/>
 					<span className="input-group-btn">
-						<button className="btn btn-info" onClick={this.createItem}>Add</button>
+						<button className="btn btn-info" onClick={this.createItem}><i className="fa fa-plus"></i></button>
 					</span>
-				</div>
-				<div>
-					<br/>
-					<button type="button" className="btn btn-xs btn-danger" onClick={this.props.onDeleteItemList.bind(null, itemList._id, router.params.boardId)}>Remove List</button>
 				</div>
 			</div>
 		)
