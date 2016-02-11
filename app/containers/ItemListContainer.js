@@ -5,8 +5,11 @@ import { DropTarget } from 'react-dnd';
 
 const itemListTarget = {
   drop(props, monitor) {
-    moveItem("end")
+    console.log(props);
     console.log(monitor.getItem())
+    if(monitor.getItem().itemListId === props.itemList._id)
+      return
+    props.onMoveItem(monitor.getItem(), props.itemList._id)
   }
 };
 

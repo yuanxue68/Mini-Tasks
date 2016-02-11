@@ -1,5 +1,6 @@
 import * as ActionTypes from './../actions/itemListActions'
 import * as ItemActionTypes from './../actions/itemActions'
+import * as DndActionTypes from './../actions/DndActions'
 
 export default function itemLists (state = [], action){
 	const {type} = action
@@ -54,6 +55,27 @@ export default function itemLists (state = [], action){
 				}
 			})
 			return newState
+		case DndActionTypes.MOVE_ITEM_SUCCESS:
+		 var newState = []
+		 state.forEach(function(itemList){
+		 	var newList = []
+
+		 	if(itemList._id === action.oldItemList){
+		 		itemList.items.forEach(function(item){
+		 			if(item._id !== action.itemListInfo._id){
+		 				newList.push(item)
+		 			}
+		 		})
+		 		itemList.items = newList
+		 		newState.push(itemList)
+		 	} else if(action.itemListInfo.itemListId === itemList._id){
+		 		itemList.items.push(action.itemListInfo)
+		 		newState.push(itemList)
+		 	} else {
+		 		newState.push(itemList)
+		 	}
+		 })
+		 return newState
 		default:
 			return state
 	}

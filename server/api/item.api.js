@@ -40,9 +40,34 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 	});
 });
 
-router.put('/', function(req, res){
+router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+	var id = req.params.id
+	req.userId = myUtils.getUserId(req.user);
 
+	Item.findOne({_id:id}, function(err, item){
+		if(err){
+			return res.status(400).send("an error has occured while deleting your item");
+		}
+		verifyBoardOwner(item.boardId, req, res, function(){
+			var newAttribute = createSetObj(req.body);
+			Item.update({_id:id}, {$set: newAttribute}, function(err, status){
+				if(err){
+					res.status(400).send("an error has occured while deleting your item");
+				} else {
+					res.json(status);
+				}
+			});
+		});
+	});
 });
+
+function createSetObj(body){
+	var newAttribute = {};
+	newAttribute.itemListId = body.itemListId;
+	newAttribute.boardId = body.boardId;
+	newAttribute.name = body.name;
+	return newAttribute;
+}
 
 router.delete('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.id
