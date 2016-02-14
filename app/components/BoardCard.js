@@ -7,9 +7,9 @@ export default class BoardCard extends Component {
 
 		return (
 			<Link to={"/board/"+board._id}>
-				<div className="well">
+				<div className="well square-card">
 					<button type="button" className="pull-right btn btn-danger" onClick={this.props.onDeleteBoard.bind(null, this.props.board._id)}><i className="fa fa-times"></i></button>
-					<h6>Name: {board.name}</h6>
+					<h6><i className="fa fa-clipboard"></i> {board.name}</h6>
 					<label>Description:</label>
 					<div>{board.description}</div>
 				</div>

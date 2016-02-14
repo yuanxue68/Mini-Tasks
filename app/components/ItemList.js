@@ -24,18 +24,19 @@ export default class ItemLists extends Component{
 		})
 		var inputId = "itemName"+index
 		return (
-			<div className ="col-md-3">
+			<div className ="col-md-3 dim-container">
 				{overLay}
-				<h4>{itemList.name}</h4>
+				<h4><i className="fa fa-columns"></i> {itemList.name}</h4>
 				{items}
-				<div>
-					<button type="button" className="btn btn-xs btn-danger" onClick={this.props.onDeleteItemList.bind(null, itemList._id, router.params.boardId)}>Remove List</button>
-				</div>
 				<div className="input-group">
 					<input id={inputId} type="text" className="form-control"/>
 					<span className="input-group-btn">
 						<button className="btn btn-info" onClick={this.createItem}><i className="fa fa-plus"></i></button>
 					</span>
+				</div>
+				<br/>
+				<div>
+					<button type="button" className="btn btn-xs btn-danger" onClick={this.props.onDeleteItemList.bind(null, itemList._id, router.params.boardId)}>Remove List</button>
 				</div>
 			</div>
 		)

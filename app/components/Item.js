@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { ItemTypes } from './../actions/DndActions';
 import { DragSource } from 'react-dnd';
+import {openModal} from './../utils/Utils'
 
 const itemSource = {
   beginDrag(props) {
@@ -20,13 +21,14 @@ class Item extends Component{
 		const { connectDragSource, isDragging } = this.props;
 		const {item} = this.props
 		return connectDragSource(
-			<div className="well" style={{
+			<div className="well card" onClick={openModal.bind(null, "#itemInfoModal")} style={{
         opacity: isDragging ? 0.5 : 1,
         fontSize: 25,
         fontWeight: 'bold'
       }}>
+      	<i className="fa fa-tasks"></i>
 				<button type="button" className="close" onClick={this.props.onDeleteItem.bind(null, item._id, item.itemListId)}><span>&times;</span></button>
-				{this.props.item.name}
+				<span> 	 {this.props.item.name}</span>
 			</div>
 		)
 	}

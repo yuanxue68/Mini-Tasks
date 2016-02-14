@@ -6,6 +6,7 @@ import {createItem, deleteItem, editItem, getItem} from './../actions/ItemAction
 import { moveItem } from './../actions/DndActions';
 import BoardPage from './../components/BoardPage'
 import ListCreationModal from './../components/ListCreationModal'
+import ItemModal from './../components/ItemModal'
 
 export default class Board extends Component {
 	componentDidMount(){
@@ -19,9 +20,11 @@ export default class Board extends Component {
 			<div>
 				<ListCreationModal {...this.props}
 				onCreateItemList={(itemListsInfo, boardId)=>dispatch(createItemList(itemListsInfo, boardId))}/>
+				<ItemModal {...this.props}
+				editItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
 				onCreateItem={(item)=>dispatch(createItem(item))}
-				onDeleteItem={(itemId, itemListId)=>dispatch(deleteItem(itemId, itemListId))}
+				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId))}}
 				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId))}
 				onDeleteItemList={(itemListId, boardId)=>dispatch(deleteItemList(itemListId, boardId))}/>
 			</div>

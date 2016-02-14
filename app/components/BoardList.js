@@ -20,14 +20,14 @@ export default class Home extends Component {
 			return <BoardCard key={index} board={board} onDeleteBoard={onDeleteBoard}/>
 		}) 
 		return (
-			<div className="container">
-				<h3>My Boards</h3>
+			<div className="container dim-container">
+				<h3 className="">My Boards</h3>
 				<div className="clearfix" >
-				    <button type="button" onClick={openModal.bind(null, "#boardCreationModal")} className="btn btn-primary pull-right">New Board</button>
+				    <button type="button" onClick={openModal.bind(null, "#boardCreationModal")} className="btn btn-info pull-right"><i className="fa fa-tachometer"></i> New Board</button>
 				</div>
 				<br/>
 				<BoardCreationModal authentication={authentication} onCreateBoard={this.props.onCreateBoard}/>
-				{BoardList}
+				<div className="board-container">{BoardList}</div>
 			</div>
 		)
 	}

@@ -21,8 +21,18 @@ router.use(function(req, res, next){
 	next();
 });
 
-router.get('/', function(req, res){
+router.get('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
+	var id = req.params.id;
+	req.userId = myUtils.getUserId(req.user);
 
+	Item.findOne({_id:id}, function(err, item){
+		if(err){
+			return res.status(400).send("an error has occured while getting your item");
+		}
+		verifyBoardOwner(item.boardId, req, res, function(){
+			return res.json(item);
+		});
+	});
 });
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res){
@@ -41,7 +51,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
-	var id = req.params.id
+	var id = req.params.id;
 	req.userId = myUtils.getUserId(req.user);
 
 	Item.findOne({_id:id}, function(err, item){
