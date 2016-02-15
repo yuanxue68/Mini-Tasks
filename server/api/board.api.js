@@ -12,8 +12,8 @@ router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("name","Your Board must have a name").notEmpty();
 		req.checkBody("owner","Your Board must have a owner").notEmpty();
-	} else if (req.method === "GET"){
-		req.checkQuery("owner", "You must specify a username").notEmpty();
+	} else if (req.method === "PUT"){
+		req.checkBody("name","Your Board must have a name").notEmpty();
 	}
 
 	var errors = req.validationErrors();
@@ -58,10 +58,25 @@ router.get("/", passport.authenticate('bearer', { session: false }), function(re
 	});
 });
 
+router.get("/:id", passport.authenticate('bearer', { session: false }), function(req, res, next){
+	var id = req.params.id;
+	req.userId = myUtils.getUserId(req.user);
+
+	verifyBoardOwner(id, req, res, function(){
+		Board.findOne({_id: id}, function(err, board){
+			if(err){
+				res.status(400).send("an error has occured while getting your board");
+			} else {
+				res.json(board);
+			}
+		});
+	});
+});
+
 router.put("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
 	var id = req.params.id;
-	var newValues = {};
+	var newValues = {name:'', description:''};
 
 	if(req.body.name){
 		newValues.name = req.body.name;
@@ -69,7 +84,7 @@ router.put("/:id", passport.authenticate('bearer', { session: false }), function
 	if(req.body.description){
 		newValues.description = req.body.description;
 	}
-
+	debugger
 	verifyBoardOwner(id, req, res, function(){
 		Board.update({_id:id}, {$set: newValues}, function(err, status){
 			if(err){

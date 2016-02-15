@@ -95,35 +95,3 @@ function deleteBoardFailure(error){
 		error
 	}
 }
-
-export const EDIT_BOARD_SUCCESS = 'EDIT_BOARD_SUCCESS'
-export const EDIT_BOARD_FAILURE = 'EDIT_BOARD_FAILURE'
-
-function editBoardSuccess(boardInfo){
-	return {
-		type: EDIT_BOARD_SUCCESS,
-		boardInfo
-	}
-}
-
-function editBoardFailure(error){
-	return {
-		type: EDIT_BOARD_FAILURE,
-		error
-	}
-}
-
-export function editboard(boardInfo){
-	return function(dispatch){
-		return $.ajax({
-			url: 'api/boards/'+boardInfo._id,
-			method: 'PUT',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			data: JSON.stringify(boardInfo)
-		}).done((data)=>{
-			dispatch(editBoardSuccess(boardInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(editBoardFailure(xhr.responseText))
-		})
-	}
-}

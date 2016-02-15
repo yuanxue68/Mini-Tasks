@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import * as ActionTypes from './../actions/RootActions'
 import boardList from './../reducers/BoardListReducer'
 import itemLists from './../reducers/ItemListReducer'
+import boardInfo from './../reducers/BoardReducer'
 
 const rootReducer = combineReducers({
 	router,
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
 	notificationMessage,
 	authentication,
 	boardList,
+	boardInfo,
 	itemLists
 })
 export default rootReducer

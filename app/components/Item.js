@@ -21,7 +21,7 @@ class Item extends Component{
 		const { connectDragSource, isDragging } = this.props;
 		const {item} = this.props
 		return connectDragSource(
-			<div className="well card" onClick={openModal.bind(null, "#itemInfoModal")} style={{
+			<div className="well card" onClick={this.onOpen} style={{
         opacity: isDragging ? 0.5 : 1,
         fontSize: 25,
         fontWeight: 'bold'
@@ -32,6 +32,11 @@ class Item extends Component{
 			</div>
 		)
 	}
+
+  onOpen(){
+    //this.props.getItem()
+    openModal("#itemInfoModal")
+  }
 }
 
 export default DragSource(ItemTypes.ITEM, itemSource, collect)(Item);

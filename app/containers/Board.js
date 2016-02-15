@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
 import {createItem, deleteItem, editItem, getItem} from './../actions/ItemActions'
+import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
 import { moveItem } from './../actions/DndActions';
 import BoardPage from './../components/BoardPage'
 import ListCreationModal from './../components/ListCreationModal'
@@ -12,6 +13,7 @@ export default class Board extends Component {
 	componentDidMount(){
 		const { dispatch } = this.props
 		dispatch(getItemLists(this.props.router.params.boardId))
+		dispatch(getBoard(this.props.router.params.boardId))
 	}
 
 	render (){
@@ -23,6 +25,8 @@ export default class Board extends Component {
 				<ItemModal {...this.props}
 				editItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
+				onChangeBoardInput={(boardInfo)=>dispatch(changeBoardInput(boardInfo))}
+				onEditBoard={(boardInfo)=>dispatch(editboard(boardInfo))}
 				onCreateItem={(item)=>dispatch(createItem(item))}
 				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId))}}
 				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId))}
@@ -36,6 +40,7 @@ function mapStateToProps (state) {
 	return {
 		authentication: state.authentication,
 		itemLists: state.itemLists,
+		boardInfo: state.boardInfo,
 		router: state.router
 	}
 }
