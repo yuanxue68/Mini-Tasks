@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var BoardSchema = new Schema({
 	owner: {type: String, required: true},
 	name: {type: String, required: true},
-	description: String
+	description: String,
+	members: {type: Array, 'default': []}
 });
 
 BoardSchema.pre('remove', function(next){

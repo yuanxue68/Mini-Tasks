@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
-import {createItem, deleteItem, editItem, getItem} from './../actions/ItemActions'
+import {createItem, deleteItem, editItem, populateItemToModal} from './../actions/ItemActions'
 import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
 import { moveItem } from './../actions/DndActions';
 import BoardPage from './../components/BoardPage'
@@ -23,10 +23,12 @@ export default class Board extends Component {
 				<ListCreationModal {...this.props}
 				onCreateItemList={(itemListsInfo, boardId)=>dispatch(createItemList(itemListsInfo, boardId))}/>
 				<ItemModal {...this.props}
-				editItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
+				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
+				onEditItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
 				onChangeBoardInput={(boardInfo)=>dispatch(changeBoardInput(boardInfo))}
 				onEditBoard={(boardInfo)=>dispatch(editboard(boardInfo))}
+				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
 				onCreateItem={(item)=>dispatch(createItem(item))}
 				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId))}}
 				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId))}
@@ -40,6 +42,7 @@ function mapStateToProps (state) {
 	return {
 		authentication: state.authentication,
 		itemLists: state.itemLists,
+		itemInfo: state.itemInfo,
 		boardInfo: state.boardInfo,
 		router: state.router
 	}

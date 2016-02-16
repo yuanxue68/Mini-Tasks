@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import Header from './../components/Header'
+import UserIdModal from './../components/UserIdModal'
 import { resetErrorMessage, resetNotificationMessage, userSignOut, userSignIn } from './../actions/RootActions'
 
 class App extends Component {
@@ -68,11 +69,12 @@ class App extends Component {
   }
 
   render(){
-    const {children, dispatch} = this.props
-
+    const {children, dispatch, authentication} = this.props
+    var userIdModal = authentication.authed ? <UserIdModal userInfo={authentication.userInfo}/> : null
     return(
       <div>
-        <Header onUserSignOut={()=> dispatch(userSignOut())}/>
+        {userIdModal}
+        <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/>
         {this.renderErrorMessage()}
         {this.renderNotification()}
         {children}

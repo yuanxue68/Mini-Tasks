@@ -1,53 +1,16 @@
 import {getCookie} from './../utils/Utils'
 
-/*
-export const GET_ITEMLISTS_SUCCESS = 'GET_ITEMLISTS_SUCCESS'
-export const GET_ITEMLISTS_FAILURE = 'GET_ITEMLISTS_FAILURE'
 
-function getItemListsSuccess(itemLists){
+export const POPULATE_ITEM_SUCCESS = 'POPULATE_ITEM_SUCCESS'
+
+
+export function populateItemToModal(itemInfo){
 	return {
-		type: GET_ITEMLISTS_SUCCESS,
-		itemLists
+		type: POPULATE_ITEM_SUCCESS,
+		itemInfo
 	}
 }
 
-function getItemListsFailure(error){
-	return {
-		type: GET_ITEMLISTS_FAILURE,
-		error
-	}
-}
-
-export function getItemLists(boardId){
-	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId+"/itemLists",
-			method: 'GET',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((data)=>{
-			var itemLists = []
-			//nest items related to an item list inside an itemlist object
-			data.itemLists.forEach(function(itemList){
-				itemList.items=[]
-				data.items.forEach(function(item){
-					if(item._id === itemList._id){
-						itemList.items = item.items;
-					}
-				})
-				itemLists.push(itemList)
-			})
-			dispatch(getItemListsSuccess(itemLists))
-		}).fail((xhr, status, err)=>{
-			dispatch(getItemListsFailure(xhr.responseText))
-		})
-	}
-}
-
-function organizeItemLists(data){
-	data.itemLists.forEach(function(itemList){
-
-	});
-}*/
 
 export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS'
 export const CREATE_ITEM_FAILURE = 'CREATE_ITEM_FAILURE'
@@ -114,35 +77,35 @@ function deleteItemFailure(error){
 	}
 }
 
-/*
-export const EDIT_ITEMLIST_SUCCESS = 'EDIT_ITEMLIST_SUCCESS'
-export const EDIT_ITEMLIST_FAILURE = 'EDIT_ITEMLIST_FAILURE'
+export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS'
+export const EDIT_ITEM_FAILURE = 'EDIT_ITEM_FAILURE'
 
-function editItemListSuccess(itemListInfo){
+function editItemSuccess(itemInfo){
 	return {
-		type: EDIT_ITEMLIST_SUCCESS,
-		itemListInfo
+		type: EDIT_ITEM_SUCCESS,
+		itemInfo
 	}
 }
 
-function editItemListFailure(error){
+function editItemFailure(error){
 	return {
 		type: EDIT_ITEMLIST_FAILURE,
 		error
 	}
 }
 
-export function editItemList(itemListInfo){
+export function editItem(itemInfo){
 	return function(dispatch){
 		return $.ajax({
-			url: 'api/boards/'+itemListInfo._id,
+			url: 'api/items/'+itemInfo._id,
 			method: 'PUT',
+			contentType: 'application/json',
 			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			data: JSON.stringify(itemListInfo)
+			data: JSON.stringify(itemInfo)
 		}).done((data)=>{
-			dispatch(editItemListSuccess(itemListInfo))
+			dispatch(editItemSuccess(itemInfo))
 		}).fail((xhr, status, err)=>{
-			dispatch(editItemListFailure(xhr.responseText))
+			dispatch(editItemFailure(xhr.responseText))
 		})
 	}
-}*/
+}

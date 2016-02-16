@@ -38,6 +38,25 @@ export default function itemLists (state = [], action){
 				}
 			})
 			return newState
+		case ItemActionTypes.EDIT_ITEM_SUCCESS:
+			var newState = []
+			state.forEach(function(itemList){
+				if(itemList._id === action.itemInfo.itemListId){
+					var newList = []
+					itemList.items.forEach(function(item){
+						if(item._id === action.itemInfo._id){
+							newList.push(action.itemInfo)
+						} else {
+							newList.push(item)
+						}
+					})
+					itemList.items = newList
+					newState.push(itemList)
+				} else {
+					newState.push(itemList)
+				}
+			})
+			return newState
 		case ItemActionTypes.DELETE_ITEM_SUCCESS:
 			var newState = []
 			state.forEach(function(itemList){

@@ -8,7 +8,7 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemList, router, onDeleteItem, index, isOver} = this.props
+		const {itemList, router, onDeleteItem, onPopulateItemToModal, index, isOver} = this.props
 		var overLay = isOver ? <div style={{
 						position: 'absolute',
             top: 0,
@@ -20,7 +20,7 @@ export default class ItemLists extends Component{
             backgroundColor: 'yellow',
           }} /> : null
 		var items = itemList.items.map(function(item, index){
-			return <Item key={index} item={item} onDeleteItem={onDeleteItem}/>
+			return <Item key={index} item={item} onDeleteItem={onDeleteItem} onPopulateItemToModal={onPopulateItemToModal}/>
 		})
 		var inputId = "itemName"+index
 		return (

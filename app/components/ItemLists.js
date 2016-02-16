@@ -7,7 +7,7 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemLists, router, onDeleteItemList, onCreateItem, onDeleteItem, onMoveItem} = this.props
+		const {itemLists, router, onDeleteItemList, onCreateItem, onDeleteItem, onMoveItem, onPopulateItemToModal} = this.props
 		if(itemLists){
 			var listComponent = []
 			var i = 0
@@ -16,13 +16,13 @@ export default class ItemLists extends Component{
 				console.log(i)
 				listComponent.push(
 					<div className="row" index={i}>
-						<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} 
+						<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onPopulateItemToModal={onPopulateItemToModal}
 							onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList} onMoveItem={onMoveItem}/>
-						<ItemListContainer index={i+1} key={i+1} itemList={itemLists[i+1]} onCreateItem={onCreateItem} 
+						<ItemListContainer index={i+1} key={i+1} itemList={itemLists[i+1]} onCreateItem={onCreateItem} onPopulateItemToModal={onPopulateItemToModal}
 							onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList} onMoveItem={onMoveItem}/>
-						<ItemListContainer index={i+2} key={i+2} itemList={itemLists[i+2]} onCreateItem={onCreateItem} 
+						<ItemListContainer index={i+2} key={i+2} itemList={itemLists[i+2]} onCreateItem={onCreateItem} onPopulateItemToModal={onPopulateItemToModal}
 							onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList} onMoveItem={onMoveItem}/>
-						<ItemListContainer index={i+3} key={i+3} itemList={itemLists[i+3]} onCreateItem={onCreateItem} 
+						<ItemListContainer index={i+3} key={i+3} itemList={itemLists[i+3]} onCreateItem={onCreateItem} onPopulateItemToModal={onPopulateItemToModal}
 							onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList} onMoveItem={onMoveItem}/>
 					</div>
 				)
@@ -30,7 +30,7 @@ export default class ItemLists extends Component{
 			//include the remainder of Itemlist 
 			var remainingList = []
 			for (i; i<itemLists.length; i++){
-				remainingList.push(<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} 
+				remainingList.push(<ItemListContainer index={i} key={i} itemList={itemLists[i]} onCreateItem={onCreateItem} onPopulateItemToModal={onPopulateItemToModal}
 					onDeleteItem={onDeleteItem} router={router} onDeleteItemList={onDeleteItemList} onMoveItem={onMoveItem}/>)
 			}
 			listComponent.push(<div className="row" index={i+1}>{remainingList}</div>)

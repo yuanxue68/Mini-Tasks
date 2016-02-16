@@ -4,6 +4,8 @@ import * as ActionTypes from './../actions/RootActions'
 import boardList from './../reducers/BoardListReducer'
 import itemLists from './../reducers/ItemListReducer'
 import boardInfo from './../reducers/BoardReducer'
+import itemInfo from './../reducers/ItemInfoReducer'
+import members from './../reducers/MemberReducer'
 
 const rootReducer = combineReducers({
 	router,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
 	authentication,
 	boardList,
 	boardInfo,
-	itemLists
+	itemLists,
+	itemInfo,
+	members
 })
 export default rootReducer
 
@@ -36,7 +40,7 @@ function notificationMessage(state = null, action) {
 	return state
 }
 
-function authentication(state = {authed:false}, action) {
+function authentication(state = {authed:false, userInfo: {}}, action) {
 	const {type} = action
 	switch (type) {
 		case ActionTypes.SIGN_UP_FAILURE:

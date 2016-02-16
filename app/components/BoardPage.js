@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {openModal} from './../utils/Utils'
 import ItemLists from './ItemLists'
 import { DragDropContext } from 'react-dnd';
+import {Link} from 'react-router'
 import HTML5Backend from 'react-dnd-html5-backend';
 
 class BoardPage extends Component {
@@ -15,18 +16,20 @@ class BoardPage extends Component {
 	render(){
 		return(
 			<div className="container">
+				<div className="clearfix" >
+					<div className="btn-group pull-right">
+				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Add Member</Link>
+				    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary"><i className="fa fa-list"></i> New List</button>
+			    </div>
+			    <button type="button" className="btn btn-info pull-left" onClick={this.saveBoard}><i className="fa fa-floppy-o"></i> Save Board Info</button>
+				</div>
 				<div className="form-group">
+					<label htmlFor="">Board Name</label>
 					<input id="boardName" type="text" className="form-control" onChange={this.inputChange} value={this.props.boardInfo.name} placeholder="Board Name"/>
 				</div>
 				<div className="form-group">
+					<label htmlFor="">Board Description</label>
 					<textarea id="boardDescription" className="form-control" onChange={this.inputChange} value={this.props.boardInfo.description} placeholder="Board Description"></textarea>
-				</div>
-				<div className="clearfix" >
-						<div className="btn-group pull-right">
-					    <button type="button"  className="btn btn-warning"><i className="fa fa-users"></i> New Member</button>
-					    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary"><i className="fa fa-list"></i> New List</button>
-				    </div>
-				    <button type="button" className="btn btn-info pull-left" onClick={this.saveBoard}><i className="fa fa-floppy-o"></i> Save Board Info</button>
 				</div>
 				<br/>
 				<ItemLists {...this.props}/>

@@ -5,6 +5,7 @@ import Home from './containers/Home'
 import Login from './containers/Login'
 import SignUp from './containers/SignUp'
 import Board from './containers/Board'
+import Members from './containers/Members'
 
 export default (
 	<Route path="/" component = {App} >
@@ -12,5 +13,6 @@ export default (
 		<Route path="login" component = {Login}/>
 		<Route path="signup" component = {SignUp}/>
 		<Route path="board/:boardId" component = {Board}/>
+		<Route path="board/:boardId/members" component = {Members}/>
 	</Route>
 )

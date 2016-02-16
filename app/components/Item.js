@@ -17,6 +17,11 @@ function collect(connect, monitor) {
 }
 
 class Item extends Component{
+  constructor(props){
+    super(props)
+    this.onOpen = this.onOpen.bind(this)
+  }
+
 	render(){
 		const { connectDragSource, isDragging } = this.props;
 		const {item} = this.props
@@ -34,8 +39,9 @@ class Item extends Component{
 	}
 
   onOpen(){
-    //this.props.getItem()
+    const {item, onPopulateItemToModal} = this.props
     openModal("#itemInfoModal")
+    onPopulateItemToModal(item)
   }
 }
 

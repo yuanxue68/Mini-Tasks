@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
+import {openModal} from './../utils/Utils'
 
 export default class Header extends Component{
 	constructor(props) {
@@ -7,6 +8,16 @@ export default class Header extends Component{
 	}
 	
 	render() {
+		var loggedInButtons
+		if(this.props.authentication.authed){
+			loggedInButtons = (<ul className="nav navbar-nav navbar-right">
+					<li><a onClick={openModal.bind(null, "#userIdModal")}>GetUserId</a></li>
+	        <li><a href="#" onClick={this.props.onUserSignOut}>Logout</a></li>
+	      </ul>)
+		} else {
+			loggedInButtons = null
+		}
+
 		return (
 			<div>
 				<nav className="navbar navbar-inverse" role="navigation">
@@ -21,15 +32,8 @@ export default class Header extends Component{
 							Brand
 						</Link>
 					</div>
-					<div className="navbar-form navbar-left" role="search">
-		        <div className="form-group">
-		          <input type="text" className="form-control" placeholder="Search"/>
-		        </div>
-		      </div>
 					<div className="collapse navbar-collapse" id="login-nav">
-						<ul className="nav navbar-nav navbar-right">
-			        <li><a href="#" onClick={this.props.onUserSignOut}>Logout</a></li>
-			      </ul>
+						{loggedInButtons}
 					</div>
 				</nav>
 			</div>

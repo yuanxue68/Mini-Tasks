@@ -7,6 +7,7 @@ var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 var myUtils = require('./../utils/utils');
 
 router.use('/:boardId/itemlists', require('./itemList.api'));
+router.use('/:boardId/members', require('./members.api'));
 
 router.use(function(req, res, next){
 	if(req.method === "POST"){
