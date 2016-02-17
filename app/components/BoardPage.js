@@ -18,7 +18,7 @@ class BoardPage extends Component {
 			<div className="container">
 				<div className="clearfix" >
 					<div className="btn-group pull-right">
-				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Add Member</Link>
+				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Members</Link>
 				    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary"><i className="fa fa-list"></i> New List</button>
 			    </div>
 			    <button type="button" className="btn btn-info pull-left" onClick={this.saveBoard}><i className="fa fa-floppy-o"></i> Save Board Info</button>

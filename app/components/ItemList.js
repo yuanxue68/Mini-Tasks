@@ -45,6 +45,9 @@ export default class ItemLists extends Component{
 	createItem(){
 		const {itemList, router, index} = this.props
 		var name = $('#itemName'+index).val()
+		if(!name.trim()){
+			return
+		}
 		$('#itemName'+index).val("")
 		var item = {
 			name,
