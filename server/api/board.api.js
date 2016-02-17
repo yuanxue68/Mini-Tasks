@@ -44,13 +44,12 @@ router.post("/", passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req, res, next){
-	debugger
 	req.userId = myUtils.getUserId(req.user);
 	if(req.userId !== req.query.owner){
 		return res.status(400).send("you do not have permission to view this board");
 	}
-
-	Board.find({owner:req.query.owner}, function(err, boards){
+	debugger
+	Board.find({$or:[{owner:req.query.owner},{members:String(req.user._id)}]}, function(err, boards){
 		if(err){
 			res.status(400).send("an error has occured while getting your board");
 		} else {
