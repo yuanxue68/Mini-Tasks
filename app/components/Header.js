@@ -29,7 +29,7 @@ export default class Header extends Component{
 							<span className="icon-bar"></span>
 						</button>
 						<Link className="navbar-brand" to="/">
-							Brand
+							Mini Tasks
 						</Link>
 					</div>
 					<div className="collapse navbar-collapse" id="login-nav">

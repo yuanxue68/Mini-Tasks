@@ -33,8 +33,8 @@ class Item extends Component{
       }}>
       	<i className="fa fa-tasks"></i>
 				<button type="button" className="close" onClick={this.props.onDeleteItem.bind(null, item._id, item.itemListId)}><span>&times;</span></button>
-				<span> 	 {this.props.item.name}</span>
-        <span className={"pull-right label label-"+this.props.item.colorLabel}>   {this.props.item.colorLabel}</span>
+				<span className={"label label-"+this.props.item.colorLabel}>   {this.props.item.colorLabel}</span>
+        <span> 	 {this.props.item.name}</span>
 			</div>
 		)
 	}

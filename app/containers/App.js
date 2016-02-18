@@ -69,12 +69,14 @@ class App extends Component {
   }
 
   render(){
-    const {children, dispatch, authentication} = this.props
+    const {children, dispatch, authentication, router} = this.props
     var userIdModal = authentication.authed ? <UserIdModal userInfo={authentication.userInfo}/> : null
+    var header = !authentication.authed && router.location.pathname === "/" ? 
+      null : <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/> 
     return(
       <div>
         {userIdModal}
-        <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/>
+        {header}
         {this.renderErrorMessage()}
         {this.renderNotification()}
         {children}
@@ -88,7 +90,8 @@ function mapStateToProps (state) {
   return {
     errorMessage: state.errorMessage,
     notificationMessage: state.notificationMessage,
-    authentication: state.authentication
+    authentication: state.authentication,
+    router: state.router
   }
 }
 

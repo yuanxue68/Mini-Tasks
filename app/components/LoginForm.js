@@ -12,13 +12,13 @@ export default class LoginForm extends Component {
         <h5>Sign In</h5>
         <div className="form-group">
           <label>Username</label>
-          <input id="login-username" className="form-control" placeholder="Email"/>
+          <input id="login-username" className="form-control" placeholder="Username"/>
         </div>
         <div className="form-group">
           <label>Password</label>
           <input id="login-password" type="password" className="form-control" placeholder="Password"/>
         </div>
-        <button onClick={this.submitSignInForm} className="btn btn-primary">Login</button>
+        <button type="submit" onClick={this.submitSignInForm} className="btn btn-primary">Login</button>
       </div>
     )
   }

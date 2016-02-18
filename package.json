@@ -1,5 +1,5 @@
 {
-  "name": "yullo",
+  "name": "mini tasks",
   "version": "1.0.0",
   "description": "trello like task management web app",
   "main": "index.js",

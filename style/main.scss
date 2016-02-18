@@ -55,3 +55,28 @@
 .label{
 	margin: 5px;
 }
+
+.btn-hg{
+	margin: 2px;
+}
+
+.primary-font{
+	color: #16a085;
+}
+
+
+.flex{
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.flex-landing{
+	height: 100vh;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
