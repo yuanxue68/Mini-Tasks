@@ -12,7 +12,7 @@ require('./server/config/passport');
 
 var app = express();
 mongoose.connect(process.env.MONGO_URI);
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 
 //mount middleware
 app.use(morgan('dev'));
