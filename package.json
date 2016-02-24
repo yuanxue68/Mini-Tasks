@@ -4,7 +4,7 @@
   "description": "trello like task management web app",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "gulp",
     "postinstall": "bower install"
   },
   "engines": {
