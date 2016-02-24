@@ -44,6 +44,15 @@ gulp.task('sass', function(){
 });
 
 gulp.task('start', function () {
+  nodemon({ script: 'server.js'
+          , ext: 'js'
+          , watch: ['server/**','server.js'] })
+    .on('restart', function () {
+      console.log('restarted!')
+    });
+});
+
+gulp.task('dev', function () {
 	env({
     file: '.env.js'
   });
@@ -55,6 +64,7 @@ gulp.task('start', function () {
       console.log('restarted!')
     });
 });
+
 
 gulp.task('watch', function(){
 	gulp.watch('./app/**/*.js',['webpack']);
