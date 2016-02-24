@@ -1,0 +1,9 @@
+{
+  "name": "yullo",
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.2.1",
+    "flat-ui": "~2.2.2",
+    "font-awesome": "~4.5.0"
+  }
+}

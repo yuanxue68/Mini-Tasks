@@ -1,16 +1,21 @@
 {
-  "name": "mini tasks",
+  "name": "yullo",
   "version": "1.0.0",
   "description": "trello like task management web app",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "bower install"
+  },
+  "engines": {
+    "node": "4.1.0"
   },
   "author": "Yuan Xue",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.2",
+    "bower": "^1.7.7",
     "express": "^4.13.4",
     "express-validator": "^2.19.0",
     "history": "^1.17.0",
@@ -38,6 +43,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "gulp": "^3.9.0",
+    "gulp-env": "^0.4.0",
     "gulp-nodemon": "^2.0.6",
     "gulp-sass": "^2.1.1",
     "gulp-util": "^3.0.7",

@@ -3,6 +3,7 @@ var webpack = require("webpack");
 var gutil = require("gulp-util");
 var sass = require('gulp-sass');
 var nodemon = require('gulp-nodemon');
+var env = require('gulp-env');
 
 webpackConfig = {
 	entry: "./app/Main.js",
@@ -43,12 +44,16 @@ gulp.task('sass', function(){
 });
 
 gulp.task('start', function () {
+	env({
+    file: '.env.js'
+  });
+
   nodemon({ script: 'server.js'
           , ext: 'js'
           , watch: ['server/**','server.js'] })
     .on('restart', function () {
       console.log('restarted!')
-    })
+    });
 });
 
 gulp.task('watch', function(){

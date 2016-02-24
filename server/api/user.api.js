@@ -2,8 +2,8 @@ var express = require('express');
 var	mongoose = require('mongoose');
 var passport = require('passport');
 var	User = require('./../models/user.model');
-var jwt = require('jsonwebtoken');
 var	util = require('util');
+var utils=require('./../utils/utils');
 var	errorMsg = require('./../constants/errors.constants').userResourceErrors;
 var SECRET=require('./../config/authConfig').SECRET;
 
@@ -37,9 +37,7 @@ router.post("/",function(req,res){
 				res.status(400).send(errorMsg.USER_CREATION_ERROR);
 			}
 		}
-    var token = jwt.sign(user, SECRET, {
-      expiresIn: 604800
-    });
+    var token = utils.createToken(user);
 		res.cookie("yulloToken",token).send(user);
 	});
 

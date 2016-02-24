@@ -5,12 +5,13 @@ var mongoose = require('mongoose');
 var validator = require('express-validator');
 var passport = require('passport');
 
+console.log(process.env);
 //required configs
-var configDB = require('./server/config/database');
+//var configDB = require('./server/config/database');
 require('./server/config/passport');
 
 var app = express();
-mongoose.connect(configDB.url);
+mongoose.connect(process.env.MONGO_URI);
 var port = 3000;
 
 //mount middleware

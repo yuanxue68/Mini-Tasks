@@ -3,7 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('./../models/user.model');
-var authConfig = require('./authConfig');
+//var authConfig = require('./authConfig');
 var jwt = require('jsonwebtoken');
 var utils=require('./../utils/utils');
 
@@ -27,9 +27,9 @@ passport.use(new LocalStrategy(function(username, password, done){
 }));
 
 passport.use(new FacebookStrategy({
-  clientID: authConfig.facebookAuth.clientID,
-  clientSecret: authConfig.facebookAuth.clientSecret,
-  callbackURL: authConfig.facebookAuth.callbackURL
+  clientID: process.env.facebookClientID,
+  clientSecret: process.env.facebookClientSecret,
+  callbackURL: process.env.facebookCallbackURL
 }, function(accessToken, refreshToken, profile, done){
   User.findOne({"facebook.id":profile.id}, function(err, user){
     if(err) {
@@ -61,7 +61,7 @@ passport.use(new FacebookStrategy({
 
 passport.use(new BearerStrategy(function(token, done){
   try {
-    jwt.verify(token, authConfig.SECRET, function(err,decoded){
+    jwt.verify(token, process.env.SECRET, function(err,decoded){
       if (err){
         return done(null, false);
       } else {
