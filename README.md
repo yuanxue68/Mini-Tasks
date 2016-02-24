@@ -23,9 +23,9 @@ bower install
 module.exports = {
   MONGO_URI: "your mongo url",
   SECRET: "somesecret",
-	facebookClientID: 'your app id', // your App ID
-	facebookClientSecret: 'your app secret', // your App Secret
-	facebookCallbackURL: 'http://localhost:3000/api/auth/facebook/callback' //local example
+  facebookClientID: 'your app id', // your App ID
+  facebookClientSecret: 'your app secret', // your App Secret
+  facebookCallbackURL: 'http://localhost:3000/api/auth/facebook/callback' //local example
 };
 ```
 

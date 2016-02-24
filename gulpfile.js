@@ -71,4 +71,4 @@ gulp.task('watch', function(){
 	gulp.watch('./style/**/*.scss',['sass']);
 });
 
-gulp.task('default', ['webpack','sass','start','watch']);
+gulp.task('default', ['webpack','sass','dev','watch']);
