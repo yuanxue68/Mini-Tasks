@@ -4,7 +4,6 @@ var express = require('express');
 var utils=require('./../utils/utils');
 
 var router = express.Router();
-var SECRET=require('./../config/authConfig').SECRET;
 
 router.post("/local", function(req, res, next){
   passport.authenticate(['bearer','local'], function(err, user, info) {

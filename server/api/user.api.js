@@ -5,7 +5,6 @@ var	User = require('./../models/user.model');
 var	util = require('util');
 var utils=require('./../utils/utils');
 var	errorMsg = require('./../constants/errors.constants').userResourceErrors;
-var SECRET=require('./../config/authConfig').SECRET;
 
 var	router = express.Router();
 //validate params
