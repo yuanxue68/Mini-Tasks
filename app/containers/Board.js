@@ -8,12 +8,15 @@ import { moveItem } from './../actions/DndActions';
 import BoardPage from './../components/BoardPage'
 import ListCreationModal from './../components/ListCreationModal'
 import ItemModal from './../components/ItemModal'
+import {getCookie} from './../utils/Utils'
+
 
 export default class Board extends Component {
 	componentDidMount(){
 		const { dispatch } = this.props
-		dispatch(getItemLists(this.props.router.params.boardId))
-		dispatch(getBoard(this.props.router.params.boardId))
+		var token = getCookie("yulloToken")
+    dispatch(getItemLists(this.props.router.params.boardId))
+		dispatch(getBoard(this.props.router.params.boardId, token))
 	}
 
 	render (){

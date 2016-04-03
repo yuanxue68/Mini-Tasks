@@ -8,6 +8,20 @@ export function getCookie(name) {
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
+export function urlBuilder(url, params) {
+  var url = url+"?"
+	for (var key in params) {
+    if (!params.hasOwnProperty(key)) {
+     	continue   
+    }
+		url = url + key + "=" + params[key]
+	}
+  return url
+}
+
+export function getHost(){
+  return "http://localhost:3000"
+}
 export function openModal(element){
 	$(element).modal()
 }

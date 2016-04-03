@@ -17,16 +17,22 @@ export const CREATE_ITEM_FAILURE = 'CREATE_ITEM_FAILURE'
 
 export function createItem(item){
 	return function(dispatch){
-		return $.ajax({
-			url:'/api/items',
+		return fetch('/api/items',{
 			method:'POST',
-			contentType: 'application/json',
-			data: JSON.stringify(item),
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((item)=>{
+			body: JSON.stringify(item),
+      headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      }
+		}).then((response)=>{
+      if (response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((item)=>{
 			dispatch(createItemSuccess(item))
-		}).fail((xhr, status, err)=>{
-			dispatch(createItemFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(createItemFailure(err.responseText))
 		})
 	}
 }
@@ -50,14 +56,21 @@ export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE'
 
 export function deleteItem(itemId, itemListId){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/items/'+itemId,
+		return fetch('api/items/'+itemId,{
 			method: 'DELETE',
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done(()=>{
+      headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      }
+		}).then((response)=>{
+      if (response.status > 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then(()=>{
 			dispatch(deleteItemSuccess(itemId, itemListId))
-		}).fail((xhr, status, err)=>{
-			dispatch(deleteItemFailure(xhr.responseText))
+		}).catch((err)=>{
+      console.log(err)
+			dispatch(deleteItemFailure(err.errorMessage))
 		})
 	}
 }
@@ -96,16 +109,22 @@ function editItemFailure(error){
 
 export function editItem(itemInfo){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/items/'+itemInfo._id,
+		return fetch('api/items/'+itemInfo._id, {
 			method: 'PUT',
-			contentType: 'application/json',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			data: JSON.stringify(itemInfo)
-		}).done((data)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      },
+			body: JSON.stringify(itemInfo)
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((data)=>{
 			dispatch(editItemSuccess(itemInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(editItemFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(editItemFailure(err.errorMessage))
 		})
 	}
 }

@@ -1,4 +1,4 @@
-import {getCookie} from './../utils/Utils'
+import {urlBuilder, getCookie} from './../utils/Utils'
 
 export const GET_BOARDS_SUCCESS = 'GET_BOARDS_SUCCESS'
 export const GET_BOARDS_FAILURE = 'GET_BOARDS_FAILURE'
@@ -19,15 +19,21 @@ function getBoardsFailure(error){
 
 export function getBoards(owner){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/',
+		return fetch(urlBuilder('/api/boards', owner), {
 			method: 'GET',
-			data:owner,
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((boardList)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      }
+		}).then((response)=>{
+      if (response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((boardList)=>{
 			dispatch(getBoardsSuccess(boardList))
-		}).fail((xhr, status, err)=>{
-			dispatch(getBoardsFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(getBoardsFailure(err.errorMessage))
 		})
 	}
 }
@@ -37,16 +43,22 @@ export const CREATE_BOARD_FAILURE = 'CREATE_BOARD_FAILURE'
 
 export function createBoard(boardInfo){
 	return function(dispatch){
-		return $.ajax({
-			url:'/api/boards',
+		return fetch('/api/boards', {
 			method:'POST',
-			contentType: 'application/json',
-			data: JSON.stringify(boardInfo),
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((boardInfo)=>{
+      headers: {
+				"Authorization": "Bearer " + getCookie("yulloToken"),
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(boardInfo)
+		}).then((response)=>{
+			if(response.status >= 400) {
+				throw new Error(response.statusText)
+			}
+			return response.json()
+		}).then((boardInfo)=>{
 			dispatch(createBoardSucess(boardInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(createBoardFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(createBoardFailure(err.errorMessage))
 		})
 	}
 }
@@ -70,14 +82,18 @@ export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE'
 
 export function deleteBoard(boardId){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/boards/'+boardId,
+		return fetch('/api/boards/'+boardId, {
 			method: 'DELETE',
       headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done(()=>{
+		}).then((response)=>{
+			if (response.status >= 400){
+				throw new Error(response.statusText)
+			}
+			return response.json()
+		}).then(()=>{
 			dispatch(deleBoardSuccess(boardId))
-		}).fail((xhr, status, err)=>{
-			dispatch(deleteBoardFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(deleteBoardFailure(err.errorMessage))
 		})
 	}
 }

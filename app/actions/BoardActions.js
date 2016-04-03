@@ -1,4 +1,4 @@
-import {getCookie} from './../utils/Utils'
+import {getHost, getCookie} from './../utils/Utils'
 
 export const GET_BOARD_SUCCESS = 'GET_BOARD_SUCCESS'
 export const GET_BOARD_FAILURE = 'GET_BOARD_FAILURE'
@@ -17,16 +17,21 @@ function getBoardFailure(error){
 	}
 }
 
-export function getBoard(boardId){
+export function getBoard(boardId, token){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId,
+    var host = getHost()
+		return fetch(`${host}/api/boards/${boardId}`, {
 			method: 'GET',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((boardInfo)=>{
-			dispatch(getBoardSuccess(boardInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(getBoardFailure(xhr.responseText))
+			headers: {"Authorization": `Bearer ${token}` }
+		}).then((response)=>{
+			if(response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+		}).then((boardInfo)=>{ 
+      dispatch(getBoardSuccess(boardInfo))
+    }).catch((err)=>{
+			dispatch(getBoardFailure(err.message))
 		})
 	}
 }
@@ -51,16 +56,22 @@ function editBoardFailure(error){
 
 export function editboard(boardInfo){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/boards/'+boardInfo._id,
+		return fetch('api/boards/'+boardInfo._id, {
 			method: 'PUT',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			contentType: "application/json",
-			data: JSON.stringify(boardInfo)
-		}).done((data)=>{
-			dispatch(editBoardSuccess(boardInfo, "Board Infomration Saved Sucessfully"))
-		}).fail((xhr, status, err)=>{
-			dispatch(editBoardFailure(xhr.responseText))
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      },
+			body: JSON.stringify(boardInfo)
+		}).then((response)=>{
+			if(response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+		}).then((boardInfo)=>{
+      dispatch(editBoardSuccess(boardInfo, "Board Infomration Saved Sucessfully"))
+    }).catch((err)=>{
+			dispatch(editBoardFailure(err.errorMessage))
 		})
 	}
 }

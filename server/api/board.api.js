@@ -14,7 +14,8 @@ router.use(function(req, res, next){
 		req.checkBody("name","Your Board must have a name").notEmpty();
 		req.checkBody("owner","Your Board must have a owner").notEmpty();
 	} else if (req.method === "PUT"){
-		req.checkBody("name","Your Board must have a name").notEmpty();
+    console.log(req)
+    req.checkBody("name","Your Board must have a name").notEmpty();
 	}
 
 	var errors = req.validationErrors();

@@ -13,16 +13,21 @@ export function moveItem(from, targetItemListId){
 	from.itemListId = targetItemListId
 	console.log(from.itemListId)
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/items/'+from._id,
+		return fetch('/api/items/'+from._id, {
 			method: 'PUT',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			type: 'application/json',
-			data: from
-		}).done((data)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      },
+			body: JSON.stringify(from)
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((data)=>{
 			dispatch(moveItemSuccess(from, oldItemList))
-		}).fail((xhr, status, err)=>{
-			dispatch(moveItemFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(moveItemFailure(err.errorMessage))
 		})
 	}
 }

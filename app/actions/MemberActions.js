@@ -19,14 +19,20 @@ function getMembersFailure(error){
 
 export function getMembers(boardId){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId+"/members",
+		return fetch('/api/boards/'+boardId+'/members', {
 			method: 'GET',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((members)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      }
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((members)=>{
 			dispatch(getMembersSuccess(members))
-		}).fail((xhr, status, err)=>{
-			dispatch(getMembersFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(getMembersFailure(err.message))
 		})
 	}
 }
@@ -52,16 +58,22 @@ function createMembersFailure(error){
 
 export function createMember(boardId, userId){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId+"/members",
+		return fetch('/api/boards/'+boardId+"/members", {
 			method: 'POST',
-			contentType:'application/json',
-			data: JSON.stringify(userId),
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((member)=>{
+			body: JSON.stringify(userId),
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      }
+		}).then((reponse)=>{
+      if (response >= status) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((member)=>{
 			dispatch(createMembersSuccess(member, "member added successfully "))
-		}).fail((xhr, status, err)=>{
-			dispatch(createMembersFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(createMembersFailure(err.message))
 		})
 	}
 }
@@ -85,14 +97,20 @@ function deleteMemberFailure(error){
 
 export function deleteMember(boardId, userId){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId+"/members/"+userId,
+		return fetch('/api/boards/'+boardId+'/members/'+userId, {
 			method: 'DELETE',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((data)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      }
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((data)=>{
 			dispatch(deleteMemberSuccess(userId))
-		}).fail((xhr, status, err)=>{
-			dispatch(deleteMemberFailure(xhr.responseText))
+		}).fail((err)=>{
+			dispatch(deleteMemberFailure(error.message))
 		})
 	}
 }

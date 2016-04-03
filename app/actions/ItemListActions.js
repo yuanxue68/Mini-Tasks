@@ -19,11 +19,17 @@ function getItemListsFailure(error){
 
 export function getItemLists(boardId){
 	return function(dispatch){
-		return $.ajax({
-			url: '/api/boards/'+boardId+"/itemLists",
+		return fetch('/api/boards/'+boardId+"/itemLists", {
 			method: 'GET',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((data)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      }
+		}).then((response)=>{
+      if (response.status > 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((data)=>{
 			var itemLists = []
 			//nest items related to an item list inside an itemlist object
 			data.itemLists.forEach(function(itemList){
@@ -36,8 +42,8 @@ export function getItemLists(boardId){
 				itemLists.push(itemList)
 			})
 			dispatch(getItemListsSuccess(itemLists))
-		}).fail((xhr, status, err)=>{
-			dispatch(getItemListsFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(getItemListsFailure(err.errorMessage))
 		})
 	}
 }
@@ -53,17 +59,23 @@ export const CREATE_ITEMLIST_FAILURE = 'CREATE_ITEMLIST_FAILURE'
 
 export function createItemList(itemListInfo, boardId){
 	return function(dispatch){
-		return $.ajax({
-			url:'/api/boards/'+boardId+"/itemLists",
+		return fetch('/api/boards/'+boardId+'/itemLists', {
 			method:'POST',
-			contentType: 'application/json',
-			data: JSON.stringify(itemListInfo),
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done((itemListInfo)=>{
+			body: JSON.stringify(itemListInfo),
+      headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Content-Type": "application/json"
+      }
+		}).then((response)=>{
+      if(response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((itemListInfo)=>{
 			itemListInfo.items=[]
 			dispatch(createItemListSucess(itemListInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(createItemListFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(createItemListFailure(err.errorMessage))
 		})
 	}
 }
@@ -87,14 +99,20 @@ export const DELETE_ITEMLIST_FAILURE = 'DELETE_ITEMLIST_FAILURE'
 
 export function deleteItemList(itemListId, boardId){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/boards/'+boardId+"/itemLists/"+itemListId,
+		return fetch('api/boards/'+boardId+'/itemLists/'+itemListId, {
 			method: 'DELETE',
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
-		}).done(()=>{
+      headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      }
+		}).then((response)=>{
+      if (response.status >= 400){
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then(()=>{ 
 			dispatch(deleteItemListSuccess(itemListId))
-		}).fail((xhr, status, err)=>{
-			dispatch(deleteItemListFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(deleteItemListFailure(err.errorMessage))
 		})
 	}
 }
@@ -132,15 +150,21 @@ function editItemListFailure(error){
 
 export function editItemList(itemListInfo){
 	return function(dispatch){
-		return $.ajax({
-			url: 'api/boards/'+itemListInfo._id,
+		return fetch('api/boards/'+itemListInfo._id, {
 			method: 'PUT',
-			headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-			data: JSON.stringify(itemListInfo)
-		}).done((data)=>{
+			headers: {
+        "Authorization": "Bearer " + getCookie("yulloToken")
+      },
+			body: JSON.stringify(itemListInfo)
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    }).then((data)=>{
 			dispatch(editItemListSuccess(itemListInfo))
-		}).fail((xhr, status, err)=>{
-			dispatch(editItemListFailure(xhr.responseText))
+		}).catch((err)=>{
+			dispatch(editItemListFailure(err.errorMessage))
 		})
 	}
 }
