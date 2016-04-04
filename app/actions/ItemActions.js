@@ -1,4 +1,4 @@
-import {getCookie} from './../utils/Utils'
+import {getHost} from './../utils/Utils'
 
 
 export const POPULATE_ITEM_SUCCESS = 'POPULATE_ITEM_SUCCESS'
@@ -14,25 +14,26 @@ export function populateItemToModal(itemInfo){
 
 export const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS'
 export const CREATE_ITEM_FAILURE = 'CREATE_ITEM_FAILURE'
+export const CREATE_ITEM_ERROR = 'Failed to create item'
 
-export function createItem(item){
+export function createItem(item, token){
 	return function(dispatch){
-		return fetch('/api/items',{
-			method:'POST',
+		return fetch(`${getHost()}/api/items`,{
+			method: 'POST',
 			body: JSON.stringify(item),
       headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       }
 		}).then((response)=>{
       if (response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(CREATE_ITEM_ERROR)
       }
       return response.json()
     }).then((item)=>{
 			dispatch(createItemSuccess(item))
 		}).catch((err)=>{
-			dispatch(createItemFailure(err.responseText))
+			dispatch(createItemFailure(err.message))
 		})
 	}
 }
@@ -53,24 +54,24 @@ function createItemFailure(error){
 
 export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS'
 export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE'
+export const DELETE_ITEM_ERROR = "An error has occured while deleting this item"
 
-export function deleteItem(itemId, itemListId){
+export function deleteItem(itemId, itemListId, token){
 	return function(dispatch){
-		return fetch('api/items/'+itemId,{
+		return fetch(`${getHost()}/api/items/${itemId}`, {
 			method: 'DELETE',
       headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken")
+        "Authorization": `Bearer ${token}`
       }
 		}).then((response)=>{
-      if (response.status > 400){
-        throw new Error(response.statusText)
+      if (response.status >= 400){
+        throw new Error(DELETE_ITEM_ERROR)
       }
       return response.json()
     }).then(()=>{
 			dispatch(deleteItemSuccess(itemId, itemListId))
 		}).catch((err)=>{
-      console.log(err)
-			dispatch(deleteItemFailure(err.errorMessage))
+			dispatch(deleteItemFailure(err.message))
 		})
 	}
 }

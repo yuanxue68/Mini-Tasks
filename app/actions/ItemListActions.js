@@ -1,8 +1,8 @@
-import {getCookie} from './../utils/Utils'
+import {getHost} from './../utils/Utils'
 
 export const GET_ITEMLISTS_SUCCESS = 'GET_ITEMLISTS_SUCCESS'
 export const GET_ITEMLISTS_FAILURE = 'GET_ITEMLISTS_FAILURE'
-
+export const GET_ITEMLISTS_ERROR = 'An error has occured while getting lists of items'
 function getItemListsSuccess(itemLists){
 	return {
 		type: GET_ITEMLISTS_SUCCESS,
@@ -17,16 +17,16 @@ function getItemListsFailure(error){
 	}
 }
 
-export function getItemLists(boardId){
+export function getItemLists(boardId, token){
 	return function(dispatch){
-		return fetch('/api/boards/'+boardId+"/itemLists", {
+		return fetch(`${getHost()}/api/boards/${boardId}/itemLists`, {
 			method: 'GET',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken")
+        "Authorization": `Bearer ${token}`
       }
 		}).then((response)=>{
-      if (response.status > 400) {
-        throw new Error(response.statusText)
+      if (response.status >= 400) {
+        throw new Error(GET_ITEMLISTS_ERROR)
       }
       return response.json()
     }).then((data)=>{
@@ -43,39 +43,34 @@ export function getItemLists(boardId){
 			})
 			dispatch(getItemListsSuccess(itemLists))
 		}).catch((err)=>{
-			dispatch(getItemListsFailure(err.errorMessage))
+			dispatch(getItemListsFailure(err.message))
 		})
 	}
 }
 
-function organizeItemLists(data){
-	data.itemLists.forEach(function(itemList){
-
-	});
-}
-
 export const CREATE_ITEMLIST_SUCCESS = 'CREATE_ITEMLIST_SUCCESS'
 export const CREATE_ITEMLIST_FAILURE = 'CREATE_ITEMLIST_FAILURE'
+export const CREATE_ITEMLIST_ERROR = 'An error has occured while creating item list'
 
-export function createItemList(itemListInfo, boardId){
+export function createItemList(itemListInfo, boardId, token){
 	return function(dispatch){
-		return fetch('/api/boards/'+boardId+'/itemLists', {
+		return fetch(`${getHost()}/api/boards/${boardId}/itemLists`, {
 			method:'POST',
 			body: JSON.stringify(itemListInfo),
       headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       }
 		}).then((response)=>{
       if(response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(CREATE_ITEMLIST_ERROR)
       }
       return response.json()
     }).then((itemListInfo)=>{
 			itemListInfo.items=[]
 			dispatch(createItemListSucess(itemListInfo))
 		}).catch((err)=>{
-			dispatch(createItemListFailure(err.errorMessage))
+			dispatch(createItemListFailure(err.message))
 		})
 	}
 }
@@ -96,23 +91,24 @@ function createItemListFailure(error){
 
 export const DELETE_ITEMLIST_SUCCESS = 'DELETE_ITEMLIST_SUCCESS'
 export const DELETE_ITEMLIST_FAILURE = 'DELETE_ITEMLIST_FAILURE'
+export const DELETE_ITEMLIST_ERROR = 'An error has occured while deleting item list'
 
-export function deleteItemList(itemListId, boardId){
+export function deleteItemList(itemListId, boardId, token){
 	return function(dispatch){
-		return fetch('api/boards/'+boardId+'/itemLists/'+itemListId, {
+		return fetch(`${getHost()}/api/boards/${boardId}/itemLists/${itemListId}`, {
 			method: 'DELETE',
       headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken")
+        "Authorization": `Bearer ${token}`
       }
 		}).then((response)=>{
       if (response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(DELETE_ITEMLIST_ERROR)
       }
       return response.json()
     }).then(()=>{ 
 			dispatch(deleteItemListSuccess(itemListId))
 		}).catch((err)=>{
-			dispatch(deleteItemListFailure(err.errorMessage))
+			dispatch(deleteItemListFailure(err.message))
 		})
 	}
 }

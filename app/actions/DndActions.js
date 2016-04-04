@@ -1,4 +1,4 @@
-import {getCookie} from './../utils/Utils'
+import {getHost} from './../utils/Utils'
 
 export const ItemTypes = {
   ITEM: 'item'
@@ -7,27 +7,28 @@ export const ItemTypes = {
 
 export const MOVE_ITEM_SUCCESS = 'MOVE_ITEM_SUCCESS'
 export const MOVE_ITEM_FAILURE = 'MOVE_ITEM_FAILURE'
+export const MOVE_ITEM_ERROR = 'Failed to move this item'
 
-export function moveItem(from, targetItemListId){
-	var oldItemList = from.itemListId
+export function moveItem(from, targetItemListId, token){
+	var oldItemList = JSON.parse(JSON.stringify(from.itemListId))
 	from.itemListId = targetItemListId
-	console.log(from.itemListId)
 	return function(dispatch){
-		return fetch('/api/items/'+from._id, {
+		return fetch(`${getHost()}/api/items/${from._id}`, {
 			method: 'PUT',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken")
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
 			body: JSON.stringify(from)
 		}).then((response)=>{
       if (response.status >= 400) {
-        throw new Error(response.statusText)
+        throw new Error(MOVE_ITEM_ERROR)
       }
       return response.json()
     }).then((data)=>{
 			dispatch(moveItemSuccess(from, oldItemList))
 		}).catch((err)=>{
-			dispatch(moveItemFailure(err.errorMessage))
+			dispatch(moveItemFailure(err.message))
 		})
 	}
 }

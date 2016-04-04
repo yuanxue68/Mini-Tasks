@@ -4,6 +4,7 @@ import { pushState } from 'redux-router'
 import Header from './../components/Header'
 import UserIdModal from './../components/UserIdModal'
 import { resetErrorMessage, resetNotificationMessage, userSignOut, userSignIn } from './../actions/RootActions'
+import { getCookie } from './../utils/Utils'
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class App extends Component {
 
   componentWillMount(){
     const { dispatch, authentication } = this.props
-    dispatch(userSignIn({}, false))
+    var token = getCookie('yulloToken')
+    dispatch(userSignIn({}, token, false))
   }
 
   handleDismissErrorClick(e) {

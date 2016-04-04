@@ -1,7 +1,8 @@
-import {urlBuilder, getCookie} from './../utils/Utils'
+import {getHost, urlBuilder} from './../utils/Utils'
 
 export const GET_BOARDS_SUCCESS = 'GET_BOARDS_SUCCESS'
 export const GET_BOARDS_FAILURE = 'GET_BOARDS_FAILURE'
+export const GET_BOARDS_ERROR = "Failed get board list"
 
 function getBoardsSuccess(boardList){
 	return {
@@ -17,48 +18,49 @@ function getBoardsFailure(error){
 	}
 }
 
-export function getBoards(owner){
+export function getBoards(owner, token){
 	return function(dispatch){
-		return fetch(urlBuilder('/api/boards', owner), {
+		return fetch(urlBuilder(`${getHost()}/api/boards`, owner), {
 			method: 'GET',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       }
 		}).then((response)=>{
       if (response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(GET_BOARDS_ERROR)
       }
       return response.json()
     }).then((boardList)=>{
 			dispatch(getBoardsSuccess(boardList))
 		}).catch((err)=>{
-			dispatch(getBoardsFailure(err.errorMessage))
+			dispatch(getBoardsFailure(err.message))
 		})
 	}
 }
 
 export const CREATE_BOARD_SUCCESS = 'CREATE_BOARD_SUCCESS'
 export const CREATE_BOARD_FAILURE = 'CREATE_BOARD_FAILURE'
+export const CREATE_BOARD_ERROR = 'Failed to create a board'
 
-export function createBoard(boardInfo){
+export function createBoard(boardInfo, token){
 	return function(dispatch){
-		return fetch('/api/boards', {
+		return fetch(`${getHost()}/api/boards`, {
 			method:'POST',
       headers: {
-				"Authorization": "Bearer " + getCookie("yulloToken"),
+				"Authorization": `Bearer ${token}`,
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(boardInfo)
 		}).then((response)=>{
 			if(response.status >= 400) {
-				throw new Error(response.statusText)
+				throw new Error(CREATE_BOARD_ERROR)
 			}
 			return response.json()
 		}).then((boardInfo)=>{
 			dispatch(createBoardSucess(boardInfo))
 		}).catch((err)=>{
-			dispatch(createBoardFailure(err.errorMessage))
+			dispatch(createBoardFailure(err.message))
 		})
 	}
 }
@@ -79,21 +81,22 @@ function createBoardFailure(error){
 
 export const DELETE_BOARD_SUCCESS = 'DELETE_BOARD_SUCCESS'
 export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE'
+export const DELETE_BOARD_ERROR = 'An error has occured while deleting this board'
 
-export function deleteBoard(boardId){
+export function deleteBoard(boardId, token){
 	return function(dispatch){
-		return fetch('/api/boards/'+boardId, {
+		return fetch(`${getHost()}/api/boards/${boardId}`, {
 			method: 'DELETE',
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")}
+      headers: {"Authorization": `Bearer ${token}`}
 		}).then((response)=>{
 			if (response.status >= 400){
-				throw new Error(response.statusText)
+				throw new Error(DELETE_BOARD_ERROR)
 			}
 			return response.json()
 		}).then(()=>{
 			dispatch(deleBoardSuccess(boardId))
 		}).catch((err)=>{
-			dispatch(deleteBoardFailure(err.errorMessage))
+			dispatch(deleteBoardFailure(err.message))
 		})
 	}
 }

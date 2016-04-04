@@ -15,12 +15,13 @@ export default class Board extends Component {
 	componentDidMount(){
 		const { dispatch } = this.props
 		var token = getCookie("yulloToken")
-    dispatch(getItemLists(this.props.router.params.boardId))
+    dispatch(getItemLists(this.props.router.params.boardId, token))
 		dispatch(getBoard(this.props.router.params.boardId, token))
 	}
 
 	render (){
 		const {dispatch} = this.props
+    var token = getCookie('yulloToken')
 		return (
 			<div>
 				<ListCreationModal {...this.props}
@@ -30,12 +31,12 @@ export default class Board extends Component {
 				onEditItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
 				onChangeBoardInput={(boardInfo)=>dispatch(changeBoardInput(boardInfo))}
-				onEditBoard={(boardInfo)=>dispatch(editboard(boardInfo))}
+				onEditBoard={(boardInfo)=>dispatch(editboard(boardInfo, token))}
 				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
-				onCreateItem={(item)=>dispatch(createItem(item))}
-				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId))}}
-				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId))}
-				onDeleteItemList={(itemListId, boardId)=>dispatch(deleteItemList(itemListId, boardId))}/>
+				onCreateItem={(item)=>dispatch(createItem(item, token))}
+				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId, token))}}
+				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId, token))}
+				onDeleteItemList={(itemListId, boardId)=>dispatch(deleteItemList(itemListId, boardId, token))}/>
 			</div>
 		)
 	}

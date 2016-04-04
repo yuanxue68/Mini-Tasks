@@ -31,9 +31,9 @@ router.post("/",function(req,res){
 	newUser.save(function(err, user){
 		if(err){
 			if(err.code === 11000){
-				res.status(400).send(errorMsg.DUPLICATE_USER_ERROR);
+				return res.status(400).send(errorMsg.DUPLICATE_USER_ERROR);
 			} else{
-				res.status(400).send(errorMsg.USER_CREATION_ERROR);
+				return res.status(400).send(errorMsg.USER_CREATION_ERROR);
 			}
 		}
     var token = utils.createToken(user);

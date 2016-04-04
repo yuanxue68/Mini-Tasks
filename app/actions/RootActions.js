@@ -1,5 +1,5 @@
 import {pushState} from 'redux-router'
-import {deleteCookie, getCookie} from './../utils/Utils'
+import {getCookie, deleteCookie, getHost} from './../utils/Utils'
 
 export const CREATE_ERROR_MESSAGE = 'CREATE_ERROR_MESSAGE'
 export const CREATE_NOTIFICATION_MESSAGE = 'CREATE_NOTIFICATION_MESSAGE'
@@ -35,6 +35,7 @@ export function resetNotificationMessage() {
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST'
 export const SIGN_UP_FAILURE   = 'SIGN_UP_FAILURE'
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
+export const SIGN_UP_ERROR = 'An error has occured while signing up'
 
 function signUpRequest (){
   return {
@@ -58,24 +59,25 @@ function signUpSuccess(userInfo){
 
 export function userSignUp(userInfo){
   return function(dispatch){
-    //not used atm, useful for implementing spinning wheel while the request
-    //wait for a response
-    dispatch(signUpRequest())
-
-    return $.ajax({
-      url:"/api/users",
-      dataType:'json',
-      cache:false,
-      method:'POST',
-      contentType: "application/json",
-      data:JSON.stringify(userInfo)
-    }).done((data) => {
+    return fetch(`${getHost()}/api/users/`, {
+      method:'POST', 
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin', 
+      body: JSON.stringify(userInfo)
+    }).then((response)=>{
+      if(response.status >= 400){
+        throw new Error(SIGN_UP_ERROR)
+      }
+      return response.json() 
+    }).then((data) => {
       Promise.all([
         dispatch(signInSuccess(data)),
         dispatch(pushState(null,"/",""))
       ])
-    }).fail((xhr, status, err) => {
-      dispatch(signUpFailure(xhr.responseText))
+    }).catch((err) => {
+      dispatch(signUpFailure(err.message))
     })
 
   }
@@ -84,6 +86,7 @@ export function userSignUp(userInfo){
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
 export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST'
 export const SIGN_IN_FAILURE = 'SIGN_UP_FAILURE'
+export const SIGN_IN_ERROR = 'An error has occured while signing in'
 
 function signInRequest (){
   return {
@@ -105,26 +108,30 @@ function signInSuccess(userInfo){
   }
 }
 
-export function userSignIn(userInfo, showFail = true){
+export function userSignIn(userInfo, token, showFail = true){
   return function(dispatch){
-    dispatch(signInRequest())
 
-    return $.ajax({
-      url:"/api/auth/local",
-      dataType:'json',
-      cache:false,
+    return fetch(`${getHost()}/api/auth/local`, {
       method:'POST',
-      headers: {"Authorization": "Bearer " + getCookie("yulloToken")},
-      contentType: "application/json",
-      data:JSON.stringify(userInfo)
-    }).done((data) => {
+      credentials: 'same-origin',
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userInfo)
+    }).then((response)=>{
+      if(response.status >= 400){
+        throw new Error(SIGN_IN_ERROR)
+      }
+      return response.json()
+    }).then((data) => {
       Promise.all([
         dispatch(signInSuccess(data)),
         dispatch(pushState(null,"/",""))
       ])
-    }).fail((xhr, status, err) => {
+    }).catch((err) => {
       if(showFail){
-        dispatch(signInFailure(xhr.responseText))
+        dispatch(signInFailure(err.message))
       }
     })
   }

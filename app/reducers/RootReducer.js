@@ -6,6 +6,7 @@ import itemLists from './../reducers/ItemListReducer'
 import boardInfo from './../reducers/BoardReducer'
 import itemInfo from './../reducers/ItemInfoReducer'
 import members from './../reducers/MemberReducer'
+import { getCookie } from './../utils/Utils'
 
 const rootReducer = combineReducers({
 	router,
@@ -40,33 +41,40 @@ function notificationMessage(state = null, action) {
 	return state
 }
 
-function authentication(state = {authed:false, userInfo: {}}, action) {
+function authentication(state = {authed:false, userInfo: {}, token:""}, action) {
 	const {type} = action
 	switch (type) {
 		case ActionTypes.SIGN_UP_FAILURE:
 			return Object.assign({}, state, {
 				authed:false,
-				userInfo:null
-			})
+				userInfo:null,
+			  token: ''
+      })
 		case ActionTypes.SIGN_UP_SUCCESS:
+      var token = getCookie('yulloToken')
 			return Object.assign({},state, {
 				authed:true,
-				userInfo:action.userInfo
+				userInfo:action.userInfo,
+        token
 			})
 		case ActionTypes.SIGN_IN_SUCCESS:
-			return Object.assign({}, state, {
+      var token = getCookie('yulloToken')
+      return Object.assign({}, state, {
 				authed:true,
-				userInfo:action.userInfo
+				userInfo:action.userInfo,
+        token
 			})
 		case ActionTypes.SIGN_IN_FAILURE:
 			return Object.assign({}, state, {
 				authed:false,
-				userInfo:null
+				userInfo:null,
+        token: ''
 			})
 		case ActionTypes.SIGN_OUT:
 			return Object.assign({}, state, {
 				authed:false,
-				userInfo:null
+				userInfo:null,
+        token: ''
 			})
 		default:
 			return state

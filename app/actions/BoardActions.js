@@ -2,7 +2,7 @@ import {getHost, getCookie} from './../utils/Utils'
 
 export const GET_BOARD_SUCCESS = 'GET_BOARD_SUCCESS'
 export const GET_BOARD_FAILURE = 'GET_BOARD_FAILURE'
-
+export const GET_BOARD_ERROR = 'An error has occured while getting board'
 function getBoardSuccess(boardInfo){
 	return {
 		type: GET_BOARD_SUCCESS,
@@ -25,19 +25,21 @@ export function getBoard(boardId, token){
 			headers: {"Authorization": `Bearer ${token}` }
 		}).then((response)=>{
 			if(response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(GET_BOARD_ERROR)
       }
       return response.json()
 		}).then((boardInfo)=>{ 
       dispatch(getBoardSuccess(boardInfo))
     }).catch((err)=>{
-			dispatch(getBoardFailure(err.message))
+      dispatch(getBoardFailure(err.message))
 		})
 	}
 }
 
 export const EDIT_BOARD_SUCCESS = 'EDIT_BOARD_SUCCESS'
 export const EDIT_BOARD_FAILURE = 'EDIT_BOARD_FAILURE'
+export const EDIT_BOARD_ERROR = 'Failed to edit the board information'
+export const EDIT_BOARD_MESSAGE = 'Board information saved successfully'
 
 function editBoardSuccess(boardInfo, notification){
 	return {
@@ -54,24 +56,24 @@ function editBoardFailure(error){
 	}
 }
 
-export function editboard(boardInfo){
+export function editboard(boardInfo, token){
 	return function(dispatch){
-		return fetch('api/boards/'+boardInfo._id, {
+		return fetch(`${getHost()}/api/boards/${boardInfo._id}`, {
 			method: 'PUT',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
 			body: JSON.stringify(boardInfo)
 		}).then((response)=>{
 			if(response.status >= 400){
-        throw new Error(response.statusText)
+        throw new Error(EDIT_BOARD_ERROR)
       }
       return response.json()
-		}).then((boardInfo)=>{
-      dispatch(editBoardSuccess(boardInfo, "Board Infomration Saved Sucessfully"))
+		}).then(()=>{
+      dispatch(editBoardSuccess(boardInfo, EDIT_BOARD_MESSAGE))
     }).catch((err)=>{
-			dispatch(editBoardFailure(err.errorMessage))
+			dispatch(editBoardFailure(err.message))
 		})
 	}
 }
