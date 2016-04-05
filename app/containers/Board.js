@@ -24,6 +24,7 @@ export default class Board extends Component {
     var token = getCookie('yulloToken')
 		return (
 			<div>
+        <br/>
 				<ListCreationModal {...this.props}
 				onCreateItemList={(itemListsInfo, boardId)=>dispatch(createItemList(itemListsInfo, boardId))}/>
 				<ItemModal {...this.props}

@@ -6,6 +6,9 @@ import itemLists from './../reducers/ItemListReducer'
 import boardInfo from './../reducers/BoardReducer'
 import itemInfo from './../reducers/ItemInfoReducer'
 import members from './../reducers/MemberReducer'
+import modals from './../reducers/ModalReducer'
+import popovers from './../reducers/PopoverReducer'
+import {reducer as formReducer} from 'redux-form'
 import { getCookie } from './../utils/Utils'
 
 const rootReducer = combineReducers({
@@ -17,7 +20,10 @@ const rootReducer = combineReducers({
 	boardInfo,
 	itemLists,
 	itemInfo,
-	members
+	members,
+  form: formReducer,
+  modals,
+  popovers
 })
 export default rootReducer
 

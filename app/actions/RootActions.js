@@ -132,6 +132,8 @@ export function userSignIn(userInfo, token, showFail = true){
     }).catch((err) => {
       if(showFail){
         dispatch(signInFailure(err.message))
+      } else { 
+        dispatch(pushState(null,"/",""))
       }
     })
   }

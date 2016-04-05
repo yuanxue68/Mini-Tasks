@@ -5,6 +5,7 @@ import Header from './../components/Header'
 import UserIdModal from './../components/UserIdModal'
 import { resetErrorMessage, resetNotificationMessage, userSignOut, userSignIn } from './../actions/RootActions'
 import { getCookie } from './../utils/Utils'
+import LoggedOutHome from './../components/LoggedOutHome'
 
 class App extends Component {
   constructor(props) {
@@ -71,10 +72,12 @@ class App extends Component {
   }
 
   render(){
-    const {children, dispatch, authentication, router} = this.props
+    const { dispatch, authentication, router} = this.props
     var userIdModal = authentication.authed ? <UserIdModal userInfo={authentication.userInfo}/> : null
-    var header = !authentication.authed && router.location.pathname === "/" ? 
-      null : <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/> 
+    var header = authentication.authed ? <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/> : null
+    var children = authentication.authed || router.location.pathname === "/login" ||
+        router.location.pathname === "/signup"
+        ? this.props.children : <LoggedOutHome/>
     return(
       <div>
         {userIdModal}

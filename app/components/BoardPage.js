@@ -1,19 +1,21 @@
 import React, {Component} from 'react'
 import {openModal} from './../utils/Utils'
 import ItemLists from './ItemLists'
-import { DragDropContext } from 'react-dnd';
+import { DragDropContext } from 'react-dnd'
 import {Link} from 'react-router'
-import HTML5Backend from 'react-dnd-html5-backend';
+import HTML5Backend from 'react-dnd-html5-backend'
+import FlatButton from 'material-ui/lib/flat-button'
+import FontIcon from 'material-ui/lib/font-icon'
+import EditBoardPopover from './../containers/EditBoardPopover'
 
 class BoardPage extends Component {
 
 	constructor(props){
 		super(props)
-		this.inputChange = this.inputChange.bind(this)
-		this.saveBoard = this.saveBoard.bind(this)
 	}
 	
 	render(){
+    const {boardInfo} = this.props
 		return(
 			<div className="container">
 				<div className="clearfix" >
@@ -21,35 +23,14 @@ class BoardPage extends Component {
 				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Members</Link>
 				    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary"><i className="fa fa-list"></i> New List</button>
 			    </div>
-			    <button type="button" className="btn btn-info pull-left" onClick={this.saveBoard}><i className="fa fa-floppy-o"></i> Save Board Info</button>
-				</div>
-				<div className="form-group">
-					<label htmlFor="">Board Name</label>
-					<input id="boardName" type="text" className="form-control" onChange={this.inputChange} value={this.props.boardInfo.name} placeholder="Board Name"/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="">Board Description</label>
-					<textarea id="boardDescription" className="form-control" onChange={this.inputChange} value={this.props.boardInfo.description} placeholder="Board Description"></textarea>
-				</div>
+          <EditBoardPopover boardInfo={boardInfo}/>  
+        </div>
+
 				<br/>
 				<ItemLists {...this.props}/>
 			</div>
 		)
 	}
-
-	inputChange() {
-    var boardInfo = JSON.parse(JSON.stringify(this.props.boardInfo))//deep copy
-    boardInfo.name = document.getElementById("boardName").value
-    boardInfo.description = document.getElementById("boardDescription").value
-    this.props.onChangeBoardInput(boardInfo)
-  }
-
-  saveBoard(){
-  	var boardInfo = JSON.parse(JSON.stringify(this.props.boardInfo))//deep copy
-    boardInfo.name = document.getElementById("boardName").value
-    boardInfo.description = document.getElementById("boardDescription").value
-    this.props.onEditBoard(boardInfo)
-  }
 
 }
 
