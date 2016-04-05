@@ -7,7 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import FlatButton from 'material-ui/lib/flat-button'
 import FontIcon from 'material-ui/lib/font-icon'
 import EditBoardPopover from './../containers/EditBoardPopover'
-
+import ListCreationModal from './../containers/ListCreationModal'
 class BoardPage extends Component {
 
 	constructor(props){
@@ -20,9 +20,9 @@ class BoardPage extends Component {
 			<div className="container">
 				<div className="clearfix" >
 					<div className="btn-group pull-right">
+			      <ListCreationModal/>
 				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Members</Link>
-				    <button type="button" onClick={openModal.bind(null, "#itemListCreationModal")} className="btn btn-primary"><i className="fa fa-list"></i> New List</button>
-			    </div>
+          </div>
           <EditBoardPopover boardInfo={boardInfo}/>  
         </div>
 

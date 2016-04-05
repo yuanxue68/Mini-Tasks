@@ -82,6 +82,7 @@ class App extends Component {
       <div>
         {userIdModal}
         {header}
+        <br/>
         {this.renderErrorMessage()}
         {this.renderNotification()}
         {children}

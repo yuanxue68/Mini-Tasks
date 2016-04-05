@@ -1,8 +1,10 @@
 import * as ActionTypes from './../actions/ModalActions'
 
 export default function modals (state = {
-                                          boardCreation: false
-                                        }, action){
+  boardCreation: false,
+  listCreation: false
+}, action){
+
 	const {type} = action
 	switch (type){
 		case ActionTypes.OPEN_MODAL:
