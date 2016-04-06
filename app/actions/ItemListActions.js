@@ -129,11 +129,13 @@ function deleteItemListFailure(error){
 
 export const EDIT_ITEMLIST_SUCCESS = 'EDIT_ITEMLIST_SUCCESS'
 export const EDIT_ITEMLIST_FAILURE = 'EDIT_ITEMLIST_FAILURE'
-
-function editItemListSuccess(itemListInfo){
+export const EDIT_ITEMLIST_ERROR = 'An error has occured while editing item list'
+export const EDIT_ITEMLIST_MESSAGE = "Successfully edited item list"
+function editItemListSuccess(itemListInfo, notification){
 	return {
 		type: EDIT_ITEMLIST_SUCCESS,
-		itemListInfo
+		itemListInfo,
+    notification
 	}
 }
 
@@ -144,23 +146,24 @@ function editItemListFailure(error){
 	}
 }
 
-export function editItemList(itemListInfo){
+export function editItemList(itemListInfo, token){
 	return function(dispatch){
-		return fetch('api/boards/'+itemListInfo._id, {
+		return fetch(`api/boards/${itemListInfo.boardId}/itemlists/${itemListInfo._id}`, {
 			method: 'PUT',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken")
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
 			body: JSON.stringify(itemListInfo)
 		}).then((response)=>{
       if (response.status >= 400) {
-        throw new Error(response.statusText)
+        throw new Error(EDIT_ITEMLIST_ERROR)
       }
       return response.json()
     }).then((data)=>{
-			dispatch(editItemListSuccess(itemListInfo))
+			dispatch(editItemListSuccess(itemListInfo, EDIT_ITEMLIST_MESSAGE))
 		}).catch((err)=>{
-			dispatch(editItemListFailure(err.errorMessage))
+			dispatch(editItemListFailure(err.message))
 		})
 	}
 }

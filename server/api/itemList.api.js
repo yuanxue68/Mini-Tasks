@@ -68,7 +68,7 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
-	var boardId = req.params.boardId;
+	var boardId = req.body.boardId;
 	var newValues = {};
 	var id = req.params.id;
 
@@ -78,8 +78,9 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 	if(req.body.description){
 		newValues.description = req.body.description;
 	}
-
-	verifyBoardOwner(boardId, req, res, function(){
+	console.log(req.body)
+  console.log("#############")
+  verifyBoardOwner(boardId, req, res, function(){
 		ItemList.update({_id: id}, {$set: newValues}, function(err, status){
 			if(err){
 				res.status(400).send("an error has occured while editing your board");

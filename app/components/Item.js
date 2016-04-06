@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
-import { ItemTypes } from './../actions/DndActions';
-import { DragSource } from 'react-dnd';
+import { ItemTypes } from './../actions/DndActions'
+import { DragSource } from 'react-dnd'
 import {openModal} from './../utils/Utils'
+import ListItem from 'material-ui/lib/lists/list-item'
+import Divider from 'material-ui/lib/divider'
+import ActionAssignment from 'material-ui/lib/svg-icons/action/assignment'
+import Avatar from 'material-ui/lib/avatar'
+import Colors from 'material-ui/lib/styles/colors'
 
 const itemSource = {
   beginDrag(props) {
@@ -26,16 +31,13 @@ class Item extends Component{
 		const { connectDragSource, isDragging } = this.props;
 		const {item} = this.props
 		return connectDragSource(
-			<div className="well card" onClick={this.onOpen} style={{
-        opacity: isDragging ? 0.5 : 1,
-        fontSize: 25,
-        fontWeight: 'bold'
-      }}>
-      	<i className="fa fa-tasks"></i>
-				<button type="button" className="close" onClick={this.props.onDeleteItem.bind(null, item._id, item.itemListId)}><span>&times;</span></button>
-				<span className={"label label-"+this.props.item.colorLabel}>   {this.props.item.colorLabel}</span>
-        <span> 	 {this.props.item.name}</span>
-			</div>
+      <div>
+	      <ListItem 
+          primaryText={item.name} 
+          leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={Colors.blue500} />}
+          style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
+        />
+      </div>
 		)
 	}
 

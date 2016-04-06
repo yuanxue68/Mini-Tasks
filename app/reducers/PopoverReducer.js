@@ -4,6 +4,10 @@ export default function popovers (state = {
     editBoard: {
       open:false,
       anchor: null
+    },
+    listForm: {
+      open: false,
+      anchor: null
     }
   }, action){
 	

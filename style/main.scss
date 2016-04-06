@@ -1,3 +1,17 @@
+.list-container {
+  width:100%;
+  height: 100vh;
+  white-space: nowrap;
+
+}
+
+.item-list {
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+  min-width:300px;
+  max-width: 300px;
+}
 //fix flat ui 
 .navbar-inverse .nav > li > a {
 	border-bottom: 0px;

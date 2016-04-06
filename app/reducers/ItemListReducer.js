@@ -20,7 +20,7 @@ export default function itemLists (state = [], action){
 		case ActionTypes.EDIT_ITEMLIST_SUCCESS:
 			var newState = []
 			state.forEach(function(itemList){
-				if(itemList._id === action.itemList._id){
+				if(itemList._id === action.itemListInfo._id){
 					newState.push(action.itemListInfo)
 				} else {
 					newState.push(itemList)

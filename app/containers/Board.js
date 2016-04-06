@@ -6,17 +6,16 @@ import {createItem, deleteItem, editItem, populateItemToModal} from './../action
 import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
 import { moveItem } from './../actions/DndActions';
 import BoardPage from './../components/BoardPage'
-import ListCreationModal from './../components/ListCreationModal'
 import ItemModal from './../components/ItemModal'
 import {getCookie} from './../utils/Utils'
 
 
 export default class Board extends Component {
 	componentDidMount(){
-		const { dispatch } = this.props
+		const { dispatch, router } = this.props
 		var token = getCookie("yulloToken")
-    dispatch(getItemLists(this.props.router.params.boardId, token))
-		dispatch(getBoard(this.props.router.params.boardId, token))
+    dispatch(getItemLists(router.params.boardId, token))
+		dispatch(getBoard(router.params.boardId, token))
 	}
 
 	render (){
@@ -24,20 +23,15 @@ export default class Board extends Component {
     var token = getCookie('yulloToken')
 		return (
 			<div>
-				<ListCreationModal {...this.props}
-				onCreateItemList={(itemListsInfo, boardId)=>dispatch(createItemList(itemListsInfo, boardId))}/>
 				<ItemModal {...this.props}
 				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
 				onEditItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
-				onChangeBoardInput={(boardInfo)=>dispatch(changeBoardInput(boardInfo))}
-				onEditBoard={(boardInfo)=>dispatch(editboard(boardInfo, token))}
 				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
 				onCreateItem={(item)=>dispatch(createItem(item, token))}
-				onDeleteItem={(itemId, itemListId, e)=>{e.stopPropagation(); dispatch(deleteItem(itemId, itemListId, token))}}
-				onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId, token))}
-				onDeleteItemList={(itemListId, boardId)=>dispatch(deleteItemList(itemListId, boardId, token))}/>
-			</div>
+			  onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId, token))} 
+        />
+      </div>
 		)
 	}
 }
