@@ -8,6 +8,14 @@ export default function popovers (state = {
     listForm: {
       open: false,
       anchor: null
+    },
+    label: {
+      open: false,
+      anchor: null
+    },
+    members: {
+      open: false,
+      anchor: null
     }
   }, action){
 	

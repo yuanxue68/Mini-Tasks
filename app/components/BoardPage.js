@@ -9,6 +9,7 @@ import FontIcon from 'material-ui/lib/font-icon'
 import EditBoardPopover from './../containers/EditBoardPopover'
 import ListCreationPopover from './../containers/ListCreationPopover'
 import BoardAside from './../containers/BoardAside'
+import ItemInfoModal from './../containers/ItemInfoModal'
 
 class BoardPage extends Component {
 
@@ -22,6 +23,7 @@ class BoardPage extends Component {
 			<div className="container-fluid">
 				<div className="clearfix" >
 					<div className="pull-right">
+            <ItemInfoModal/>
             <BoardAside/>
 			      <ListCreationPopover/>
 				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Members</Link>

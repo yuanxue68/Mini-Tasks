@@ -2,7 +2,8 @@ import * as ActionTypes from './../actions/ModalActions'
 
 export default function modals (state = {
   boardCreation: false,
-  listCreation: false
+  listCreation: false,
+  itemInfo: false
 }, action){
 
 	const {type} = action

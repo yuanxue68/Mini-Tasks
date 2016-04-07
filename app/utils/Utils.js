@@ -8,6 +8,10 @@ export function getCookie(name) {
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
+export function buildDateText(date) {
+  return `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`
+}
+
 export function urlBuilder(url, params) {
   var url = url+"?"
 	for (var key in params) {

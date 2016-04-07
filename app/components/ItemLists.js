@@ -7,7 +7,7 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemLists, boardInfo, onMoveItem, onPopulateItemToModal} = this.props
+		const {itemLists, boardInfo, onOpenItemInfoModal, onMoveItem, onPopulateItemToModal} = this.props
 		if(itemLists){
 			var listComponent = []
 			for( var i = 0; i<itemLists.length; i++){
@@ -15,6 +15,7 @@ export default class ItemLists extends Component{
 						<ItemListContainer 
               index={i}
               key={i}
+              onOpenItemInfoModal={onOpenItemInfoModal}
               boardId={boardInfo._id}
               itemList={itemLists[i]} 
               onPopulateItemToModal={onPopulateItemToModal}

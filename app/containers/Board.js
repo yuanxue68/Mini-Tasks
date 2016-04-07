@@ -9,7 +9,6 @@ import BoardPage from './../components/BoardPage'
 import ItemModal from './../components/ItemModal'
 import {getCookie} from './../utils/Utils'
 
-
 export default class Board extends Component {
 	componentDidMount(){
 		const { dispatch, router } = this.props
@@ -23,13 +22,10 @@ export default class Board extends Component {
     var token = getCookie('yulloToken')
 		return (
 			<div>
-				<ItemModal {...this.props}
-				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
-				onEditItem={(itemInfo)=>dispatch(editItem(itemInfo))}></ItemModal>
 				<BoardPage {...this.props} 
-				onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
-				onCreateItem={(item)=>dispatch(createItem(item, token))}
-			  onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId, token))} 
+          onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
+				  onCreateItem={(item)=>dispatch(createItem(item, token))}
+			    onMoveItem={(itemInfo, targetItemListId)=>dispatch(moveItem(itemInfo, targetItemListId, token))} 
         />
       </div>
 		)

@@ -24,15 +24,14 @@ function collect(connect, monitor) {
 class Item extends Component{
   constructor(props){
     super(props)
-    this.onOpen = this.onOpen.bind(this)
   }
 
 	render(){
-		const { connectDragSource, isDragging } = this.props;
-		const {item} = this.props
+		const { item, connectDragSource, onOpenItemInfoModal, isDragging } = this.props;
 		return connectDragSource(
       <div>
 	      <ListItem 
+          onTouchTap={onOpenItemInfoModal.bind(this, item)}
           primaryText={item.name} 
           leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={Colors.blue500} />}
           style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
@@ -41,11 +40,6 @@ class Item extends Component{
 		)
 	}
 
-  onOpen(){
-    const {item, onPopulateItemToModal} = this.props
-    openModal("#itemInfoModal")
-    onPopulateItemToModal(item)
-  }
 }
 
 export default DragSource(ItemTypes.ITEM, itemSource, collect)(Item);

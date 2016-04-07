@@ -6,7 +6,7 @@ var Item = new Schema({
 	itemListId: {required: true, type: String},
 	boardId: {required: true, type: String},
 	description: {type:String, default:''},
-	dueDate: {type:String, default:'2000-01-01'},
+	dueDate: {type:String, default:'Thu Jan 01 2099 00:00:00 GMT-0400 (EDT)'},
 	colorLabel: {type: String, default:'default'}
 });
 

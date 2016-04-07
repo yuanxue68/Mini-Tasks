@@ -5,7 +5,8 @@ import { moveItem, ItemTypes } from './../actions/DndActions';
 import { DropTarget } from 'react-dnd';
 import { getCookie } from './../utils/Utils'
 import { deleteItemList } from './../actions/ItemListActions'
-import { deleteItem } from './../actions/ItemActions'
+import { deleteItem, populateItemToModal } from './../actions/ItemActions'
+import { openModal } from './../actions/ModalActions'
 
 const itemListTarget = {
   drop(props, monitor) {
@@ -27,6 +28,7 @@ class ItemListContainer extends Component {
     super(props)
     this.onDeleteItem = this.onDeleteItem.bind(this)
     this.onDeleteItemList = this.onDeleteItemList.bind(this)
+    this.onOpenItemInfoModal = this.onOpenItemInfoModal.bind(this)
   }
 
   onDeleteItem(itemId, ItemListId, e){
@@ -42,6 +44,11 @@ class ItemListContainer extends Component {
     dispatch(deleteItemList(itemListId, boardId, token))
   }
 
+  onOpenItemInfoModal(itemInfo){
+    const {dispatch} = this.props
+    dispatch(openModal('itemInfo'))
+    dispatch(populateItemToModal(itemInfo))
+  }
   render() {
 
     const { connectDropTarget, isOver } = this.props;
@@ -50,6 +57,7 @@ class ItemListContainer extends Component {
         <ItemList 
           {...this.props} 
           isOver={isOver}
+          onOpenItemInfoModal={this.onOpenItemInfoModal}
           onDeleteItem = {this.onDeleteItem}
           onDeleteItemList = {this.onDeleteItemList}
         />

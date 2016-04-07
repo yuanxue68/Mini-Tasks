@@ -11,14 +11,14 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {itemList, boardId, onDeleteItem, onPopulateItemToModal, index, isOver} = this.props
+		const {itemList, boardId, onDeleteItem, onOpenItemInfoModal, index, isOver} = this.props
 		var dragNotice = isOver ? <ListItem primaryText="..." style={{backgroundColor:'#e9e9e9'}}/> : null
     var items = itemList.items.map((item, index) => {
       return <Item 
               key={index} 
               item={item} 
               onDeleteItem={onDeleteItem} 
-              onPopulateItemToModal={onPopulateItemToModal}
+              onOpenItemInfoModal={onOpenItemInfoModal}
               />
 		})
 		var inputId = "itemName"+index
