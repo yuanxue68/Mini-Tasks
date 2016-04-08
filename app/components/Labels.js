@@ -3,10 +3,11 @@ import Avatar from 'material-ui/lib/avatar'
 
 class Labels extends Component{
   render(){
-    const {labels} = this.props
+    const {labels, onRemoveLabel} = this.props
     var labelList = labels.map((label, index)=>{
       return  <Avatar
                 style={{margin:5}}
+                onTouchTap={onRemoveLabel.bind(null, label)}
                 key={index}
                 backgroundColor={label}
               />

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {getUserId, getCookie} from './../utils/Utils'
 import {connect} from 'react-redux'
-import {createItemList, editItemList} from './../actions/ItemListActions'
+import {createItemList, editItemList, deleteItemList} from './../actions/ItemListActions'
 import ListCreationForm from './../components/ListCreationForm'
 import FlatButton from 'material-ui/lib/flat-button'
 import {openPopover, closePopover} from './../actions/PopoverActions'
@@ -9,10 +9,11 @@ import RaisedButton from 'material-ui/lib/raised-button'
 import FontIcon from 'material-ui/lib/font-icon'
 import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
+import Colors from 'material-ui/lib/styles/colors'
 
 const styles = {
   popover: {
-    padding: 20
+    padding: 20,
   }
 }
 
@@ -23,6 +24,7 @@ class ListCreationModal extends Component{
 	  this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.editList = this.editList.bind(this)
+    this.deleteList = this.deleteList.bind(this)
     var suffix = this.props.index || ""
     this.id = 'listForm'+suffix
   }
@@ -63,10 +65,23 @@ class ListCreationModal extends Component{
     this.handleClose()
   }
 
+  deleteList(){
+    const {dispatch, itemList} = this.props
+    const token = getCookie('yulloToken')
+    dispatch(deleteItemList(itemList._id, itemList.boardId, token))
+    this.handleClose()
+  }
 	render(){
     const {popovers, edit} = this.props
     const title = (this.props.itemList && this.props.itemList.name) || "New List"
-    const clickHandler = edit ? this.editList : this.createList
+    const saveHandler = edit ? this.editList : this.createList
+    const deleteButton = edit ? <RaisedButton 
+              label="delete"
+              onTouchTap={this.deleteList}
+              backgroundColor={Colors.red500}
+              primary={true}
+            /> : null
+
     const initial = {
       initialValues: this.props.itemList || {}
     }
@@ -91,8 +106,10 @@ class ListCreationModal extends Component{
             <ListCreationForm {...initial}/>
             <RaisedButton 
               label="Save" 
-              onTouchTap={clickHandler}
+              onTouchTap={saveHandler}
+              secondary={true}
             />
+            {deleteButton}
           </div>
 
         </Popover>

@@ -63,7 +63,9 @@ export default class EditBoardPopover extends Component{
           onTouchTap={this.handleOpen}
           icon={<FontIcon className="fa fa-clipboard" />}
         />
-
+        <div>
+          {boardInfo.description}
+        </div>
         <Popover
           open={popovers.editBoard.open}
           onRequestClose={this.handleClose}

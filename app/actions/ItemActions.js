@@ -1,8 +1,37 @@
 import {getHost} from './../utils/Utils'
 
+export const ADD_LABEL = 'ADD_LABEL'
+export function addLabel(label){
+  return {
+    type: ADD_LABEL,
+    label
+  }
+}
+
+export const REMOVE_LABEL = 'REMOVE_LABEL'
+export function removeLabel(label){
+  return {
+    type: REMOVE_LABEL,
+    label
+  }
+}
+
+export const ADD_DUEDATE = 'ADD_DUEDATE'
+export function addDueDate(dueDate){
+  return {
+    type: ADD_DUEDATE,
+    dueDate
+  }
+}
+
+export const REMOVE_DUEDATE = 'REMOVE_DUEDATE'
+export function removeDueDate(){
+  return {
+    type:REMOVE_DUEDATE
+  }
+}
 
 export const POPULATE_ITEM_SUCCESS = 'POPULATE_ITEM_SUCCESS'
-
 
 export function populateItemToModal(itemInfo){
 	return {
@@ -93,6 +122,7 @@ function deleteItemFailure(error){
 
 export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS'
 export const EDIT_ITEM_FAILURE = 'EDIT_ITEM_FAILURE'
+export const EDIT_ITEM_ERROR = 'EDIT_ITEM_ERROR'
 
 function editItemSuccess(itemInfo){
 	return {
@@ -108,24 +138,24 @@ function editItemFailure(error){
 	}
 }
 
-export function editItem(itemInfo){
+export function editItem(itemInfo, token){
 	return function(dispatch){
-		return fetch('api/items/'+itemInfo._id, {
+		return fetch(`api/items/${itemInfo._id}`, {
 			method: 'PUT',
 			headers: {
-        "Authorization": "Bearer " + getCookie("yulloToken"),
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
 			body: JSON.stringify(itemInfo)
 		}).then((response)=>{
       if (response.status >= 400) {
-        throw new Error(response.statusText)
+        throw new Error(EDIT_ITEM_ERROR)
       }
       return response.json()
     }).then((data)=>{
 			dispatch(editItemSuccess(itemInfo))
 		}).catch((err)=>{
-			dispatch(editItemFailure(err.errorMessage))
+			dispatch(editItemFailure(err.message))
 		})
 	}
 }

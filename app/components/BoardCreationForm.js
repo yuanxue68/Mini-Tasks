@@ -25,6 +25,7 @@ class BoardCreationForm extends Component {
         <TextField
           {...description}
           fullWidth={true}
+          multiLine={true}
           hintText="Board Description"
           floatingLabelText="Board Description"
           type=""

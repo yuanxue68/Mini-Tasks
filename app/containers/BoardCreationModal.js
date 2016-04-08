@@ -5,7 +5,6 @@ import {createBoard} from './../actions/BoardListActions'
 import BoardCreationForm from './../components/BoardCreationForm'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
-import RaisedButton from 'material-ui/lib/raised-button'
 import {openModal, closeModal} from './../actions/ModalActions'
 import FontIcon from 'material-ui/lib/font-icon'
 
@@ -29,7 +28,7 @@ export default class BoardCreationModal extends Component{
 
 	createBoard(){
     const {dispatch, form} = this.props
-		var name = form.boardCreation.name.value
+		var name = form.boardCreation.name && form.boardCreation.name.value
 		var description = form.boardCreation.description && form.boardCreation.description.value
 		if((!name)){
 			return
@@ -60,7 +59,7 @@ export default class BoardCreationModal extends Component{
         ];
     return(
       <div>
-        <RaisedButton label="New Board" primary={true}
+        <FlatButton label="New Board" 
           onTouchTap={this.handleOpen}
           icon={<FontIcon className="fa fa-tachometer"/>}    
         />

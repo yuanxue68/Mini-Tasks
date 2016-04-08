@@ -7,7 +7,8 @@ import Divider from 'material-ui/lib/divider'
 import ActionAssignment from 'material-ui/lib/svg-icons/action/assignment'
 import Avatar from 'material-ui/lib/avatar'
 import Colors from 'material-ui/lib/styles/colors'
-
+import Tag from './../components/Tag'
+import {buildDateText} from './../utils/Utils'
 const itemSource = {
   beginDrag(props) {
     return props.item;
@@ -28,14 +29,26 @@ class Item extends Component{
 
 	render(){
 		const { item, connectDragSource, onOpenItemInfoModal, isDragging } = this.props;
-		return connectDragSource(
+		const tags = item.labels.map((label, index)=>{
+      return <Tag color={label} key={index}/>      
+    })
+    const dueDateTag = item.dueDate ?
+      (<div style={{fontSize:12,paddingRight:15, textAlign: 'right'}}>
+        Due On: {buildDateText(new Date(item.dueDate))}
+      </div>) : null
+    return connectDragSource(
       <div>
+        <div className="tag-container">
+          {tags}
+        </div>
 	      <ListItem 
           onTouchTap={onOpenItemInfoModal.bind(this, item)}
           primaryText={item.name} 
           leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={Colors.blue500} />}
           style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
         />
+        {dueDateTag}
+        <Divider style={{height:2}}/>
       </div>
 		)
 	}

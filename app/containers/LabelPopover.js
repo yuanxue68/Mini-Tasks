@@ -13,6 +13,19 @@ const styles = {
   }
 }
 
+const colorList = [
+  Colors.blue500,
+  Colors.orange500,
+  Colors.yellow500,
+  Colors.red500,
+  Colors.indigo500,
+  Colors.teal500,
+  Colors.blueGrey500,
+  Colors.brown500,
+  Colors.grey500,
+  Colors.grey900
+]
+
 class LabelPopover extends Component{
 	constructor(props){
 		super(props)
@@ -24,7 +37,14 @@ class LabelPopover extends Component{
     dispatch(closePopover('label'))
   }
 	render(){
-    const {popovers} = this.props
+    const {popovers, onAddLabel} = this.props
+    var listItems = colorList.map((color, index)=>{
+      return <ListItem 
+        style={{backgroundColor:color}}
+        key={index}
+        onTouchTap={onAddLabel.bind(null, color)}
+        />
+    })
     return(
         <Popover
           title="Pick A Label"
@@ -37,14 +57,7 @@ class LabelPopover extends Component{
           autoDetectWindowHeight={false}
         >
           <List>
-            <ListItem  style={{backgroundColor:Colors.yellow500}} />
-            <ListItem  style={{backgroundColor:Colors.blue500}}/>
-            <ListItem  style={{backgroundColor:Colors.orange500}}/>
-            <ListItem  style={{backgroundColor:Colors.red500}}/>
-            <ListItem  style={{backgroundColor:Colors.indigo500}}/>
-            <ListItem  style={{backgroundColor:Colors.teal500}}/>
-            <ListItem  style={{backgroundColor:Colors.blueGrey500}}/>
-            <ListItem  style={{backgroundColor:Colors.brown500}}/>
+            {listItems}
           </List>  
         </Popover>
     )

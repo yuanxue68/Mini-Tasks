@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {reduxForm} from 'redux-form'
 import { TextField } from 'material-ui'
-import DatePicker from './DatePicker'
 
 const validate = (values) => {
   const errors = {}
@@ -33,14 +32,13 @@ class ItemInfoForm extends Component {
           type="text"
         /><br/>
         <br/>
-        <DatePicker {...dueDate} hintText="Change Due Date" />
       </form>
     )
   }
 }
 
 ItemInfoForm = reduxForm({ 
-  form: 'ItemInfo',                           
+  form: 'itemInfo',                           
   fields: ['name', 'description', 'dueDate'],
   validate
 })(ItemInfoForm)
