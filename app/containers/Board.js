@@ -4,10 +4,11 @@ import {Link} from 'react-router'
 import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
 import {createItem, deleteItem, editItem, populateItemToModal} from './../actions/ItemActions'
 import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
-import { moveItem } from './../actions/DndActions';
+import { moveItem } from './../actions/DndActions'
 import BoardPage from './../components/BoardPage'
 import ItemModal from './../components/ItemModal'
 import {getCookie} from './../utils/Utils'
+import {getMembers} from './../actions/MemberActions'
 
 export default class Board extends Component {
 	componentDidMount(){
@@ -15,6 +16,7 @@ export default class Board extends Component {
 		var token = getCookie("yulloToken")
     dispatch(getItemLists(router.params.boardId, token))
 		dispatch(getBoard(router.params.boardId, token))
+    dispatch(getMembers(router.params.boardId, token))
 	}
 
 	render (){

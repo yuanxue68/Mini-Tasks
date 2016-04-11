@@ -5,6 +5,8 @@ import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import UserList from './../components/UserList'
+import {addAssigner} from './../actions/ItemActions'
 
 const styles = {
   popover: {
@@ -16,6 +18,13 @@ class MembersPopover extends Component{
 	constructor(props){
 		super(props)
     this.handleClose = this.handleClose.bind(this)
+    this.onAssignOwner = this.onAssignOwner.bind(this)
+  }
+
+  onAssignOwner(user){
+    const {dispatch} = this.props
+    dispatch(addAssigner(user)) 
+    this.handleClose()
   }
 
   handleClose(){
@@ -23,7 +32,7 @@ class MembersPopover extends Component{
     dispatch(closePopover('members'))
   }
 	render(){
-    const {popovers} = this.props
+    const {popovers, members} = this.props
     return(
         <Popover
           title="Pick A Label"
@@ -35,10 +44,7 @@ class MembersPopover extends Component{
           onRequestClose={this.handleClose}
           autoDetectWindowHeight={false}
         >
-          <List>
-            <ListItem  label='Member1' />
-            <ListItem  label='Member2' />
-          </List>  
+          <UserList users={members} onClick={this.onAssignOwner}/>
         </Popover>
     )
 	}
@@ -49,6 +55,7 @@ class MembersPopover extends Component{
 function mapStateToProps (state) {
   return {
     popovers: state.popovers,
+    members: state.members
   }
 }
 

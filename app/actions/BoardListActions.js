@@ -1,4 +1,5 @@
 import {getHost, urlBuilder} from './../utils/Utils'
+import {pushState} from 'redux-router'
 
 export const GET_BOARDS_SUCCESS = 'GET_BOARDS_SUCCESS'
 export const GET_BOARDS_FAILURE = 'GET_BOARDS_FAILURE'
@@ -94,7 +95,10 @@ export function deleteBoard(boardId, token){
 			}
 			return response.json()
 		}).then(()=>{
-			dispatch(deleBoardSuccess(boardId))
+			Promise.all([
+        dispatch(deleBoardSuccess(boardId)),
+        dispatch(pushState(null,"/",""))
+      ])
 		}).catch((err)=>{
 			dispatch(deleteBoardFailure(err.message))
 		})

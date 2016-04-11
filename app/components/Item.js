@@ -8,7 +8,8 @@ import ActionAssignment from 'material-ui/lib/svg-icons/action/assignment'
 import Avatar from 'material-ui/lib/avatar'
 import Colors from 'material-ui/lib/styles/colors'
 import Tag from './../components/Tag'
-import {buildDateText} from './../utils/Utils'
+import {buildDateText, getInitial} from './../utils/Utils'
+
 const itemSource = {
   beginDrag(props) {
     return props.item;
@@ -32,6 +33,8 @@ class Item extends Component{
 		const tags = item.labels.map((label, index)=>{
       return <Tag color={label} key={index}/>      
     })
+    const assigner = item.assigner && item.assigner.name ? 
+                        <Avatar>{getInitial(item.assigner.name)}</Avatar>: null
     const dueDateTag = item.dueDate ?
       (<div style={{fontSize:12,paddingRight:15, textAlign: 'right'}}>
         Due On: {buildDateText(new Date(item.dueDate))}
@@ -45,6 +48,7 @@ class Item extends Component{
           onTouchTap={onOpenItemInfoModal.bind(this, item)}
           primaryText={item.name} 
           leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={Colors.blue500} />}
+          rightAvatar={assigner}
           style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
         />
         {dueDateTag}

@@ -48,8 +48,7 @@ router.get("/", passport.authenticate('bearer', { session: false }), function(re
 	if(req.userId !== req.query.owner){
 		return res.status(400).send("you do not have permission to view this board");
 	}
-	debugger
-	Board.find({$or:[{owner:req.query.owner},{members:String(req.user._id)}]}, function(err, boards){
+	Board.find({$or:[{owner:req.query.owner},{members:String(req.user._id)}]}).sort('_id').exec(function(err, boards){
 		if(err){
 			res.status(400).send("an error has occured while getting your board");
 		} else {

@@ -79,6 +79,7 @@ function createSetObj(body){
 	newAttribute.description = body.description;
 	newAttribute.dueDate = body.dueDate;
 	newAttribute.labels = body.labels;
+  newAttribute.assigner = body.assigner;
 	return newAttribute;
 }
 

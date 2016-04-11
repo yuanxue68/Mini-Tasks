@@ -8,7 +8,8 @@ var Item = new Schema({
 	labels: {type:Array, default:[]},
   description: {type:String, default:''},
 	dueDate: {type:String },
-	colorLabel: {type: String, default:'default'}
+	colorLabel: {type: String, default:'default'},
+  assigner: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 module.exports = mongoose.model('Item', Item);

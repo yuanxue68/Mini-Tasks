@@ -21,6 +21,14 @@ export default function itemInfo (state = {labels:[]}, action){
           labels: [...state.labels, action.label]
         })
       }
+    case ActionTypes.ADD_ASSIGNER:
+      return Object.assign({}, state, {
+        assigner: action.user
+      })
+    case ActionTypes.REMOVE_ASSIGNER:
+      return Object.assign({}, state, {
+        assigner: null
+      })
     case ActionTypes.REMOVE_DUEDATE:
       return Object.assign({}, state, {
         dueDate: null

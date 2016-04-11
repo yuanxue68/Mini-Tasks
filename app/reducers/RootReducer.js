@@ -9,6 +9,7 @@ import members from './../reducers/MemberReducer'
 import modals from './../reducers/ModalReducer'
 import popovers from './../reducers/PopoverReducer'
 import aside from './../reducers/AsideReducer'
+import userSearchResult from './../reducers/UserSearchReducer'
 import {reducer as formReducer} from 'redux-form'
 import { getCookie } from './../utils/Utils'
 
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   form: formReducer,
   modals,
   popovers,
-  aside
+  aside,
+  userSearchResult
 })
 export default rootReducer
 

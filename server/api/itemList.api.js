@@ -53,14 +53,20 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 			Item.aggregate([
 				{$match: query}, 
 				{$group : { _id : "$itemListId", items: { $push: "$$ROOT" } } }
-				]).exec(function(err, items){
+				])
+        .exec(function(err, items){
 				if(err){
 					return res.status(400).send("an error has occured while getting the items");
 				}
-				res.json({
-					itemLists: itemLists,
-					items: items
-				});
+        Item.populate(items, {path: "items.assigner", model:'User'}, function(err, item){
+          if(err){
+            return res.status(400).send("an error has occured while getting the items")
+          }
+          res.json({
+            itemLists: itemLists,
+            items: items
+          });
+        });
 			});
 		});
 	});
@@ -78,8 +84,6 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 	if(req.body.description){
 		newValues.description = req.body.description;
 	}
-	console.log(req.body)
-  console.log("#############")
   verifyBoardOwner(boardId, req, res, function(){
 		ItemList.update({_id: id}, {$set: newValues}, function(err, status){
 			if(err){

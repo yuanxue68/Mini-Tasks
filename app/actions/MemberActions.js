@@ -62,7 +62,7 @@ export function createMember(boardId, userId, token){
 	return function(dispatch){
 		return fetch(`${getHost()}/api/boards/${boardId}/members`, {
 			method: 'POST',
-			body: JSON.stringify(userId),
+			body: JSON.stringify({userId}),
 			headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"

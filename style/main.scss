@@ -12,38 +12,18 @@
   min-width:300px;
   max-width: 300px;
 }
-//fix flat ui 
-.navbar-inverse .nav > li > a {
-	border-bottom: 0px;
-  border-left: 0px !important;
+
+.tag-container {
+  text-align: left;
+  white-space: normal;
+  line-height: 10px;
 }
 
-.navbar-inverse .navbar-brand {
-  border-bottom: 0px;
-  border-right: 0px;
-}
 
-.navbar.navbar-inverse .navbar-form {
-  border-left: 0px;
-  border-bottom: 0px;
-}
-
-.btn-success{
-	color: #fff !important;
-  background-color: #2ecc71  !important;
-}
-
-.well {
-	background-color: #34495e;
-	color: white;
-	border: none;
-	font-size: 16px !important; 
-}
-
-.card {
-	margin-bottom: 2px;
-	padding: 10px;
-	text-align: left;
+.tag{
+  display: inline-block;
+  height: 10px;
+  width: 20%;
 }
 
 .dim-container {
@@ -51,37 +31,6 @@
 	padding-bottom: 15px;	
 	background: #f5f2f0;
 	text-align: center;
-}
-
-.board-container {
-	text-align:center;
-	vertical-align: middle;
-}
-
-
-.square-card{
-	height:200px;
-	width:250px;
-	display: inline-block;
-	text-align: left;
-	margin: 10px;
-	overflow: hidden;
-}
-
-.modal{
-	text-align: left;
-}
-
-.label{
-	margin: 5px;
-}
-
-.btn-hg{
-	margin: 2px;
-}
-
-.primary-font{
-	color: #16a085;
 }
 
 

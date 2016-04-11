@@ -4,6 +4,7 @@ import LeftNav from 'material-ui/lib/left-nav'
 import FlatButton from 'material-ui/lib/flat-button'
 import {toggleAside} from './../actions/AsideActions'
 import FontIcon from 'material-ui/lib/font-icon'
+import MenuContainer from './MenuContainer'
 
 class BoardAside extends Component {
   constructor(props){
@@ -25,7 +26,10 @@ class BoardAside extends Component {
           onTouchTap={this.handleToggle}
           icon={<FontIcon className="fa fa-align-justify"/>}
         />
-        <LeftNav open={this.props.aside.boardAside}>
+        <LeftNav 
+          style = {{padding: 15}}
+          open={this.props.aside.boardAside}>
+          {this.props.children || <MenuContainer/>}
         </LeftNav>
       </div>
     )

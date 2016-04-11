@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 var myUtils = require('./../utils/utils');
 var Board = require('./../models/board.model');
 var User = require('./../models/user.model');
-var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
+var verifyBoardOwner = require('./apiUtils').verifyBoardOwner
+var ObjectId = require('mongoose').Types.ObjectId
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.boardId;
@@ -17,28 +18,27 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 			if(!board){
 				return res.status(400).send("an error has occured while getting board members");
 			}
-			var query = constructMembershipQuery(board.members);
-			console.log("query");
-			console.log(query);
-			if(!board.members || board.members.length == 0){
-				return res.json([]);
-			}
-			User.find({query}, function(err, result){
+      
+      var query = constructMembershipQuery(board.members, req.user._id);
+      console.log(query)
+			User.find({_id: {$in: query}}, function(err, result){
 				if(err){
+          console.log(err)
 					return res.status(400).send("an error has occured while getting board members");
 				} else {
 					return res.json(result);
 				}
-			})
+			});
 		});
 	});
 });
 
-function constructMembershipQuery(membersId){
-	var query = {$or:[]};
+function constructMembershipQuery(membersId, ownerId){
+	var query = [];
 	membersId.forEach(function(id){
-		query.$or.push({"_id": mongoose.Types.ObjectId(id)})
+		query.push(new ObjectId(id))
 	});
+  query.push(ownerId)
 	return query;
 };
 
@@ -46,9 +46,6 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 	var id = req.params.boardId;
 	req.userId = myUtils.getUserId(req.user);
 	var userId = req.body.userId;
-
-	console.log("nody");
-	console.log(req.body);
 
 	verifyBoardOwner(id, req, res, function(){
 		User.findOne({_id: userId}, function(err, user){

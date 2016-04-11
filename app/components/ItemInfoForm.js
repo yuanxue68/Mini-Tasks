@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {reduxForm} from 'redux-form'
-import { TextField } from 'material-ui'
+import TextField from 'material-ui/lib/text-field'
 
 const validate = (values) => {
   const errors = {}

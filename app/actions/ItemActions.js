@@ -1,5 +1,20 @@
 import {getHost} from './../utils/Utils'
 
+export const ADD_ASSIGNER = 'ADD_ASSIGNER'
+export function addAssigner(user){
+  return {
+    type: ADD_ASSIGNER,
+    user
+  }
+}
+
+export const REMOVE_ASSIGNER = 'REMOVE_ASSIGNER'
+export function removeAssigner(){
+  return {
+    type: REMOVE_ASSIGNER
+  }
+}
+
 export const ADD_LABEL = 'ADD_LABEL'
 export function addLabel(label){
   return {
@@ -140,13 +155,15 @@ function editItemFailure(error){
 
 export function editItem(itemInfo, token){
 	return function(dispatch){
-		return fetch(`api/items/${itemInfo._id}`, {
+		var body = Object.assign({}, itemInfo)
+    body.assigner = (body.assigner && body.assigner._id) || null
+    return fetch(`api/items/${itemInfo._id}`, {
 			method: 'PUT',
 			headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
-			body: JSON.stringify(itemInfo)
+			body: JSON.stringify(body)
 		}).then((response)=>{
       if (response.status >= 400) {
         throw new Error(EDIT_ITEM_ERROR)

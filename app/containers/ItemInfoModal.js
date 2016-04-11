@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {buildDateText, getCookie} from './../utils/Utils'
+import {buildDateText, getCookie, getInitial} from './../utils/Utils'
 import {connect} from 'react-redux'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
-import {removeLabel, addLabel, editItem, deleteItem} from './../actions/itemActions'
+import {removeLabel, removeAssigner, addLabel, editItem, deleteItem} from './../actions/itemActions'
 import {addDueDate, removeDueDate} from './../actions/itemActions'
 import RaisedButton from 'material-ui/lib/raised-button'
 import {openPopover} from './../actions/PopoverActions'
@@ -29,6 +29,7 @@ export default class ItemInfoModal extends Component{
     this.openMembersPopover = this.openMembersPopover.bind(this)
     this.onAddLabel = this.onAddLabel.bind(this)
     this.onRemoveLabel = this.onRemoveLabel.bind(this)
+    this.onRemoveAssigner = this.onRemoveAssigner.bind(this)
     this.onAddDueDate = this.onAddDueDate.bind(this)
     this.onRemoveDueDate = this.onRemoveDueDate.bind(this)
     this.onSaveItem = this.onSaveItem.bind(this)
@@ -69,6 +70,11 @@ export default class ItemInfoModal extends Component{
   onRemoveDueDate(){
     const {dispatch} = this.props
     dispatch(removeDueDate())
+  }
+
+  onRemoveAssigner(){
+    const {dispatch} = this.props
+    dispatch(removeAssigner())
   }
 
   handleOpen() {
@@ -117,11 +123,16 @@ export default class ItemInfoModal extends Component{
       dueDateTag = <FlatButton
               onTouchTap={this.onRemoveDueDate}
               label={"Due On: "+dateText}  
-              icon={<FontIcon className="fa fa-times" />}
               labelPosition="before"
             />
     }
-
+    const assigner = itemInfo && itemInfo.assigner ? 
+                        <FlatButton 
+                          onTouchTap={this.onRemoveAssigner}
+                          label={"Assigned To: "+itemInfo.assigner.name}
+                          labelPosition="before"  
+                        />  
+                        : null
     return(
       <div>
 	
@@ -136,6 +147,8 @@ export default class ItemInfoModal extends Component{
           autoScrollBodyContent={true}
         >
           <div className="col-md-9">
+            {assigner}
+            <br/>
             {dueDateTag}
             <ItemInfoForm {...initial}/>
             <DatePicker onChange={this.onAddDueDate} hintText="Change Due Date"/>

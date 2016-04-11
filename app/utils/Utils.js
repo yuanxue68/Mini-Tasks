@@ -41,3 +41,12 @@ export function getUserId(user){
 		return user.facebook.id;
 	}
 }
+
+export function getInitial(name){
+  const splits = name.split(" ")
+  var initial = ''
+  splits.forEach((split)=>{
+    initial+=split[0]   
+  })
+  return initial
+}

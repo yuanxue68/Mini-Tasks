@@ -18,13 +18,13 @@ class BoardPage extends Component {
 	}
 	
 	render(){
-    const {boardInfo} = this.props
+    const {boardInfo, children} = this.props
 		return(
 			<div className="container-fluid">
 				<div className="clearfix" >
 					<div className="pull-right">
             <ItemInfoModal/>
-            <BoardAside/>
+            <BoardAside children={children}/>
 			      <ListCreationPopover/>
 				    <Link to={"board/"+this.props.params.boardId+"/members"} className="btn btn-warning"><i className="fa fa-users"></i> Members</Link>
           </div>
