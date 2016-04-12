@@ -1,3 +1,5 @@
+import Colors from 'material-ui/lib/styles/colors'
+
 export function deleteCookie(name) {
   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
@@ -25,6 +27,20 @@ export function urlBuilder(url, params) {
 
 export function getHost(){
   return "http://localhost:3000"
+}
+export function getColorList(){
+  return [
+    Colors.blue500,
+    Colors.orange500,
+    Colors.yellow500,
+    Colors.red500,
+    Colors.indigo500,
+    Colors.teal500,
+    Colors.blueGrey500,
+    Colors.brown500,
+    Colors.grey500,
+    Colors.grey900
+  ]
 }
 export function openModal(element){
 	$(element).modal()

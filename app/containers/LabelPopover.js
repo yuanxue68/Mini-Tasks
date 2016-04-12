@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {closePopover} from './../actions/PopoverActions'
-import Popover from 'material-ui/lib/popover/popover';
-import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
-import Colors from 'material-ui/lib/styles/colors';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
+import Popover from 'material-ui/lib/popover/popover'
+import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top'
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
+import {getColorList} from './../utils/Utils' 
 
 const styles = {
   popover: {
@@ -13,18 +13,8 @@ const styles = {
   }
 }
 
-const colorList = [
-  Colors.blue500,
-  Colors.orange500,
-  Colors.yellow500,
-  Colors.red500,
-  Colors.indigo500,
-  Colors.teal500,
-  Colors.blueGrey500,
-  Colors.brown500,
-  Colors.grey500,
-  Colors.grey900
-]
+const colorList = getColorList()
+
 
 class LabelPopover extends Component{
 	constructor(props){

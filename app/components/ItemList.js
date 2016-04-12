@@ -8,14 +8,36 @@ import ItemCreationPopover from './../containers/ItemCreationPopover'
 export default class ItemLists extends Component{
 	constructor(props){
 		super(props)
-	}
+	  this.filterItems = this.filterItems.bind(this)
+  }
+
+  filterItems(item){
+    const {filter} = this.props
+  
+    if(filter.name){
+      if(!item.name.includes(filter.name)){
+        return false
+      }
+    }
+    if(filter.date){
+      if(new Date(filter.date)< new Date(item.dueDate)){
+        return false
+      }
+    }
+    if(filter.colors.length>0){
+      if(!filter.colors.every((color)=>{item.labels && item.labels.indexOf(color)})){
+        return false
+      }
+    }
+    return true
+  }
 
 	render(){
 		const {itemList, boardId, onDeleteItem, onOpenItemInfoModal, index, isOver} = this.props
 		var dragNotice = isOver ? <ListItem primaryText="..." style={{backgroundColor:'#e9e9e9'}}/> : null
-    var items = itemList.items.map((item, index) => {
+    var items = itemList.items.filter(this.filterItems).map((item, index) => {
       return <Item 
-              key={index} 
+              key={item._id} 
               item={item} 
               onDeleteItem={onDeleteItem} 
               onOpenItemInfoModal={onOpenItemInfoModal}

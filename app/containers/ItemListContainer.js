@@ -68,7 +68,8 @@ class ItemListContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    router: state.router
+    router: state.router,
+    filter: state.filter
   }
 }
 
