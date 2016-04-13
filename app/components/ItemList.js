@@ -19,13 +19,18 @@ export default class ItemLists extends Component{
         return false
       }
     }
-    if(filter.date){
-      if(new Date(filter.date)< new Date(item.dueDate)){
+    if(filter.dueBefore){
+      if( (new Date(filter.dueBefore) <= new Date(item.dueDate)) || !item.dueDate){
+        return false
+      }
+    }
+    if(filter.dueAfter){
+      if( (new Date(filter.dueAfter) >= new Date(item.dueDate)) || !item.dueDate ){
         return false
       }
     }
     if(filter.colors.length>0){
-      if(!filter.colors.every((color)=>{item.labels && item.labels.indexOf(color)})){
+      if(!filter.colors.every((color)=>{return item.labels && (item.labels.indexOf(color) != -1) })){
         return false
       }
     }

@@ -1,61 +1,66 @@
 import React, {Component} from 'react'
-import FlatButton from 'material-ui/lib/flat-button'
 import {connect} from 'react-redux'
-import FontIcon from 'material-ui/lib/font-icon'
-import {Link} from 'react-router'
-import LabelFilter from './../components/LabelFilter'
-import TextField from 'material-ui/lib/text-field'
-import DatePicker from 'material-ui/lib/date-picker/date-picker'
-import {addColorFilter, changeNameFilter, changeDateFilter} from './../actions/FilterActions'
+import {clearFilter, addColorFilter, removeColorFilter, changeNameFilter, changeDueAfterFilter, changeDueBeforeFilter} from './../actions/FilterActions'
+import Filter from './../components/Filter'
 
 class FilterContainer extends Component {
   constructor(props){
     super(props)
       this.onNameChange = this.onNameChange.bind(this)
-      this.onDateChange = this.onDateChange.bind(this)
-      this.onAddColorFilter = this.onAddColorFilter.bind(this)
+      this.onDueBeforeChange = this.onDueBeforeChange.bind(this)
+      this.onDueAfterChange = this.onDueAfterChange.bind(this)
+      this.onChangeColorFilter = this.onChangeColorFilter.bind(this)
+      this.onClearFilter = this.onClearFilter.bind(this)
   }
 
-  onNameChange(){
+  onNameChange(name){
     const {dispatch} = this.props
-    const name = this.refs.nameSearch.getValue()
     dispatch(changeNameFilter(name))
   }
 
-  onDateChange(){
+  onDueBeforeChange(event, date){
+    const {dispatch} = this.props
+    dispatch(changeDueBeforeFilter(date.toString()))
   }
 
-  onAddColorFilter(){
+  onDueAfterChange(event, date){
+    const {dispatch} = this.props
+    dispatch(changeDueAfterFilter(date.toString()))
+  }
+
+  onChangeColorFilter(color){
+    const {dispatch, filter} = this.props
+    if(filter.colors.includes(color)){
+      dispatch(removeColorFilter(color))
+    } else {
+      dispatch(addColorFilter(color))
+    }
+
+  }
+
+  onClearFilter(){
+    const {dispatch} = this.props
+    dispatch(clearFilter())
   }
 
   render(){
-    const {boardInfo} = this.props
-    
-    return(
-      <div>
-        <h4><i className="fa fa-filter"></i> Filter Items</h4>
-        <FlatButton label="Back" 
-          linkButton={true}
-          containerElement={<Link to={`/board/${boardInfo._id}`}/>}
-          icon={<FontIcon className="fa fa-angle-left" />}
-        />
-        <h4>Filter By Name</h4>
-        <TextField
-          ref="nameSearch"
-          hintText="Item Name"
-          onChange={this.onNameChange}
-        /><br/>
-        <h4>Filter By DueDate</h4>
-        <DatePicker hintText="Due Before" />    
-        <LabelFilter/>
-      </div>
-    )
+    const {boardInfo, filter} = this.props
+    return <Filter 
+            onChangeColorFilter={this.onChangeColorFilter}
+            onDueBeforeChange={this.onDueBeforeChange}
+            onDueAfterChange={this.onDueAfterChange}
+            onNameChange={this.onNameChange}
+            onClearFilter={this.onClearFilter}
+            filter={filter}
+            boardInfo={boardInfo}
+            />
   }
 }
 
 function mapStateToProps(state){
   return {
-    boardInfo: state.boardInfo
+    boardInfo: state.boardInfo,
+    filter: state.filter
   }
 }
 

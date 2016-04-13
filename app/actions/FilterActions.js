@@ -22,10 +22,25 @@ export function changeNameFilter(name){
   }
 }
 
-export const CHANGE_DATE_FILTER = 'CHANGE_DATE_FILTER'
-export function changeDateFilter(date){
+export const CHANGE_DUE_BEFORE_FILTER = 'CHANGE_DUE_BEFORE_FILTER'
+export function changeDueBeforeFilter(date){
   return {
-    type: CHANGE_DATE_FILTER,
+    type: CHANGE_DUE_BEFORE_FILTER,
     date
+  }
+}
+
+export const CHANGE_DUE_AFTER_FILTER = 'CHANGE_DUE_AFTER_FILTER'
+export function changeDueAfterFilter(date){
+  return {
+    type: CHANGE_DUE_AFTER_FILTER,
+    date
+  }
+}
+
+export const CLEAR_FILTER = 'CLEAR_FILTER'
+export function clearFilter(){
+  return {
+    type: CLEAR_FILTER
   }
 }
