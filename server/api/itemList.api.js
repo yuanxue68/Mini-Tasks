@@ -12,7 +12,9 @@ router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("name","Your list must have a name").notEmpty();
 		req.checkBody("boardId","Your list must belong to a board").notEmpty();
-	}
+	} else if (req.method === 'PUT'){
+    req.checkBody("archived", "must be boolean").isBoolean()
+  }
 
 	var errors = req.validationErrors();
   if (errors) {
@@ -43,9 +45,10 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	req.userId = myUtils.getUserId(req.user);
+  var archived = req.query.archived || false;
 	var boardId = req.params.boardId;
 	verifyBoardOwner(boardId, req, res, function(){
-		ItemList.find({boardId: boardId}, function(err, itemLists){
+		ItemList.find({boardId: boardId, archived: 'true' }, function(err, itemLists){
 			if(err){
 				return res.status(400).send("an error has occured while getting the item lists");
 			}
@@ -81,9 +84,9 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 	if(req.body.name){
 		newValues.name = req.body.name;
 	}
-	if(req.body.description){
-		newValues.description = req.body.description;
-	}
+  if(req.body.archived){
+    newValues.archived = req.body.archived
+  }
   verifyBoardOwner(boardId, req, res, function(){
 		ItemList.update({_id: id}, {$set: newValues}, function(err, status){
 			if(err){

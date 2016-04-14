@@ -4,43 +4,19 @@ import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
 import ListCreationPopover from './../containers/ListCreationPopover'
 import ItemCreationPopover from './../containers/ItemCreationPopover'
+import FlatButton from 'material-ui/lib/flat-button'
+import FontIcon from 'material-ui/lib/font-icon'
 
-export default class ItemLists extends Component{
+export default class ItemList extends Component{
 	constructor(props){
 		super(props)
-	  this.filterItems = this.filterItems.bind(this)
-  }
-
-  filterItems(item){
-    const {filter} = this.props
-  
-    if(filter.name){
-      if(!item.name.includes(filter.name)){
-        return false
-      }
-    }
-    if(filter.dueBefore){
-      if( (new Date(filter.dueBefore) <= new Date(item.dueDate)) || !item.dueDate){
-        return false
-      }
-    }
-    if(filter.dueAfter){
-      if( (new Date(filter.dueAfter) >= new Date(item.dueDate)) || !item.dueDate ){
-        return false
-      }
-    }
-    if(filter.colors.length>0){
-      if(!filter.colors.every((color)=>{return item.labels && (item.labels.indexOf(color) != -1) })){
-        return false
-      }
-    }
-    return true
   }
 
 	render(){
-		const {itemList, boardId, onDeleteItem, onOpenItemInfoModal, index, isOver} = this.props
+		const {filterItems, itemList, boardId, onDeleteItem,} = this.props
+    const {onOpenItemInfoModal, index, isOver, onArchiveItemList} = this.props
 		var dragNotice = isOver ? <ListItem primaryText="..." style={{backgroundColor:'#e9e9e9'}}/> : null
-    var items = itemList.items.filter(this.filterItems).map((item, index) => {
+    var items = itemList.items.filter(filterItems).map((item, index) => {
       return <Item 
               key={item._id} 
               item={item} 
@@ -57,6 +33,7 @@ export default class ItemLists extends Component{
           {items} 
           {dragNotice}
         </List>
+        <FlatButton label="Archive" onTouchTap={onArchiveItemList} icon={<FontIcon className="fa fa-archive"/>}/>
         <ItemCreationPopover index={String(index)} itemListId={itemList._id} boardId={boardId}/>
       </div>
     )

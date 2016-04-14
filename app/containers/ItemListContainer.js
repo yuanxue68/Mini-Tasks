@@ -4,9 +4,9 @@ import ItemList from './../components/ItemList';
 import { moveItem, ItemTypes } from './../actions/DndActions';
 import { DropTarget } from 'react-dnd';
 import { getCookie } from './../utils/Utils'
-import { deleteItemList } from './../actions/ItemListActions'
-import { deleteItem, populateItemToModal } from './../actions/ItemActions'
+import { populateItemToModal } from './../actions/ItemActions'
 import { openModal } from './../actions/ModalActions'
+import {archiveItemList} from './../actions/ItemListActions'
 
 const itemListTarget = {
   drop(props, monitor) {
@@ -26,22 +26,35 @@ function collect(connect, monitor) {
 class ItemListContainer extends Component {
   constructor(props) {
     super(props)
-    this.onDeleteItem = this.onDeleteItem.bind(this)
-    this.onDeleteItemList = this.onDeleteItemList.bind(this)
     this.onOpenItemInfoModal = this.onOpenItemInfoModal.bind(this)
+    this.filterItems = this.filterItems.bind(this)
+    this.onArchiveItemList = this.onArchiveItemList.bind(this)
   }
 
-  onDeleteItem(itemId, ItemListId, e){
-    const {dispatch} = this.props
-    const token = getCookie('yulloToken')
-    e.stopPropagation()
-    dispatch(deleteItemList(itemId, itemListId, token))
-  }
-
-  onDeleteItemList(itemListId, boardId){
-    const {dispatch} = this.props
-    const token = getCookie('yulloToken')
-    dispatch(deleteItemList(itemListId, boardId, token))
+  filterItems(item){
+    const {filter} = this.props
+  
+    if(filter.name){
+      if(!item.name.includes(filter.name)){
+        return false
+      }
+    }
+    if(filter.dueBefore){
+      if( (new Date(filter.dueBefore) <= new Date(item.dueDate)) || !item.dueDate){
+        return false
+      }
+    }
+    if(filter.dueAfter){
+      if( (new Date(filter.dueAfter) >= new Date(item.dueDate)) || !item.dueDate ){
+        return false
+      }
+    }
+    if(filter.colors.length>0){
+      if(!filter.colors.every((color)=>{return item.labels && (item.labels.indexOf(color) != -1) })){
+        return false
+      }
+    }
+    return true
   }
 
   onOpenItemInfoModal(itemInfo){
@@ -49,8 +62,14 @@ class ItemListContainer extends Component {
     dispatch(openModal('itemInfo'))
     dispatch(populateItemToModal(itemInfo))
   }
-  render() {
 
+  onArchiveItemList(){
+    const {dispatch, itemList} = this.props
+    const token = getCookie('yulloToken')
+    dispatch(archiveItemList(itemList, token))
+  }
+
+  render() {
     const { connectDropTarget, isOver } = this.props;
     return connectDropTarget(
       <div className="item-list">
@@ -58,8 +77,8 @@ class ItemListContainer extends Component {
           {...this.props} 
           isOver={isOver}
           onOpenItemInfoModal={this.onOpenItemInfoModal}
-          onDeleteItem = {this.onDeleteItem}
-          onDeleteItemList = {this.onDeleteItemList}
+          onArchiveItemList={this.onArchiveItemList}
+          filterItems = {this.filterItems}
         />
       </div>
     )

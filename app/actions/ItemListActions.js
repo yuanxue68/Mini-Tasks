@@ -167,3 +167,45 @@ export function editItemList(itemListInfo, token){
 		})
 	}
 }
+
+export const ARCHIVE_ITEMLIST_SUCCESS = 'ARCHIVE_ITEMLIST_SUCCESS'
+export const ARCHIVE_ITEMLIST_FAILURE = 'ARCHIVE_ITEMLIST_FAILURE'
+export const ARCHIVE_ITEMLIST_ERROR = 'An error has occured while archiving this list'
+
+function archiveItemListSuccess(itemListId){
+  return {
+    type: ARCHIVE_ITEMLIST_SUCCESS,
+    itemListId
+  }
+}
+
+function archiveItemListFailure(error){
+  return {
+    type: ARCHIVE_ITEMLIST_FAILURE,
+    error
+  }
+}
+
+export function archiveItemList(itemListInfo, token){
+	itemListInfo.archived = true
+  return function(dispatch){
+		return fetch(`api/boards/${itemListInfo.boardId}/itemlists/${itemListInfo._id}`, {
+			method: 'PUT',
+			headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+			body: JSON.stringify(itemListInfo)
+		}).then((response)=>{
+      if (response.status >= 400) {
+        throw new Error(ARCHIVE_ITEMLIST_ERROR)
+      }
+      return response.json()
+    }).then((data)=>{
+			dispatch(archiveItemListSuccess(itemListInfo._id))
+		}).catch((err)=>{
+			dispatch(archiveItemListFailure(err.message))
+		})
+	}
+}
+

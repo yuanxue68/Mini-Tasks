@@ -27,6 +27,14 @@ export default function itemLists (state = [], action){
 				}
 			})
 			return newState
+    case ActionTypes.ARCHIVE_ITEMLIST_SUCCESS:
+      var newState = []
+      state.forEach((itemList)=>{
+        if(itemList._id != action.itemListId){
+          newState.push(itemList)
+        }
+      })
+      return newState
 		case ItemActionTypes.CREATE_ITEM_SUCCESS:
 			var newState = []
 			state.forEach(function(itemList){
@@ -57,7 +65,7 @@ export default function itemLists (state = [], action){
 				}
 			})
 			return newState
-		case ItemActionTypes.DELETE_ITEM_SUCCESS:
+    case ItemActionTypes.DELETE_ITEM_SUCCESS:
 			var newState = []
 			state.forEach(function(itemList){
 				if(itemList._id === action.itemListId){

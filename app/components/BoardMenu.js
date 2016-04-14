@@ -31,11 +31,7 @@ class BoardMenu extends Component {
           linkButton={true}
           containerElement={<Link to={`/board/${boardInfo._id}/archived`} />}
         />
-        <br/>
-        <br/>
 
-        <h4><i className="fa fa-circle" style={{color: Colors.pink500}}></i> Background Color</h4>
-        <FlatButton label="Change Board Color" secondary={true} />
       </div>
     )
   }
