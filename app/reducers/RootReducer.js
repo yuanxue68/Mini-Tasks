@@ -12,6 +12,7 @@ import aside from './../reducers/AsideReducer'
 import filter from './../reducers/FilterReducer'
 import userSearchResult from './../reducers/UserSearchReducer'
 import {reducer as formReducer} from 'redux-form'
+import archivedItemLists from './../reducers/ArchivedItemListReducer'
 import { getCookie } from './../utils/Utils'
 
 const rootReducer = combineReducers({
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
 	authentication,
 	boardList,
 	boardInfo,
-	itemLists,
+  archivedItemLists,
+  itemLists,
 	itemInfo,
 	members,
   form: formReducer,

@@ -1,29 +1,78 @@
 import React, {Component} from 'react'
-import FlatButton from 'material-ui/lib/flat-button'
 import {connect} from 'react-redux'
-import FontIcon from 'material-ui/lib/font-icon'
-import {Link} from 'react-router'
+import {pushState} from 'redux-router'
+import {getItemLists, editItemList, restoreItemList} from './../actions/ItemListActions'
+import {getCookie} from './../utils/Utils'
+import Archived from './../components/Archived'
 
 class ArchivedContainer extends Component {
+  constructor(props){
+    super(props)
+    this.nextPage = this.nextPage.bind(this)
+    this.prevPage = this.prevPage.bind(this)
+    this.onRestoreList = this.onRestoreList.bind(this)
+  }
 
+  nextPage(){
+    const {dispatch, boardInfo, router, archivedItemLists} = this.props
+    if(archivedItemLists.length === 0){
+      return
+    }
+    const token = getCookie('yulloToken') 
+    const nextPage = Number((router.location.query.page || 0)) + 1
+    Promise.all([
+      dispatch(pushState(null, `/board/${boardInfo._id}/archived?page=${nextPage}`, '')),
+      dispatch(getItemLists(boardInfo._id, token, true, nextPage))
+    ])
+  }
+
+  prevPage(){
+    const {dispatch, boardInfo, router, archivedItemLists} = this.props
+    if(!router.location.query.page || router.location.query.page <= 0){
+      return
+    }
+    const token = getCookie('yulloToken')
+    const prevPage = Number(router.location.query.page) - 1
+    Promise.all([ 
+      dispatch(pushState(null, `/board/${boardInfo._id}/archived?page=${prevPage}`, '')),
+      dispatch(getItemLists(boardInfo._id, token, true, prevPage))
+    ])
+
+  }
+
+  onRestoreList(itemListInfo){
+    const {dispatch} = this.props
+    const token = getCookie('yulloToken')
+    itemListInfo.archived = false
+    Promise.all([
+      dispatch(editItemList(itemListInfo, token)),
+      dispatch(restoreItemList(itemListInfo))
+    ])
+  }
+
+  componentWillMount(){
+    const {dispatch, boardInfo} = this.props
+    const token = getCookie('yulloToken')
+    if(!boardInfo._id)
+      return
+    dispatch(getItemLists(boardInfo._id, token, true, 0))
+  }
   render(){
-    const {boardInfo} = this.props
     return(
-      <div>
-        <h4><i className="fa fa-archive"></i>Archived List</h4>
-        <FlatButton label="Back"
-          linkButton={true}
-          containerElement={<Link to={`/board/${boardInfo._id}`}/>}
-          icon={<FontIcon className="fa fa-angle-left" />}
-        />
-      </div>
+      <Archived {...this.props}
+        nextPage={this.nextPage}
+        prevPage={this.prevPage}
+        onRestoreList={this.onRestoreList}
+      />
     )
   }
 }
 
 function mapStateToProps(state){
   return {
-    boardInfo: state.boardInfo
+    boardInfo: state.boardInfo,
+    router: state.router,
+    archivedItemLists: state.archivedItemLists
   }
 }
 

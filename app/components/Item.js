@@ -39,6 +39,8 @@ class Item extends Component{
       (<div style={{fontSize:12,paddingRight:15, textAlign: 'right'}}>
         Due On: {buildDateText(new Date(item.dueDate))}
       </div>) : null
+    {/* mark it red if the item is over due */}
+    const itemColor = item.dueDate && new Date(item.dueDate) < new Date() ? Colors.red500 : Colors.blue500
     return connectDragSource(
       <div>
         <div className="tag-container">
@@ -47,7 +49,7 @@ class Item extends Component{
 	      <ListItem 
           onTouchTap={onOpenItemInfoModal.bind(this, item)}
           primaryText={item.name} 
-          leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={Colors.blue500} />}
+          leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={itemColor} />}
           rightAvatar={assigner}
           style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
         />

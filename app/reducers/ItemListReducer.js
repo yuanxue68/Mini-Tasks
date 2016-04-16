@@ -35,6 +35,8 @@ export default function itemLists (state = [], action){
         }
       })
       return newState
+    case ActionTypes.RESTORE_ARCHIVED_ITEMLIST:
+      return [...state, action.itemListInfo]
 		case ItemActionTypes.CREATE_ITEM_SUCCESS:
 			var newState = []
 			state.forEach(function(itemList){

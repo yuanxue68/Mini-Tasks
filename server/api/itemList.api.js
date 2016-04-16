@@ -13,7 +13,10 @@ router.use(function(req, res, next){
 		req.checkBody("name","Your list must have a name").notEmpty();
 		req.checkBody("boardId","Your list must belong to a board").notEmpty();
 	} else if (req.method === 'PUT'){
-    req.checkBody("archived", "must be boolean").isBoolean()
+    req.checkBody("archived", "must be boolean").isBoolean();
+  } else if (req.method === 'GET'){
+    req.checkQuery('page', 'must be number').optional().isInt();
+    req.checkQuery('archived', 'must be boolean').optional().isBoolean();
   }
 
 	var errors = req.validationErrors();
@@ -44,25 +47,34 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
   var archived = req.query.archived || false;
+  var skip = (req.query.page && req.query.page * 10) || 0;
+  var limit = archived === 'true' ? 10 : Number.MAX_SAFE_INTEGER;
 	var boardId = req.params.boardId;
-	verifyBoardOwner(boardId, req, res, function(){
-		ItemList.find({boardId: boardId, archived: 'true' }, function(err, itemLists){
+	
+  verifyBoardOwner(boardId, req, res, function(){
+		ItemList.find({boardId: boardId, archived: archived })
+    .sort({_id:1})
+    .skip(skip)
+    .limit(limit)
+    .exec(function(err, itemLists){
 			if(err){
-				return res.status(400).send("an error has occured while getting the item lists");
+				console.log(err);
+        return res.status(400).send("an error has occured while getting the item lists");
 			}
 			var query = constructItemQuery(itemLists);
 			Item.aggregate([
-				{$match: query}, 
+				{$match: query},
 				{$group : { _id : "$itemListId", items: { $push: "$$ROOT" } } }
 				])
         .exec(function(err, items){
 				if(err){
+          console.log(err);
 					return res.status(400).send("an error has occured while getting the items");
 				}
         Item.populate(items, {path: "items.assigner", model:'User'}, function(err, item){
           if(err){
+            console.log(err);
             return res.status(400).send("an error has occured while getting the items")
           }
           res.json({
@@ -80,13 +92,9 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 	var boardId = req.body.boardId;
 	var newValues = {};
 	var id = req.params.id;
+	newValues.name = req.body.name;
+  newValues.archived = req.body.archived;
 
-	if(req.body.name){
-		newValues.name = req.body.name;
-	}
-  if(req.body.archived){
-    newValues.archived = req.body.archived
-  }
   verifyBoardOwner(boardId, req, res, function(){
 		ItemList.update({_id: id}, {$set: newValues}, function(err, status){
 			if(err){

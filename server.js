@@ -28,6 +28,10 @@ app.use('/api/auth', require('./server/api/auth.api'));
 app.use('/api/boards', require('./server/api/board.api'));
 app.use('/api/items', require('./server/api/item.api'));
 
+process.on('uncaughtException', function(err) {
+    console.log('!!!!!!!!!!!!!!! uncaughtException');
+    console.log(err);
+});
 
 app.listen(port, function(error) {
   if (error) {
@@ -36,3 +40,5 @@ app.listen(port, function(error) {
     console.info("=> 🌎  Listening on port 3000");
   }
 });
+
+
