@@ -27,7 +27,7 @@ export default class BoardCreationModal extends Component{
   }
 
 	createBoard(){
-    const {dispatch, form} = this.props
+    const {dispatch, form, authentication} = this.props
 		var name = form.boardCreation.name && form.boardCreation.name.value
 		var description = form.boardCreation.description && form.boardCreation.description.value
 		if((!name)){
@@ -36,7 +36,7 @@ export default class BoardCreationModal extends Component{
 		var board ={
 			name,
 			description,
-			owner: getUserId(this.props.authentication.userInfo)
+			owner: authentication.userInfo._id
 		}
     var token = getCookie('yulloToken')
 		dispatch(createBoard(board, token))

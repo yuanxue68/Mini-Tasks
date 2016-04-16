@@ -3,7 +3,6 @@ var router = express.Router(); //so that it can get params from parent router
 var passport = require('passport');
 var util = require('util');
 var Item = require('./../models/item.model');
-var myUtils = require('./../utils/utils');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 
 router.use(function(req, res, next){
@@ -23,7 +22,7 @@ router.use(function(req, res, next){
 
 router.get('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.id;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 
 	Item.findOne({_id:id}, function(err, item){
 		if(err){
@@ -36,7 +35,7 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), function
 });
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var boardId = req.body.boardId;
 	verifyBoardOwner(boardId, req, res, function(){
 		var newItem = new Item(req.body);
@@ -52,7 +51,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.id;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 
 	Item.findOne({_id:id}, function(err, item){
 		if(err){
@@ -85,7 +84,7 @@ function createSetObj(body){
 
 router.delete('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.id
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	Item.findOne({_id:id}, function(err, item){
 		if(err){
 			return res.status(400).send("an error has occured while deleting your item");

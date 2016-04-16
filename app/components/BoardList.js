@@ -9,11 +9,7 @@ export default class Home extends Component {
 	
 	componentDidMount(){
 		const {dispatch, onGetBoards, authentication} = this.props
-		if(authentication.userInfo.facebook){
-			onGetBoards({owner:authentication.userInfo.facebook.id})
-		} else {
-			onGetBoards({owner:authentication.userInfo.local.username})
-		}
+		onGetBoards({owner:authentication.userInfo._id})
 	}
 
 	render(){

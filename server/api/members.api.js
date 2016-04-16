@@ -3,7 +3,6 @@ var router = express.Router({mergeParams: true}); //so that it can get params fr
 var passport = require('passport');
 var util = require('util');
 var mongoose = require('mongoose');
-var myUtils = require('./../utils/utils');
 var Board = require('./../models/board.model');
 var User = require('./../models/user.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner
@@ -11,7 +10,7 @@ var ObjectId = require('mongoose').Types.ObjectId
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.boardId;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 
 	verifyBoardOwner(id, req, res, function(){
 		Board.findOne({_id: id}, function(err, board){
@@ -44,7 +43,7 @@ function constructMembershipQuery(membersId, ownerId){
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.boardId;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var userId = req.body.userId;
 
 	verifyBoardOwner(id, req, res, function(){
@@ -72,7 +71,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 
 router.delete('/:userId', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.boardId;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var userId = req.params.userId;
 
 	verifyBoardOwner(id, req, res, function(){

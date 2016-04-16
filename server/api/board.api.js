@@ -4,7 +4,6 @@ var util = require('util');
 var passport = require('passport');
 var Board = require('./../models/board.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
-var myUtils = require('./../utils/utils');
 
 router.use('/:boardId/itemlists', require('./itemList.api'));
 router.use('/:boardId/members', require('./members.api'));
@@ -28,7 +27,7 @@ router.use(function(req, res, next){
 
 router.post("/", passport.authenticate('bearer', { session: false }), function(req, res){
 
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	if(req.userId !== req.body.owner){
 		return res.status(400).send("you can not create a board under someone else's name");
 	}
@@ -44,7 +43,7 @@ router.post("/", passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req, res, next){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	if(req.userId !== req.query.owner){
 		return res.status(400).send("you do not have permission to view this board");
 	}
@@ -59,7 +58,7 @@ router.get("/", passport.authenticate('bearer', { session: false }), function(re
 
 router.get("/:id", passport.authenticate('bearer', { session: false }), function(req, res, next){
 	var id = req.params.id;
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 
 	verifyBoardOwner(id, req, res, function(){
 		Board.findOne({_id: id}, function(err, board){
@@ -73,7 +72,7 @@ router.get("/:id", passport.authenticate('bearer', { session: false }), function
 });
 
 router.put("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var id = req.params.id;
 	var newValues = {name:'', description:''};
 
@@ -96,7 +95,7 @@ router.put("/:id", passport.authenticate('bearer', { session: false }), function
 });
 
 router.delete("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var id = req.params.id;
 	verifyBoardOwner(id, req, res, function(){
 		Board.findOne({_id:id}, function(err, doc){

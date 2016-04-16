@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router({mergeParams: true}); //so that it can get params from parent router
 var passport = require('passport');
 var util = require('util');
-var myUtils = require('./../utils/utils');
 var ItemList = require('./../models/itemList.model');
 var Item = require('./../models/item.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
@@ -28,7 +27,7 @@ router.use(function(req, res, next){
 });
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var boardId = req.params.boardId;
 
 	if(boardId !== req.body.boardId){
@@ -47,6 +46,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 });
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
+	req.userId = req.user._id.toString();
   var archived = req.query.archived || false;
   var skip = (req.query.page && req.query.page * 10) || 0;
   var limit = archived === 'true' ? 10 : Number.MAX_SAFE_INTEGER;
@@ -88,7 +88,7 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 });
 
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var boardId = req.body.boardId;
 	var newValues = {};
 	var id = req.params.id;
@@ -107,7 +107,7 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 });
 
 router.delete('/:id', passport.authenticate('bearer', { session: false }), function(req, res){
-	req.userId = myUtils.getUserId(req.user);
+	req.userId = req.user._id.toString();
 	var boardId = req.params.boardId;
 	var id = req.params.id;
 
