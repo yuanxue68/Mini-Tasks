@@ -8,6 +8,7 @@ import Board from './containers/Board'
 import BoardMenu from './containers/MenuContainer'
 import ArchivedContainer from './containers/ArchivedContainer'
 import FilterContainer from './containers/FilterContainer'
+import UserSettingContainer from './containers/UserSettingContainer'
 
 export default (
 	<Route path="/" component = {App} >
@@ -18,5 +19,6 @@ export default (
       <Route path="archived" component={ArchivedContainer}/>
       <Route path="filter" component={FilterContainer}/>
 		</Route>
+    <Route path="setting" component={UserSettingContainer}/>
 	</Route>
 )

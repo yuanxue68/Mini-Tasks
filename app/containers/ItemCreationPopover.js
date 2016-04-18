@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {getUserId, getCookie} from './../utils/Utils'
+import {getCookie} from './../utils/Utils'
 import {connect} from 'react-redux'
 import {createItem} from './../actions/ItemActions'
 import ItemCreationForm from './../components/ItemCreationForm'

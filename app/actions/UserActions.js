@@ -44,3 +44,45 @@ export function clearUserSearch(){
     type: CLEAR_USER_SEARCH
   }
 }
+
+export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS'
+export const EDIT_USER_FAILURE = 'EDIT_USER_FAILURE'
+export const EDIT_USER_ERROR = 'An error has occured while editing user'
+export const EDIT_USER_MESSAGE = 'User setting saved successfully'
+
+export function editUserSuccess(userInfo, notification){
+  return {
+    type: EDIT_USER_SUCCESS,
+    userInfo,
+    notification
+  }
+}
+
+export function editUserFailure(error){
+  return {
+    type: EDIT_USER_FAILURE,
+    error
+  }
+}
+
+export function editUser(userInfo, token){
+  return function(dispatch){
+    return fetch(`${getHost()}/api/users/${userInfo._id}`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userInfo)
+    }).then((response)=>{
+      if(response.status >= 400){
+        throw new Error(EDIT_USER_ERROR)     
+      }
+      return response.json()
+    }).then((result)=>{
+      dispatch(editUserSuccess(result, EDIT_USER_MESSAGE))
+    }).catch((err)=>{
+      dispatch(editUserFailure(err.message))
+    })
+  }
+}

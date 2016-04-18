@@ -34,16 +34,15 @@ UserSchema.pre('save', function(next){
 			}
 			user.local.password = hash;
 			next();
-		})
+		});
 	});
-
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.local.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
+  bcrypt.compare(candidatePassword, this.local.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
 UserSchema.methods.toJSON = function() {

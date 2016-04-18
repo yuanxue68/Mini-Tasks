@@ -1,6 +1,7 @@
 import { routerStateReducer as router } from 'redux-router'
 import { combineReducers } from 'redux'
 import * as ActionTypes from './../actions/RootActions'
+import * as UserActionTypes from './../actions/UserActions'
 import boardList from './../reducers/BoardListReducer'
 import itemLists from './../reducers/ItemListReducer'
 import boardInfo from './../reducers/BoardReducer'
@@ -90,6 +91,10 @@ function authentication(state = {authed:false, userInfo: {}, token:""}, action) 
 				userInfo:null,
         token: ''
 			})
+    case UserActionTypes.EDIT_USER_SUCCESS:
+      return Object.assign({}, state, {
+        userInfo: action.userInfo
+      })
 		default:
 			return state
 	}

@@ -59,7 +59,6 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 		}
 		verifyBoardOwner(item.boardId, req, res, function(){
 			var newAttribute = createSetObj(req.body);
-			debugger
 			Item.update({_id:id}, {$set: newAttribute}, function(err, status){
 				if(err){
 					res.status(400).send("an error has occured while deleting your item");

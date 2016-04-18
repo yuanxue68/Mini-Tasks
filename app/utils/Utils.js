@@ -50,14 +50,6 @@ export function closeModal(element){
 	$(element).modal('hide')
 }
 
-export function getUserId(user){
-	if(user.local && user.local.username){
-		return user.local.username;
-	} else {
-		return user.facebook.id;
-	}
-}
-
 export function getInitial(name){
   const splits = name.split(" ")
   var initial = ''

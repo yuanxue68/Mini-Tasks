@@ -15,11 +15,15 @@ router.use(function(req, res, next){
 		req.checkBody("name","empty display name").notEmpty();
 		req.checkBody("local.password","password need to be 6+ characters").notEmpty().len(6);
 	} else if(req.method === "GET"){
-	}
+	} else if(req.method === "PUT"){
+    req.checkBody("local.password", "password need to be 6+ characters").optional().len(6);
+		req.checkBody("name","empty display name").notEmpty();
+		req.checkBody("_id","empty userId").notEmpty();
+  }
 
 	var errors = req.validationErrors();
   if (errors) {
-    res.status(400).send("There have been validation errors: " + util.inspect(errors));
+    return res.status(400).send("There have been validation errors: " + util.inspect(errors));
   }
 
 	next();
@@ -41,6 +45,34 @@ router.post("/",function(req,res){
 	});
 
 });
+
+router.put("/:id", passport.authenticate('bearer', { session: false }), function(req, res){
+  if(req.user._id.toString() != req.params.id){
+    return res.status(400).send("you can not edit this user setting");
+  }
+  if(req.body.password != req.body.password_confirmation){
+    return res.status(400).send("password does not match confirmation");
+  }
+  User.findOne({_id: req.params.id}, function(err, user){
+    if(err){
+      return res.status(400).send("an error has occured while updating user");
+    }
+    setUpdatedAttributes(user, req.body);
+    user.save(function(err, user){
+      if(err){
+        return res.status(400).send("an error has occured while updating user");
+      }
+      res.json(user);
+    }); 
+  });
+});
+
+function setUpdatedAttributes(user, newUserInfo){
+  user.name = newUserInfo.name;
+  if(newUserInfo.password && user.local){
+    user.local.password = newUserInfo.password;
+  }
+};
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req,res){
   try {

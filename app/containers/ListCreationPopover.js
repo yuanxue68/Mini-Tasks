@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {getUserId, getCookie} from './../utils/Utils'
+import {getCookie} from './../utils/Utils'
 import {connect} from 'react-redux'
 import {createItemList, editItemList, deleteItemList} from './../actions/ItemListActions'
 import ListCreationForm from './../components/ListCreationForm'

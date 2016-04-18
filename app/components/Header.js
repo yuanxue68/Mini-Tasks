@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
-import {openModal} from './../utils/Utils'
 import AppBar from 'material-ui/lib/app-bar'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import IconMenu from 'material-ui/lib/menus/icon-menu'
@@ -14,21 +13,19 @@ export default class Header extends Component{
 	}
 	
 	render() {
-		var loggedInButtons
-		if(this.props.authentication.authed){
-			loggedInButtons = (<ul className="nav navbar-nav navbar-right">
-					<li><a onClick={openModal.bind(null, "#userIdModal")}>GetUserId</a></li>
-	        <li><a href="#" onClick={this.props.onUserSignOut}>Logout</a></li>
-	      </ul>)
-		} else {
-			loggedInButtons = null
-		}
     return (
       <AppBar 
         title="Mini Tasks"
-       	showMenuIconButton={false}
         titleStyle={{fontSize:18}}
         style={{height:50, minHeight:50}}
+        iconElementLeft={
+          <IconButton containerElement={<Link to="/" />} linkButton={true} >
+            <FontIcon
+              className="fa fa-home"
+            >
+            </FontIcon>
+          </IconButton>}
+
         iconElementRight={
 					<IconMenu
 						iconButtonElement={
@@ -38,10 +35,9 @@ export default class Header extends Component{
 						anchorOrigin={{horizontal: 'right', vertical: 'top'}}
 					>
 						<MenuItem
-              containerElement={<Link to="/" />} 
-							primaryText="My Boards"
-              to="/"
-							leftIcon= {<FontIcon className="fa fa-home"></FontIcon>}
+              containerElement={<Link to="setting" />} 
+							primaryText="Setting"
+							leftIcon= {<FontIcon className="fa fa-gear"></FontIcon>}
 						/>
 
             <MenuItem 
