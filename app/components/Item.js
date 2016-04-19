@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { ItemTypes } from './../actions/DndActions'
-import { DragSource } from 'react-dnd'
+import { DragSource, DropTarget } from 'react-dnd'
 import {openModal} from './../utils/Utils'
 import ListItem from 'material-ui/lib/lists/list-item'
 import Divider from 'material-ui/lib/divider'
@@ -9,17 +9,51 @@ import Avatar from 'material-ui/lib/avatar'
 import Colors from 'material-ui/lib/styles/colors'
 import Tag from './../components/Tag'
 import {buildDateText, getInitial} from './../utils/Utils'
+import flow from 'lodash/flow'
+
 
 const itemSource = {
   beginDrag(props) {
     return props.item;
   }
-};
+}
 
-function collect(connect, monitor) {
+const itemTarget = {
+  hover(props, monitor){
+    const {findItemIndex, onHoverItem} = props
+    const draggedItem = monitor.getItem()
+    const hoveredItem = props.item
+    if(draggedItem._id !== hoveredItem._id){
+      const draggedIndex = findItemIndex(draggedItem)
+      const hoveredIndex = findItemIndex(hoveredItem)
+      onHoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex)
+    }
+  },
+  drop(props, monitor){
+    /*const {findItemIndex, onHoverItem} = props
+    const draggedItem = monitor.getItem()
+    const hoveredItem = props.item
+    console.log(draggedItem, hoveredItem)
+    if(draggedItem._id !== hoveredItem._id){
+      const draggedIndex = findItemIndex(draggedItem)
+      const hoveredIndex = findItemIndex(hoveredItem)
+      //onHoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex)
+    }*/
+  }
+}
+
+function dragCollect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
+  }
+}
+
+function dropCollect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    draggedItem: monitor.getItem()
   }
 }
 
@@ -29,7 +63,7 @@ class Item extends Component{
   }
 
 	render(){
-		const { item, connectDragSource, onOpenItemInfoModal, isDragging } = this.props;
+		const { item,connectDropTarget, connectDragSource, onOpenItemInfoModal, draggedItem } = this.props;
 		const tags = item.labels.map((label, index)=>{
       return <Tag color={label} key={index}/>      
     })
@@ -41,24 +75,28 @@ class Item extends Component{
       </div>) : null
     {/* mark it red if the item is over due */}
     const itemColor = item.dueDate && new Date(item.dueDate) < new Date() ? Colors.red500 : Colors.blue500
-    return connectDragSource(
+    return connectDropTarget(connectDragSource(
       <div>
         <div className="tag-container">
           {tags}
         </div>
 	      <ListItem 
           onTouchTap={onOpenItemInfoModal.bind(this, item)}
+          disableTouchRipple = {true}
           primaryText={item.name} 
           leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={itemColor} />}
           rightAvatar={assigner}
-          style={{backgroundColor: isDragging ? '#e9e9e9' : 'white'}}
+          style={{opacity: draggedItem && draggedItem._id === item._id ? '0' : '1'}}
         />
         {dueDateTag}
         <Divider style={{height:2}}/>
       </div>
-		)
+		))
 	}
 
 }
 
-export default DragSource(ItemTypes.ITEM, itemSource, collect)(Item);
+export default flow(
+    DragSource(ItemTypes.ITEM, itemSource, dragCollect),
+    DropTarget(ItemTypes.ITEM, itemTarget, dropCollect)
+)(Item)

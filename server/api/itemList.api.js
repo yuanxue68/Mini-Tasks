@@ -65,6 +65,7 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 			var query = constructItemQuery(itemLists);
 			Item.aggregate([
 				{$match: query},
+        {$sort: {pos:1}},
 				{$group : { _id : "$itemListId", items: { $push: "$$ROOT" } } }
 				])
         .exec(function(err, items){

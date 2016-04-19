@@ -13,15 +13,17 @@ export default class ItemList extends Component{
   }
 
 	render(){
-		const {filterItems, itemList, boardId, onDeleteItem,} = this.props
+		const {findItemIndex, onHoverItem, filterItems, itemList, boardId, onDeleteItem,} = this.props
     const {onOpenItemInfoModal, index, isOver, onArchiveItemList} = this.props
 		var dragNotice = isOver ? <ListItem primaryText="..." style={{backgroundColor:'#e9e9e9'}}/> : null
     var items = itemList.items.filter(filterItems).map((item, index) => {
       return <Item 
               key={item._id} 
               item={item} 
+              findItemIndex={findItemIndex}
               onDeleteItem={onDeleteItem} 
               onOpenItemInfoModal={onOpenItemInfoModal}
+              onHoverItem={onHoverItem}
               />
 		})
 		var inputId = "itemName"+index
@@ -31,7 +33,6 @@ export default class ItemList extends Component{
         <ListCreationPopover edit={true} itemList={itemList} index={String(index)}/>
         <List style={{border: 'solid 1px #e9e9e9'}}>
           {items} 
-          {dragNotice}
         </List>
         <FlatButton label="Archive" onTouchTap={onArchiveItemList} icon={<FontIcon className="fa fa-archive"/>}/>
         <ItemCreationPopover index={String(index)} itemListId={itemList._id} boardId={boardId}/>

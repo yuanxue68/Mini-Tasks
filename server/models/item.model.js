@@ -8,6 +8,7 @@ var Item = new Schema({
 	labels: {type:Array, default:[]},
   description: {type:String, default:''},
 	dueDate: {type:String },
+  pos: {type: Number, required: true},
 	colorLabel: {type: String, default:'default'},
   assigner: {type: Schema.Types.ObjectId, ref: 'User'}
 });

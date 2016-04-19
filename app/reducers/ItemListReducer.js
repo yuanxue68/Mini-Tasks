@@ -105,6 +105,32 @@ export default function itemLists (state = [], action){
 		 	}
 		 })
 		 return newState
+    case DndActionTypes.HOVER_ITEM:
+      var newState = []
+      const {draggedItem, draggedIndex, hoveredItem, hoveredIndex} = action
+      state.forEach((itemList)=>{
+        var newList = []
+        itemList.items.forEach((item)=>{
+          if(item._id !== draggedItem._id){
+            newList.push(item)
+          }
+        })
+        itemList.items = newList
+        newState.push(itemList)
+      })
+  
+      newState.forEach((itemList, index)=>{
+        if(itemList._id === hoveredItem.itemListId){
+          draggedItem.itemListId = itemList._id
+          newState[index].items = [
+            ...itemList.items.slice(0, hoveredIndex),
+            draggedItem,
+            ...itemList.items.slice(hoveredIndex)
+          ] 
+        }
+      })
+      
+      return newState 
 		default:
 			return state
 	}

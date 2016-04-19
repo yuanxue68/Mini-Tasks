@@ -38,14 +38,28 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 	req.userId = req.user._id.toString();
 	var boardId = req.body.boardId;
 	verifyBoardOwner(boardId, req, res, function(){
-		var newItem = new Item(req.body);
-		newItem.save(function(err, item){
-			if(err){
-				console.log(err);
-				return res.status(400).send("an error has occured while creating items");
-			} 
-				return res.json(item);
-		})
+    Item.find({itemListId:req.body.itemListId}).sort({pos:-1}).limit(1).exec(function(err, items){
+      if(err){
+        return res.status(400).send("an error has occured while setting position")
+      }
+      var position;
+      console.log(items);
+      if(items.length === 0){
+        position = 65535;
+      } else {
+        position = (Math.ceil(items[0].pos/65535)+1) * 65535;
+      }
+      var newItem = new Item(req.body);
+      newItem.pos = position;
+      newItem.save(function(err, item){
+        if(err){
+          console.log(err);
+          return res.status(400).send("an error has occured while creating items");
+        } 
+          return res.json(item);
+      });
+
+    });
 	});
 });
 
@@ -78,6 +92,7 @@ function createSetObj(body){
 	newAttribute.dueDate = body.dueDate;
 	newAttribute.labels = body.labels;
   newAttribute.assigner = body.assigner;
+  newAttribute.pos = body.pos;
 	return newAttribute;
 }
 

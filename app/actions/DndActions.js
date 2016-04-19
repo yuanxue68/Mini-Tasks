@@ -4,6 +4,17 @@ export const ItemTypes = {
   ITEM: 'item'
 };
 
+export const HOVER_ITEM = 'HOVER_ITEM'
+
+export function hoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex){
+  return {
+    type: HOVER_ITEM,
+    draggedItem,
+    draggedIndex,
+    hoveredItem,
+    hoveredIndex
+  }
+}
 
 export const MOVE_ITEM_SUCCESS = 'MOVE_ITEM_SUCCESS'
 export const MOVE_ITEM_FAILURE = 'MOVE_ITEM_FAILURE'
