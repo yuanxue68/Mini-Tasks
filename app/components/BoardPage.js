@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {openModal} from './../utils/Utils'
 import ItemLists from './ItemLists'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'

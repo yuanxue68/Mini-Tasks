@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import ItemList from './../components/ItemList';
-import { ItemTypes } from './../actions/DndActions';
-import { DropTarget, DragSource } from 'react-dnd';
-import { getCookie } from './../utils/Utils'
-import { populateItemToModal } from './../actions/ItemActions'
-import { openModal } from './../actions/ModalActions'
+import {ItemTypes} from './../actions/DndActions';
+import {DropTarget, DragSource} from 'react-dnd';
+import {getCookie} from './../utils/Utils'
+import {populateItemToModal} from './../actions/ItemActions'
+import {openModal} from './../actions/ModalActions'
 import {archiveItemList} from './../actions/ItemListActions'
 import flow from 'lodash/flow'
 
@@ -151,7 +151,6 @@ class ItemListContainer extends Component {
 
 function mapStateToProps (state) {
   return {
-    router: state.router,
     filter: state.filter
   }
 }

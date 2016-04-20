@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
-import {createItem, deleteItem, editItem, populateItemToModal} from './../actions/ItemActions'
-import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
-import { moveItemList, moveItem } from './../actions/DndActions'
+import {editItemList, getItemLists} from './../actions/ItemListActions'
+import {editItem, populateItemToModal} from './../actions/ItemActions'
+import {getBoard} from './../actions/BoardActions'
+import {moveItemList, moveItem} from './../actions/DndActions'
 import BoardPage from './../components/BoardPage'
-import ItemModal from './../components/ItemModal'
 import {getCookie} from './../utils/Utils'
 import {getMembers} from './../actions/MemberActions'
 
@@ -94,7 +93,6 @@ export default class Board extends Component {
 			<div>
 				<BoardPage {...this.props} 
           onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
-				  onCreateItem={(item)=>dispatch(createItem(item, token))}
 			    onDropItem={this.onDropItem} 
           onDropItemList={this.onDropItemList}
           findItemIndex={this.findItemIndex}
