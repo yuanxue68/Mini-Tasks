@@ -43,7 +43,6 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
         return res.status(400).send("an error has occured while setting position")
       }
       var position;
-      console.log(items);
       if(items.length === 0){
         position = 65535;
       } else {

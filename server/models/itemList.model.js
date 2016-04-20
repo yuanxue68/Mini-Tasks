@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var ItemList = new Schema({
 	name: {type: String, required: true},
 	boardId: {type: String, required: true},
-  archived: {type: Boolean, default: false}
+  archived: {type: Boolean, default: false},
+  pos: {type: Number, required: true}
 });
 
 ItemList.pre('remove', function(next){

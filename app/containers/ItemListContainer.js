@@ -1,24 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import ItemList from './../components/ItemList';
-import { moveItem, ItemTypes } from './../actions/DndActions';
-import { DropTarget } from 'react-dnd';
+import { ItemTypes } from './../actions/DndActions';
+import { DropTarget, DragSource } from 'react-dnd';
 import { getCookie } from './../utils/Utils'
 import { populateItemToModal } from './../actions/ItemActions'
 import { openModal } from './../actions/ModalActions'
 import {archiveItemList} from './../actions/ItemListActions'
+import flow from 'lodash/flow'
 
-const itemListTarget = {
+const itemListSource = {
+  beginDrag(props) {
+    return props.itemList
+  }
+}
+
+const dropTarget = {
   drop(props, monitor) {
     const type = monitor.getItemType()
-    const droppedItem = monitor.getItem()
-    const {onDropItem, itemList, findItemIndex, findPosition} = props
-    if(type === 'item'){
+    if(type==="item"){
+      const droppedItem = monitor.getItem()
+      const {onDropItem, itemList, findItemIndex, findPosition} = props
       const index = findItemIndex(droppedItem)
-      const position = findPosition(itemList.items, index)
+      const position = findPosition(index, itemList.items)
       droppedItem.itemListId = itemList._id
       droppedItem.pos = position
       onDropItem(droppedItem)
+    } else if(type==="itemList"){
+      const droppedItemList = monitor.getItem()
+      const {onDropItemList, findItemListIndex, findPosition} = props
+      const index = findItemListIndex(droppedItemList)
+      const position = findPosition(index)
+      droppedItemList.pos = position
+      onDropItemList(droppedItemList)
     }
   },
   hover(props, monitor) {
@@ -26,23 +40,37 @@ const itemListTarget = {
     const {itemList} = props
     //when an list is empty, it has no item component in it
     //onhover of item component will not trigger so we handle it with list's hover
-    if(type === 'item' && itemList.items.length === 0){
+    if(type==="item" &&itemList.items.length === 0){
       const {findItemIndex, onHoverItem} = props
       const draggedItem = monitor.getItem()
       const draggedIndex = findItemIndex(draggedItem)
       // reducer depends on itemListId to determine which list to push the drag item in
       // so we create an object with itemListId in it
       onHoverItem(draggedItem, draggedIndex, {itemListId: itemList._id}, 0)
-    } else {
+    } else if(type==='itemList'){
+      const {findItemListIndex, onMoveItemList} = props 
+      const draggedItemList = monitor.getItem()
+      const hoveredItemList = itemList
+      if(draggedItemList._id !== hoveredItemList._id){
+        const hoveredIndex = findItemListIndex(hoveredItemList)
+        onMoveItemList(draggedItemList, hoveredIndex)
+      }
     }
   }
 
 };
 
-function collect(connect, monitor) {
+function dropCollect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver()
+  }
+}
+
+function dragCollect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
   }
 }
 
@@ -94,8 +122,8 @@ class ItemListContainer extends Component {
   }
 
   render() {
-    const { connectDropTarget, isOver, findItemIndex, onHoverItem } = this.props;
-    return connectDropTarget(
+    const { connectDropTarget, connectDragSource, isOver, findItemIndex, onHoverItem } = this.props;
+    return connectDropTarget(connectDragSource(
       <div className="item-list">
         <ItemList 
           {...this.props} 
@@ -107,7 +135,7 @@ class ItemListContainer extends Component {
           onHoverItem={onHoverItem}
         />
       </div>
-    )
+    ))
   }
 }
 
@@ -118,5 +146,10 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(DropTarget(ItemTypes.ITEM, itemListTarget, collect)(ItemListContainer))
+export default connect(mapStateToProps)(
+  flow(
+    DragSource(ItemTypes.ITEMLIST, itemListSource, dragCollect),
+    DropTarget([ItemTypes.ITEM, ItemTypes.ITEMLIST], dropTarget, dropCollect),
+  )(ItemListContainer)
+)
 

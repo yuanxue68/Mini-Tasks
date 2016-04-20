@@ -35,13 +35,27 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 	}
 
 	verifyBoardOwner(boardId, req, res, function(){
-		var newItemList = new ItemList(req.body)
-		newItemList.save(function(err, itemList){
-			if(err){
-				return res.status(400).send("unable to save the list");
-			} 
-			res.json(itemList);
-		});
+    ItemList.find({boardId: req.body.boardId}).sort({pos:-1}).limit(1).exec(function(err, itemLists){
+      if(err){
+        return res.status(400).send("an error has occured while setting position")
+      }
+      
+      var position;
+      if(itemLists.length === 0){
+        position = 65535;
+      } else {
+        position = (Math.ceil(itemLists[0].pos/65535)+1) * 65535;
+      }
+
+		  var newItemList = new ItemList(req.body);
+      newItemList.pos = position;
+      newItemList.save(function(err, itemList){
+        if(err){
+          return res.status(400).send("unable to save the list");
+        } 
+        res.json(itemList);
+      });
+    });
 	});
 });
 
@@ -54,7 +68,7 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 	
   verifyBoardOwner(boardId, req, res, function(){
 		ItemList.find({boardId: boardId, archived: archived })
-    .sort({_id:1})
+    .sort({pos:1})
     .skip(skip)
     .limit(limit)
     .exec(function(err, itemLists){
@@ -95,6 +109,7 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 	var id = req.params.id;
 	newValues.name = req.body.name;
   newValues.archived = req.body.archived;
+  newValues.pos = req.body.pos;
 
   verifyBoardOwner(boardId, req, res, function(){
 		ItemList.update({_id: id}, {$set: newValues}, function(err, status){
