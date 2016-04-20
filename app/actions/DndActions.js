@@ -5,24 +5,23 @@ export const ItemTypes = {
   ITEMLIST: 'itemList'
 }
 
-export const HOVER_ITEM = 'HOVER_ITEM'
+export const MOVE_ITEM = 'MOVE_ITEM'
 
-export function hoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex){
+export function moveItem(item, newItemListId, newIndex){
   return {
-    type: HOVER_ITEM,
-    draggedItem,
-    draggedIndex,
-    hoveredItem,
-    hoveredIndex
+    type: MOVE_ITEM,
+    item,
+    newItemListId,
+    newIndex
   }
 }
 
 export const MOVE_ITEMLIST = 'MOVE_ITEMLIST'
 
-export function moveItemList(draggedItemList, hoveredIndex){
+export function moveItemList(itemList, newIndex){
   return {
     type: MOVE_ITEMLIST,
-    draggedItemList,
-    hoveredIndex
+    itemList,
+    newIndex
   }
 }

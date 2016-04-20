@@ -87,22 +87,22 @@ export default function itemLists (state = [], action){
     case DndActionTypes.MOVE_ITEMLIST:
         var newState = []
         state.forEach((itemList)=>{
-          if(itemList._id !== action.draggedItemList._id){
+          if(itemList._id !== action.itemList._id){
             newState.push(itemList)
           }
         })
         return [
-          ...newState.slice(0, action.hoveredIndex),
-          action.draggedItemList,
-          ...newState.slice(action.hoveredIndex)
+          ...newState.slice(0, action.newIndex),
+          action.itemList,
+          ...newState.slice(action.newIndex)
         ]
-    case DndActionTypes.HOVER_ITEM:
+    case DndActionTypes.MOVE_ITEM:
       var newState = []
-      const {draggedItem, draggedIndex, hoveredItem, hoveredIndex} = action
+      const {item: moveItem, newItemListId, newIndex} = action
       state.forEach((itemList)=>{
         var newList = []
         itemList.items.forEach((item)=>{
-          if(item._id !== draggedItem._id){
+          if(item._id !== moveItem._id){
             newList.push(item)
           }
         })
@@ -111,12 +111,12 @@ export default function itemLists (state = [], action){
       })
   
       newState.forEach((itemList, index)=>{
-        if(itemList._id === hoveredItem.itemListId){
-          draggedItem.itemListId = itemList._id
+        if(itemList._id === newItemListId){
+          moveItem.itemListId = itemList._id
           newState[index].items = [
-            ...itemList.items.slice(0, hoveredIndex),
-            draggedItem,
-            ...itemList.items.slice(hoveredIndex)
+            ...itemList.items.slice(0, newIndex),
+            moveItem,
+            ...itemList.items.slice(newIndex)
           ] 
         }
       })

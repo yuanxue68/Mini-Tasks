@@ -7,7 +7,7 @@ export default class ItemLists extends Component{
 	}
 
 	render(){
-		const {findItemIndex, findItemListIndex, findPosition, onMoveItemList, onHoverItem, filter, itemLists} = this.props
+		const {findItemIndex, findItemListIndex, findPosition, onMoveItemList, onMoveItem, filter, itemLists} = this.props
     const {boardInfo, onOpenItemInfoModal, onDropItem, onDropItemList, onPopulateItemToModal} = this.props
 		if(itemLists){
 			var listComponent = []
@@ -26,7 +26,7 @@ export default class ItemLists extends Component{
               findItemIndex={findItemIndex}
               findItemListIndex={findItemListIndex}
               findPosition={findPosition}
-              onHoverItem={onHoverItem}
+              onMoveItem={onMoveItem}
               onMoveItemList={onMoveItemList}
             />
 				)

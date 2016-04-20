@@ -14,38 +14,38 @@ import flow from 'lodash/flow'
 
 const itemSource = {
   beginDrag(props) {
-    return props.item;
+    return {
+      item: props.item,
+      originalItemListId: props.item.itemListId,
+      originalIndex: props.findItemIndex(props.item)
+    }
+  },
+  endDrag(props, monitor){
+    const {item: droppedItem, originalIndex, originalItemListId} = monitor.getItem()
+    if(!monitor.didDrop()){
+      props.onMoveItem(droppedItem, originalItemListId, originalIndex)
+    }
   }
 }
 
 const itemTarget = {
   hover(props, monitor){
-    const {findItemIndex, onHoverItem} = props
-    const draggedItem = monitor.getItem()
+    const {findItemIndex, onMoveItem} = props
+    const draggedItem = monitor.getItem().item
     const hoveredItem = props.item
     if(draggedItem._id !== hoveredItem._id){
       const draggedIndex = findItemIndex(draggedItem)
       const hoveredIndex = findItemIndex(hoveredItem)
-      onHoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex)
+      onMoveItem(draggedItem, hoveredItem.itemListId, hoveredIndex)
     }
-  },
-  drop(props, monitor){
-    /*const {findItemIndex, onHoverItem} = props
-    const draggedItem = monitor.getItem()
-    const hoveredItem = props.item
-    console.log(draggedItem, hoveredItem)
-    if(draggedItem._id !== hoveredItem._id){
-      const draggedIndex = findItemIndex(draggedItem)
-      const hoveredIndex = findItemIndex(hoveredItem)
-      //onHoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex)
-    }*/
   }
 }
 
 function dragCollect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
+    dragObj: monitor.getItem()
   }
 }
 
@@ -62,7 +62,7 @@ class Item extends Component{
   }
 
 	render(){
-		const { item,connectDropTarget, connectDragSource, onOpenItemInfoModal, draggedItem } = this.props;
+		const { item,connectDropTarget, connectDragSource, onOpenItemInfoModal, dragObj } = this.props;
 		const tags = item.labels.map((label, index)=>{
       return <Tag color={label} key={index}/>      
     })
@@ -85,7 +85,7 @@ class Item extends Component{
           primaryText={item.name} 
           leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={itemColor} />}
           rightAvatar={assigner}
-          style={{opacity: draggedItem && draggedItem._id === item._id ? '0' : '1'}}
+          style={{backgroundColor: dragObj && dragObj.item && dragObj.item._id === item._id ? '#A9A9A9':'' }}
         />
         {dueDateTag}
         <Divider style={{height:2}}/>

@@ -4,7 +4,7 @@ import {Link} from 'react-router'
 import {createItemList, deleteItemList, editItemList, getItemLists} from './../actions/ItemListActions'
 import {createItem, deleteItem, editItem, populateItemToModal} from './../actions/ItemActions'
 import {getBoard, changeBoardInput, editboard} from './../actions/BoardActions'
-import { moveItemList, hoverItem } from './../actions/DndActions'
+import { moveItemList, moveItem } from './../actions/DndActions'
 import BoardPage from './../components/BoardPage'
 import ItemModal from './../components/ItemModal'
 import {getCookie} from './../utils/Utils'
@@ -13,7 +13,7 @@ import {getMembers} from './../actions/MemberActions'
 export default class Board extends Component {
   constructor(props){
     super(props)
-    this.onHoverItem = this.onHoverItem.bind(this)
+    this.onMoveItem = this.onMoveItem.bind(this)
     this.onMoveItemList = this.onMoveItemList.bind(this)
     this.findItemIndex = this.findItemIndex.bind(this)
     this.findItemListIndex = this.findItemListIndex.bind(this)
@@ -29,9 +29,9 @@ export default class Board extends Component {
     dispatch(getMembers(router.params.boardId, token))
 	}
 
-  onHoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex){
+  onMoveItem(draggedItem, newItemListId, newIndex){
     const {dispatch} = this.props
-    dispatch(hoverItem(draggedItem, draggedIndex, hoveredItem, hoveredIndex))
+    dispatch(moveItem(draggedItem, newItemListId, newIndex))
   }
 
   onMoveItemList(draggedItemList, hoveredIndex){
@@ -99,7 +99,7 @@ export default class Board extends Component {
           onDropItemList={this.onDropItemList}
           findItemIndex={this.findItemIndex}
           findItemListIndex={this.findItemListIndex}
-          onHoverItem={this.onHoverItem}
+          onMoveItem={this.onMoveItem}
           onMoveItemList={this.onMoveItemList}
           findPosition={this.findPosition}
         />
