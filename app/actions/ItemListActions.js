@@ -2,6 +2,9 @@ import {getHost} from './../utils/Utils'
 
 export const GET_ITEMLISTS_SUCCESS = 'GET_ITEMLISTS_SUCCESS'
 export const GET_ITEMLISTS_FAILURE = 'GET_ITEMLISTS_FAILURE'
+export const GET_ITEMLISTS_REQUEST = 'GET_ITEMLISTS_REQUEST'
+export const GET_ARCHIVED_ITEMLISTS_REQUEST = 'GET_ARCHIVED_ITEMLISTS_REQUEST'
+export const GET_ARCHIVED_ITEMLISTS_FAILURE = 'GET_ARCHIVED_ITEMLISTS_FAILURE'
 export const GET_ARCHIVED_ITEMLISTS_SUCCESS = 'GET_ARCHIVED_ITEMLISTS_SUCCESS'
 export const GET_ITEMLISTS_ERROR = 'An error has occured while getting lists of items'
 function getItemListsSuccess(itemLists){
@@ -9,6 +12,18 @@ function getItemListsSuccess(itemLists){
 		type: GET_ITEMLISTS_SUCCESS,
 		itemLists
 	}
+}
+
+function getItemListsRequest(){
+  return {
+    type: GET_ITEMLISTS_REQUEST
+  }
+}
+
+function getArchivedItemListsRequest(){
+  return {
+    type: GET_ARCHIVED_ITEMLISTS_REQUEST
+  }
 }
 
 function getArchivedItemListsSuccess(itemLists){
@@ -25,11 +40,18 @@ function getItemListsFailure(error){
 	}
 }
 
+function getArchivedItemListsFailure(error){
+	return {
+		type: GET_ARCHIVED_ITEMLISTS_FAILURE,
+		error
+	}
+}
+
 export function getItemLists(boardId, token, archived=false, page=0){
   const url = archived ? `${getHost()}/api/boards/${boardId}/itemLists?archived=${archived}&page=${page}` 
               :`${getHost()}/api/boards/${boardId}/itemLists` 
-
 	return function(dispatch){
+    archived ? dispatch(getArchivedItemListsRequest()) : dispatch(getItemListsRequest())
 		return fetch (url, {
 			method: 'GET',
 			headers: {
@@ -54,7 +76,7 @@ export function getItemLists(boardId, token, archived=false, page=0){
 			})
 			archived ? dispatch(getArchivedItemListsSuccess(itemLists)) : dispatch(getItemListsSuccess(itemLists))
 		}).catch((err)=>{
-			dispatch(getItemListsFailure(err.message))
+			archive ? dispatch(getArchivedItemListsFailure(err.message)) : dispatch(getItemListsFailure(err.message))
 		})
 	}
 }

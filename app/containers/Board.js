@@ -8,6 +8,8 @@ import {moveItemList, moveItem} from './../actions/DndActions'
 import BoardPage from './../components/BoardPage'
 import {getCookie} from './../utils/Utils'
 import {getMembers} from './../actions/MemberActions'
+import {startDrag, stopDrag} from './../actions/RootActions'
+import CircularProgress from 'material-ui/lib/circular-progress'
 
 export default class Board extends Component {
   constructor(props){
@@ -87,11 +89,11 @@ export default class Board extends Component {
   }
 
 	render (){
-		const {dispatch} = this.props
+		const {dispatch, loadingStatus} = this.props
     const token = getCookie('yulloToken')
-		return (
-			<div>
-				<BoardPage {...this.props} 
+    var content
+    if(!loadingStatus.loadingItemlists){
+      content = <BoardPage {...this.props} 
           onPopulateItemToModal={(itemInfo)=>dispatch(populateItemToModal(itemInfo))}
 			    onDropItem={this.onDropItem} 
           onDropItemList={this.onDropItemList}
@@ -101,7 +103,16 @@ export default class Board extends Component {
           onMoveItemList={this.onMoveItemList}
           findPosition={this.findPosition}
         />
+
+    } else {
+      content = <div className="text-center">
+        <CircularProgress size={4}/>
       </div>
+    }
+		return (
+			<div>
+        {content}
+			</div>
 		)
 	}
 }
@@ -112,7 +123,8 @@ function mapStateToProps (state) {
 		itemLists: state.itemLists,
 		itemInfo: state.itemInfo,
 		boardInfo: state.boardInfo,
-		router: state.router
+		router: state.router,
+    loadingStatus: state.loadingStatus
 	}
 }
 

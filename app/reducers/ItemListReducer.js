@@ -120,7 +120,6 @@ export default function itemLists (state = [], action){
           ] 
         }
       })
-      
       return newState 
 		default:
 			return state

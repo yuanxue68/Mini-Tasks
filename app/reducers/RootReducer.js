@@ -14,6 +14,7 @@ import filter from './../reducers/FilterReducer'
 import userSearchResult from './../reducers/UserSearchReducer'
 import {reducer as formReducer} from 'redux-form'
 import archivedItemLists from './../reducers/ArchivedItemListReducer'
+import loadingStatus from './../reducers/LoadingStatus'
 import { getCookie } from './../utils/Utils'
 
 const rootReducer = combineReducers({
@@ -32,10 +33,10 @@ const rootReducer = combineReducers({
   popovers,
   aside,
   userSearchResult,
-  filter
+  filter,
+  loadingStatus
 })
 export default rootReducer
-
 function errorMessage(state = null, action) {
 	const {type, error} = action
 	if (type === ActionTypes.RESET_ERROR_MESSAGE) {

@@ -7,11 +7,6 @@ import FontIcon from 'material-ui/lib/font-icon'
 
 export default class Home extends Component {
 	
-	componentDidMount(){
-		const {dispatch, onGetBoards, authentication} = this.props
-		onGetBoards({owner:authentication.userInfo._id})
-	}
-
 	render(){
 		const styles = {
       root: {

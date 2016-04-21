@@ -148,7 +148,7 @@ function editItemSuccess(itemInfo){
 
 function editItemFailure(error){
 	return {
-		type: EDIT_ITEMLIST_FAILURE,
+		type: EDIT_ITEM_FAILURE,
 		error
 	}
 }

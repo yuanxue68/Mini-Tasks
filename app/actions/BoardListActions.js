@@ -3,6 +3,7 @@ import {pushState} from 'redux-router'
 
 export const GET_BOARDS_SUCCESS = 'GET_BOARDS_SUCCESS'
 export const GET_BOARDS_FAILURE = 'GET_BOARDS_FAILURE'
+export const GET_BOARDS_REQUEST = 'GET_BOARDS_REQUEST'
 export const GET_BOARDS_ERROR = "Failed get board list"
 
 function getBoardsSuccess(boardList){
@@ -19,8 +20,15 @@ function getBoardsFailure(error){
 	}
 }
 
+function getBoardsRequest(){
+  return {
+    type: GET_BOARDS_REQUEST
+  }
+}
+
 export function getBoards(owner, token){
 	return function(dispatch){
+    dispatch(getBoardsRequest())
 		return fetch(urlBuilder(`${getHost()}/api/boards`, owner), {
 			method: 'GET',
 			headers: {

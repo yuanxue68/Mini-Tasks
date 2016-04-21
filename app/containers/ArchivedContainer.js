@@ -4,6 +4,7 @@ import {pushState} from 'redux-router'
 import {getItemLists, editItemList, restoreItemList} from './../actions/ItemListActions'
 import {getCookie} from './../utils/Utils'
 import Archived from './../components/Archived'
+import CircularProgress from 'material-ui/lib/circular-progress'
 
 class ArchivedContainer extends Component {
   constructor(props){
@@ -58,12 +59,24 @@ class ArchivedContainer extends Component {
     dispatch(getItemLists(boardInfo._id, token, true, 0))
   }
   render(){
-    return(
-      <Archived {...this.props}
+    const {loadingStatus} = this.props
+    var content 
+    if(!loadingStatus.loadingArchived){
+      content = <Archived {...this.props}
         nextPage={this.nextPage}
         prevPage={this.prevPage}
         onRestoreList={this.onRestoreList}
       />
+    } else {
+      content = <div className="text-center">
+        <CircularProgress/>
+      </div>
+    }
+
+    return(
+      <div>
+        {content}
+      </div>
     )
   }
 }
@@ -72,7 +85,8 @@ function mapStateToProps(state){
   return {
     boardInfo: state.boardInfo,
     router: state.router,
-    archivedItemLists: state.archivedItemLists
+    archivedItemLists: state.archivedItemLists,
+    loadingStatus: state.loadingStatus
   }
 }
 

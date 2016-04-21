@@ -12,8 +12,10 @@ import FontIcon from 'material-ui/lib/font-icon'
 import ItemInfoForm from './../components/ItemInfoForm'
 import LabelPopover from './../containers/LabelPopover'
 import MembersPopover from './../containers/MembersPopover'
+import CommentsContainer from './../containers/CommentsContainer'
 import Labels from './../components/labels'
 import DatePicker from 'material-ui/lib/date-picker/date-picker'
+
 
 const sideButtonStyle = {
   margin:10,
@@ -137,7 +139,7 @@ export default class ItemInfoModal extends Component{
       <div>
 	
         <Dialog
-          title="Item Details"
+          title={itemInfo.name || "Item Details"}
           actions={actions}
           contentStyle={{width:'85%', maxWidth:'none'}}
           modal={false}
@@ -146,35 +148,40 @@ export default class ItemInfoModal extends Component{
           autoDetectWindowHeight={false}
           autoScrollBodyContent={true}
         >
-          <div className="col-md-9">
-            {assigner}
-            <br/>
-            {dueDateTag}
-            <ItemInfoForm {...initial}/>
-            <DatePicker onChange={this.onAddDueDate} hintText="Change Due Date"/>
-            <Labels 
-              labels={itemInfo.labels}
-              onRemoveLabel={this.onRemoveLabel}
-            />
+          <div className="row">
+            <div className="col-md-9">
+              {assigner}
+              <br/>
+              {dueDateTag}
+              <ItemInfoForm {...initial}/>
+              <DatePicker onChange={this.onAddDueDate} hintText="Change Due Date"/>
+              <Labels 
+                labels={itemInfo.labels}
+                onRemoveLabel={this.onRemoveLabel}
+              />
+            </div>
+            <div className="col-md-3">
+              <RaisedButton style={sideButtonStyle} 
+                label="Assign" 
+                onTouchTap={this.openMembersPopover}
+              />
+              <MembersPopover/>
+              <RaisedButton style={sideButtonStyle} 
+                onTouchTap={this.openLabelPopover} 
+                label="Label"
+              />
+              <LabelPopover
+                onAddLabel={this.onAddLabel}
+              />
+              <RaisedButton 
+                onTouchTap={this.onDeleteItem}
+                style={sideButtonStyle}
+                label="Delete"
+              />
+            </div>
           </div>
-          <div className="col-md-3">
-            <RaisedButton style={sideButtonStyle} 
-              label="Assign" 
-              onTouchTap={this.openMembersPopover}
-            />
-            <MembersPopover/>
-            <RaisedButton style={sideButtonStyle} 
-              onTouchTap={this.openLabelPopover} 
-              label="Label"
-            />
-            <LabelPopover
-              onAddLabel={this.onAddLabel}
-            />
-            <RaisedButton 
-              onTouchTap={this.onDeleteItem}
-              style={sideButtonStyle}
-              label="Delete"
-            />
+          <div className="row">
+            <CommentsContainer/>
           </div>
         </Dialog>
       </div>

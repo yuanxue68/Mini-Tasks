@@ -9,6 +9,7 @@ import Colors from 'material-ui/lib/styles/colors'
 import Tag from './../components/Tag'
 import {buildDateText, getInitial} from './../utils/Utils'
 import flow from 'lodash/flow'
+import isEqual from 'lodash/isEqual'
 
 
 const itemSource = {
@@ -58,6 +59,10 @@ function dropCollect(connect, monitor) {
 class Item extends Component{
   constructor(props){
     super(props)
+  }
+
+  shouldComponentUpdate(nextProps){
+    return !isEqual(this.props.item, nextProps.item) || !isEqual(this.props.dragObj, nextProps.dragObj)
   }
 
 	render(){

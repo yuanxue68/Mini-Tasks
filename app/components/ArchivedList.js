@@ -10,6 +10,7 @@ export default class ArchivedList extends Component{
     const {archivedItemLists, onRestoreList} = this.props
     const list = archivedItemLists.map((list)=>{
       return <ListItem
+              key={list._id}
               primaryText={list.name} 
               onTouchTap={onRestoreList.bind(null, list)}
               leftAvatar={
