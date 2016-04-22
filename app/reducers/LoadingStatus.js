@@ -1,5 +1,6 @@
 import * as ItemListActionTypes from './../actions/ItemListActions'
 import * as BoardListActionTypes from './../actions/BoardListActions'
+import * as CommentActionTypes from './../actions/CommentActions'
 
 export default function loadingStatus (state = {
   loadingBoards: false,
@@ -17,7 +18,7 @@ export default function loadingStatus (state = {
       return Object.assign({}, state, {
         loadingItemlists: true
       })
-    case "comment":
+    case CommentActionTypes.GET_COMMENTS_REQUEST:
       return Object.assign({}, state, {
         loadingComments: true
       })
@@ -35,7 +36,8 @@ export default function loadingStatus (state = {
       return Object.assign({}, state, {
         loadingItemlists: false
       })
-    case 'comment':
+    case CommentActionTypes.GET_COMMENTS_SUCCESS:
+    case CommentActionTypes.GET_COMMENTS_FAILURE:
       return Object.assign({}, state, {
         loadingComments: false
       })

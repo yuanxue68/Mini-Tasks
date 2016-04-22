@@ -181,7 +181,7 @@ export default class ItemInfoModal extends Component{
             </div>
           </div>
           <div className="row">
-            <CommentsContainer/>
+            <CommentsContainer item={itemInfo} />
           </div>
         </Dialog>
       </div>

@@ -1,9 +1,11 @@
 var express = require('express');
-var router = express.Router(); //so that it can get params from parent router
+var router = express.Router(); 
 var passport = require('passport');
 var util = require('util');
 var Item = require('./../models/item.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
+
+router.use('/:itemId/comments', require('./comment.api'));
 
 router.use(function(req, res, next){
 	if(req.method === "POST"){

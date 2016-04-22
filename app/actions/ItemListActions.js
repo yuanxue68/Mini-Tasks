@@ -76,7 +76,7 @@ export function getItemLists(boardId, token, archived=false, page=0){
 			})
 			archived ? dispatch(getArchivedItemListsSuccess(itemLists)) : dispatch(getItemListsSuccess(itemLists))
 		}).catch((err)=>{
-			archive ? dispatch(getArchivedItemListsFailure(err.message)) : dispatch(getItemListsFailure(err.message))
+			archived ? dispatch(getArchivedItemListsFailure(err.message)) : dispatch(getItemListsFailure(err.message))
 		})
 	}
 }

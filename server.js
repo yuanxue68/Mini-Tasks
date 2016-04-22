@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 var validator = require('express-validator');
 var passport = require('passport');
 
-console.log(process.env);
 //required configs
 //var configDB = require('./server/config/database');
 require('./server/config/passport');
@@ -29,7 +28,6 @@ app.use('/api/boards', require('./server/api/board.api'));
 app.use('/api/items', require('./server/api/item.api'));
 
 process.on('uncaughtException', function(err) {
-    console.log('!!!!!!!!!!!!!!! uncaughtException');
     console.log(err);
 });
 

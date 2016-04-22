@@ -7,6 +7,7 @@ import {getCookie} from './../utils/Utils'
 import {populateItemToModal} from './../actions/ItemActions'
 import {openModal} from './../actions/ModalActions'
 import {archiveItemList} from './../actions/ItemListActions'
+import {getComments} from './../actions/CommentActions'
 import flow from 'lodash/flow'
 
 const itemListSource = {
@@ -121,8 +122,10 @@ class ItemListContainer extends Component {
  
   onOpenItemInfoModal(itemInfo){
     const {dispatch} = this.props
+    const token = getCookie('yulloToken')
     dispatch(openModal('itemInfo'))
     dispatch(populateItemToModal(itemInfo))
+    dispatch(getComments(itemInfo._id, token))
   }
 
   onArchiveItemList(){

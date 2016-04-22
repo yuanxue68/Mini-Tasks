@@ -40,7 +40,7 @@ class UserPopover extends Component {
     const {popovers, user, boardInfo} = this.props
     return(
       <div style={{display:'inline-block'}} onClick={this.handleOpen}>
-        <Avatar style={{margin:1}}>
+        <Avatar style={{margin:1, cursor:'pointer'}}>
           {getInitial(user.name)}
         </Avatar>
         <Popover open={popovers[this.id] && popovers[this.id].open}
