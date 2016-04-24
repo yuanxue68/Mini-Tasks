@@ -18,6 +18,14 @@ class App extends Component {
     var token = getCookie('yulloToken')
     dispatch(userSignIn({}, token, false))
   }
+  
+  componentWillReceiveProps(nextProps){
+    const {dispatch} = this.props
+    if(this.props.router.location.pathname !== nextProps.router.location.pathname){
+      dispatch(resetErrorMessage())
+      dispatch(resetNotificationMessage())
+    }
+  }
 
   handleDismissErrorClick(e) {
     const { dispatch } = this.props

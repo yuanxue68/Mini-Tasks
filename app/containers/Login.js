@@ -6,13 +6,26 @@ import LoginForm from './../components/LoginForm'
 class Login extends Component {
 	constructor(props){
 		super(props)
+    this.userSignIn = this.userSignIn.bind(this)
 	}
 	
-	render(){
-		const {dispatch} = this.props
+	userSignIn(event){
+    event.preventDefault()
+    const {dispatch, form} = this.props
+    if(!(form.login.username.value && form.login.password.value )){
+      return 
+    }
+    const userInfo = {
+      username: form.login.username.value,
+      password: form.login.password.value
+    }
+    dispatch(userSignIn(userInfo))
+  }
+
+  render(){
 		return (
 			<div className="container">
-				<LoginForm onUserSignIn={ (userInfo)=>dispatch(userSignIn(userInfo)) }/>
+				<LoginForm login={this.userSignIn}/>
 			</div>
 		)
 	}
@@ -20,6 +33,7 @@ class Login extends Component {
 
 function mapStateToProps (state) {
   return {
+    form: state.form
   }
 }
 

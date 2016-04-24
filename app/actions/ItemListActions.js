@@ -167,7 +167,8 @@ export const EDIT_ITEMLIST_MESSAGE = "Successfully edited item list"
 function editItemListSuccess(itemListInfo, notification){
 	return {
 		type: EDIT_ITEMLIST_SUCCESS,
-		itemListInfo
+		itemListInfo,
+    notification
 	}
 }
 
@@ -193,7 +194,7 @@ export function editItemList(itemListInfo, token){
       }
       return response.json()
     }).then((data)=>{
-			dispatch(editItemListSuccess(itemListInfo))
+			dispatch(editItemListSuccess(itemListInfo, EDIT_ITEMLIST_MESSAGE))
 		}).catch((err)=>{
 			dispatch(editItemListFailure(err.message))
 		})

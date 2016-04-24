@@ -1,35 +1,56 @@
 import React, {Component} from 'react'
+import {reduxForm} from 'redux-form'
+import TextField from 'material-ui/lib/text-field'
+import RaisedButton from 'material-ui/lib/raised-button'
+import FontIcon from 'material-ui/lib/font-icon'
 
-export default class LoginForm extends Component {
-  constructor(props){
-    super(props)
-    this.submitSignInForm = this.submitSignInForm.bind(this)
+const validate = (values) => {
+  const errors = {}
+  if(!values.username) {
+    errors.username = 'Required'
   }
-  
-  render(){
+  if(!values.password) {
+    errors.password = 'Required'
+  }
+  return errors
+}
+
+class LoginForm extends Component {
+  render() {
+    const {fields: {username, password}, errors, login} = this.props 
     return (
-      <div className="col-md-8 col-md-offset-2">
-        <h5>Sign In</h5>
-        <div className="form-group">
-          <label>Username</label>
-          <input id="login-username" className="form-control" placeholder="try username 'username'"/>
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input id="login-password" type="password" className="form-control" placeholder="Try Password 'password'"/>
-        </div>
-        <button type="submit" onClick={this.submitSignInForm} className="btn btn-primary">Login</button>
-      </div>
+      <form onSubmit={login}>
+        <h3>Login</h3>
+        <TextField
+          {...username}
+          fullWidth={true}
+          errorText = {errors.username}
+          hintText="User Name"
+          floatingLabelText="User Name"
+          type="text"
+        /><br/>
+        <TextField
+          {...password}
+          fullWidth={true}
+          hintText="Password"
+          floatingLabelText="Password"
+          errorText={errors.password}
+          type="password"
+        /><br/>
+        <RaisedButton 
+          label="Log in" 
+          icon={<FontIcon className="fa fa-paper-plane-o"/>}
+          type="submit"
+        />
+      </form>
     )
   }
-
-  submitSignInForm(){
-    var username = document.getElementById("login-username").value
-    var password = document.getElementById("login-password").value
-    var userInfo ={
-      username,
-      password
-    }
-    this.props.onUserSignIn(userInfo)
-  }
 }
+
+LoginForm = reduxForm({ 
+  form: 'login',                           
+  fields: ['username', 'password'],
+  validate
+})(LoginForm)
+
+export default LoginForm

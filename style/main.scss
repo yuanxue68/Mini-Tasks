@@ -1,3 +1,12 @@
+.alert{
+  border-radius: 0px;
+}
+
+.alert-danger, .alert-info{
+  background-color: #FFFFFF;
+}
+
+
 .list-container {
   display: flex;
   flex-wrap: nowrap;
