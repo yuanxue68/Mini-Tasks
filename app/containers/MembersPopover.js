@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {closePopover} from './../actions/PopoverActions'
-import Popover from 'material-ui/lib/popover/popover';
-import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
+import Popover from 'material-ui/lib/popover/popover'
+import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top'
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
 import UserList from './../components/UserList'
 import {addAssigner} from './../actions/ItemActions'
 

@@ -22,7 +22,7 @@ class BoardAside extends Component {
     return(
       <div>
         <FlatButton
-          label="Show Menu"
+          label="Toggle Menu"
           onTouchTap={this.handleToggle}
           icon={<FontIcon className="fa fa-align-justify"/>}
         />

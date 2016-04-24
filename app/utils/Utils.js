@@ -42,13 +42,6 @@ export function getColorList(){
     Colors.grey900
   ]
 }
-export function openModal(element){
-	$(element).modal()
-}
-
-export function closeModal(element){
-	$(element).modal('hide')
-}
 
 export function getInitial(name){
   const splits = name.split(" ")

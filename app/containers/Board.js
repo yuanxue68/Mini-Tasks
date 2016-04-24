@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
 import {editItemList, getItemLists} from './../actions/ItemListActions'
 import {editItem, populateItemToModal} from './../actions/ItemActions'
 import {getBoard} from './../actions/BoardActions'

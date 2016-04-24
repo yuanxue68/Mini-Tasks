@@ -80,9 +80,11 @@ class App extends Component {
       <div>
         {header}
         <br/>
-        {this.renderErrorMessage()}
-        {this.renderNotification()}
-        {children}
+        <div style={{marginTop:60}}>
+          {this.renderErrorMessage()}
+          {this.renderNotification()}
+          {children}
+        </div>
       </div>
     )
   }

@@ -8,7 +8,7 @@ import 'isomorphic-fetch'
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 
-describe('board actions', ()=>{
+describe('itemList actions', ()=>{
   afterEach(()=>{
     nock.cleanAll()
   })
@@ -20,6 +20,7 @@ describe('board actions', ()=>{
       .reply(200, response)
 
     const expectedActions = [
+      { type: actions.GET_ITEMLISTS_REQUEST },
       { type: actions.GET_ITEMLISTS_SUCCESS, itemLists: [] }
     ]
     const store = mockStore({ boards:[] })
@@ -39,6 +40,7 @@ describe('board actions', ()=>{
       .reply(400, response)
 
     const expectedActions = [
+      { type: actions.GET_ITEMLISTS_REQUEST },
       { type: actions.GET_ITEMLISTS_FAILURE, error: actions.GET_ITEMLISTS_ERROR }
     ]
     const store = mockStore({ boards:[] })

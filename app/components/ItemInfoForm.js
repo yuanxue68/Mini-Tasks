@@ -43,4 +43,4 @@ ItemInfoForm = reduxForm({
   validate
 })(ItemInfoForm)
 
-export default ItemInfoForm;
+export default ItemInfoForm

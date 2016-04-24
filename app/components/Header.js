@@ -17,7 +17,7 @@ export default class Header extends Component{
       <AppBar 
         title="Mini Tasks"
         titleStyle={{fontSize:18}}
-        style={{height:50, minHeight:50}}
+        style={{height:50, minHeight:50, position: 'fixed'}}
         iconElementLeft={
           <IconButton containerElement={<Link to="/" />} linkButton={true} >
             <FontIcon

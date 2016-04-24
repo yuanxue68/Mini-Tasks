@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button'
 import FontIcon from 'material-ui/lib/font-icon'
 import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
+import isEqual from 'lodash/isEqual'
 
 const styles = {
   popover: {
@@ -53,6 +54,10 @@ class ItemCreationPopover extends Component{
 		dispatch(createItem(item, token))
     this.handleClose()
 	}
+
+  shouldComponentUpdate(nextProps, nextState){
+    return !isEqual(this.props, nextProps)
+  }
 
 	render(){
     const {popovers, edit} = this.props

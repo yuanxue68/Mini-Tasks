@@ -25,6 +25,7 @@
     "body-parser": "^1.14.2",
     "bower": "^1.7.7",
     "chai": "^3.5.0",
+    "expose-loader": "^0.7.1",
     "express": "^4.13.4",
     "express-validator": "^2.19.0",
     "gulp": "^3.9.0",

@@ -10,6 +10,7 @@ import FontIcon from 'material-ui/lib/font-icon'
 import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
 import Colors from 'material-ui/lib/styles/colors'
+import isEqual from 'lodash/isEqual'
 
 const styles = {
   popover: {
@@ -71,6 +72,11 @@ class ListCreationModal extends Component{
     dispatch(deleteItemList(itemList._id, itemList.boardId, token))
     this.handleClose()
   }
+
+  shouldComponentUpdate(nextProps, nextState){
+    return !isEqual(this.props, nextProps)
+  }
+
 	render(){
     const {popovers, edit} = this.props
     const title = (this.props.itemList && this.props.itemList.name) || "New List"

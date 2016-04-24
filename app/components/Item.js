@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {ItemTypes} from './../actions/DndActions'
 import {DragSource, DropTarget} from 'react-dnd'
-import ListItem from 'material-ui/lib/lists/list-item'
 import Divider from 'material-ui/lib/divider'
 import ActionAssignment from 'material-ui/lib/svg-icons/action/assignment'
 import Avatar from 'material-ui/lib/avatar'
@@ -34,7 +33,6 @@ const itemTarget = {
     const draggedItem = monitor.getItem().item
     const hoveredItem = props.item
     if(draggedItem._id !== hoveredItem._id){
-      const draggedIndex = findItemIndex(draggedItem)
       const hoveredIndex = findItemIndex(hoveredItem)
       onMoveItem(draggedItem, hoveredItem.itemListId, hoveredIndex)
     }
@@ -44,34 +42,36 @@ const itemTarget = {
 function dragCollect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-    dragObj: monitor.getItem()
+    isDragging: monitor.isDragging()
   }
 }
 
 function dropCollect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    isOver: monitor.isOver(),
+    dragObj: monitor.getItem()
   }
 }
 
 class Item extends Component{
-  constructor(props){
-    super(props)
-  }
+	constructor(props){
+		super(props)
+		this.state = {numOfHover: 0}
+	}
 
   shouldComponentUpdate(nextProps){
     return !isEqual(this.props.item, nextProps.item) || !isEqual(this.props.dragObj, nextProps.dragObj)
   }
-
+	
 	render(){
 		const { item,connectDropTarget, connectDragSource, onOpenItemInfoModal, dragObj } = this.props;
-		const tags = item.labels.map((label, index)=>{
-      return <Tag color={label} key={index}/>      
+    const labels = item.labels.length === 0 ? ['transparent'] : item.labels
+		const tags = labels.map((label)=>{
+      return <Tag color={label} key={label}/>      
     })
     const assigner = item.assigner && item.assigner.name ? 
-                        <Avatar>{getInitial(item.assigner.name)}</Avatar>: null
+                        <Avatar style={{verticalAlign: 'top', margin:10}} >{getInitial(item.assigner.name)}</Avatar>: null
     const dueDateTag = item.dueDate ?
       (<div style={{fontSize:12,paddingRight:15, textAlign: 'right'}}>
         Due On: {buildDateText(new Date(item.dueDate))}
@@ -83,14 +83,20 @@ class Item extends Component{
         <div className="tag-container">
           {tags}
         </div>
-	      <ListItem 
-          onTouchTap={onOpenItemInfoModal.bind(this, item)}
-          disableTouchRipple = {true}
-          primaryText={item.name} 
-          leftAvatar={<Avatar icon={<ActionAssignment />} backgroundColor={itemColor} />}
-          rightAvatar={assigner}
-          style={{backgroundColor: dragObj && dragObj.item && dragObj.item._id === item._id ? '#A9A9A9':'' }}
-        />
+	      <div className="text-left" style={{backgroundColor: dragObj && dragObj.item && dragObj.item._id === item._id ? '#A9A9A9':''}}>
+          <Avatar icon={<ActionAssignment />} backgroundColor={itemColor} style={{verticalAlign: 'top', margin:10}} />
+          <div onClick={onOpenItemInfoModal.bind(this, item)} 
+              style={{display:'inline-block', 
+                      marginTop:20, 
+                      width:178, 
+                      maxWidth:178,
+                      textOverflow: 'ellipsis', 
+                      overFlow: 'hidden',
+                      textAlign: 'center'}}>
+            {item.name}
+          </div>
+          {assigner}
+        </div>
         {dueDateTag}
         <Divider style={{height:2}}/>
       </div>

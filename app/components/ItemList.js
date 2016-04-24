@@ -6,10 +6,12 @@ import ListCreationPopover from './../containers/ListCreationPopover'
 import ItemCreationPopover from './../containers/ItemCreationPopover'
 import FlatButton from 'material-ui/lib/flat-button'
 import FontIcon from 'material-ui/lib/font-icon'
+import isEqual from 'lodash/isEqual'
 
 export default class ItemList extends Component{
-	constructor(props){
-		super(props)
+	
+	shouldComponentUpdate(nextProps, nextState){
+    return !isEqual(this.props, nextProps)
   }
 
 	render(){
@@ -25,7 +27,6 @@ export default class ItemList extends Component{
               onMoveItem={onMoveItem}
               />
 		})
-		var inputId = "itemName"+index
     return (
       <div style={{backgroundColor: draggedListId === itemList._id ? '#A9A9A9':'', cursor:'move'}}>
         <ListCreationPopover edit={true} itemList={itemList} index={String(index)}/>

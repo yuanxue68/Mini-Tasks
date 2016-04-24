@@ -9,6 +9,8 @@ import {openModal} from './../actions/ModalActions'
 import {archiveItemList} from './../actions/ItemListActions'
 import {getComments} from './../actions/CommentActions'
 import flow from 'lodash/flow'
+import isEqual from 'lodash/isEqual'
+import difference from 'lodash/difference'
 
 const itemListSource = {
   beginDrag(props) {
@@ -85,6 +87,7 @@ function dragCollect(connect, monitor) {
   }
 }
 
+
 class ItemListContainer extends Component {
   constructor(props) {
     super(props)
@@ -133,6 +136,11 @@ class ItemListContainer extends Component {
     const token = getCookie('yulloToken')
     dispatch(archiveItemList(itemList, token))
   }
+
+  shouldComponentUpdate(nextProps){
+    return !isEqual(this.props, nextProps)
+  }
+
 
   render() {
     const { connectDropTarget, connectDragSource, dragObj, findItemIndex, onMoveItem } = this.props;

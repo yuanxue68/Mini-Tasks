@@ -20,6 +20,7 @@ describe('board list actions', ()=>{
       .reply(200, response)
 
     const expectedActions = [
+      { type: actions.GET_BOARDS_REQUEST },
       { type: actions.GET_BOARDS_SUCCESS, boardList: response }
     ]
     const store = mockStore({ boards:[] })
@@ -39,6 +40,7 @@ describe('board list actions', ()=>{
       .reply(400, response)
 
     const expectedActions = [
+      { type: actions.GET_BOARDS_REQUEST },
       { type: actions.GET_BOARDS_FAILURE, error: actions.GET_BOARDS_ERROR}
     ]
     const store = mockStore({ boards:[] })
@@ -96,7 +98,13 @@ describe('board list actions', ()=>{
       .reply(200, response)
 
     const expectedActions = [
-      { type: actions.DELETE_BOARD_SUCCESS, boardId: response }
+      { type: actions.DELETE_BOARD_SUCCESS, boardId: response },
+      { payload: {
+            args: [null, "/", ""],
+            method: "pushState"
+          },
+        type: "@@reduxReactRouter/historyAPI"
+      }
     ]
     const store = mockStore({ boards:[] })
 
@@ -115,8 +123,8 @@ describe('board list actions', ()=>{
       .reply(400, response)
 
     const expectedActions = [
-      { type: actions.DELETE_BOARD_FAILURE, error: actions.DELETE_BOARD_ERROR }
-    ]
+
+      { type: actions.DELETE_BOARD_FAILURE, error: actions.DELETE_BOARD_ERROR }]
     const store = mockStore({ boards:[] })
 
     store.dispatch(actions.deleteBoard(1, "token"))

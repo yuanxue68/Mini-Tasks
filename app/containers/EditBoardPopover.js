@@ -40,8 +40,8 @@ export default class EditBoardPopover extends Component{
 
 	editBoard(){
     const {dispatch, form} = this.props
-		var name = form.boardCreation.name.value
-		var description = form.boardCreation.description && form.boardCreation.description.value
+		const name = form.boardCreation.name.value
+		const description = form.boardCreation.description && form.boardCreation.description.value
 		if((!name)){
 			return
 		}

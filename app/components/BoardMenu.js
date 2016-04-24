@@ -7,9 +7,6 @@ import FlatButton from 'material-ui/lib/flat-button'
 import {Link} from 'react-router'
 
 class BoardMenu extends Component {
-  constructor(props){
-    super(props)
-  }
 
   render(){
     const {boardInfo, members} = this.props

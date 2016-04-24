@@ -19,6 +19,14 @@ webpackConfig = {
 				query: {
 					presets: ['es2015', 'stage-0', 'react'],
 				}
+			},
+			{ 
+				test: require.resolve("react"), 
+				loader: "expose?React" 
+			},
+			{
+				test: require.resolve("react-addons-perf"), 
+				loader: "expose?Perf"
 			}
 		]
 	},
@@ -35,6 +43,10 @@ gulp.task('webpack',function(callback){
         callback();
     });
 	
+});
+
+gulp.task('apply-prod-environment', function() {
+    process.env.NODE_ENV = 'production';
 });
 
 gulp.task('sass', function(){
@@ -72,3 +84,4 @@ gulp.task('watch', function(){
 });
 
 gulp.task('default', ['webpack','sass','dev','watch']);
+gulp.task('prod', ['apply-prod-environment', 'webpack','sass','dev','watch']);

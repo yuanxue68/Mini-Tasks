@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import ItemLists from './ItemLists'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import FlatButton from 'material-ui/lib/flat-button'
-import FontIcon from 'material-ui/lib/font-icon'
 import EditBoardPopover from './../containers/EditBoardPopover'
 import ListCreationPopover from './../containers/ListCreationPopover'
 import BoardAside from './../containers/BoardAside'
@@ -36,4 +34,4 @@ class BoardPage extends Component {
 
 }
 
-export default DragDropContext(HTML5Backend)(BoardPage);
+export default DragDropContext(HTML5Backend)(BoardPage)
