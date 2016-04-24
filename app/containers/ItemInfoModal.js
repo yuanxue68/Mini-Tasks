@@ -40,9 +40,11 @@ export default class ItemInfoModal extends Component{
   onSaveItem(){
     const {dispatch,form, itemInfo} = this.props
     const token = getCookie('yulloToken')
-    itemInfo.name = form.itemInfo.name.value
-    itemInfo.description = form.itemInfo.description.value
-    dispatch(editItem(itemInfo, token))
+    const newItemInfo = Object.assign({}, itemInfo, {
+      name: form.itemInfo.name.value,
+      description: form.itemInfo.description.value
+    })
+    dispatch(editItem(newItemInfo, token))
     this.handleClose()
   }
 

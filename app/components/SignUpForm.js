@@ -9,8 +9,8 @@ const validate = (values) => {
   if(!values.username) {
     errors.username = 'Required'
   }
-  if(!values.password) {
-    errors.password = 'Required'
+  if(!values.password || values.password.length<6) {
+    errors.password = 'Password Length Must Be 6+ Characters'
   }
   if(values.passwordConfirmation != values.password){
     errors.passwordConfirmation = 'Does not match password'

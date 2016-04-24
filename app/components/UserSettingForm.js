@@ -22,7 +22,7 @@ const validate = (values) => {
 
 class UserSettingForm extends Component {
   render() {
-    const {fields: {name, password, password_confirmation}} = this.props
+    const {fields: {name, description, password, password_confirmation}} = this.props
     const {errors, onEditUser, userInfo} = this.props
 
     var passwordField, passwordConfirmationField
@@ -62,7 +62,15 @@ class UserSettingForm extends Component {
             floatingLabelText = "Display Name"
             type = "text"
           /><br/>
-          {passwordField}
+          <TextField
+            {...description}
+            style = {{width:'70%'}}
+            errorText = {errors.name}
+            hintText = "Describe Yourself"
+            floatingLabelText = "Description"
+            type = "text"
+          /><br/>
+           {passwordField}
           {passwordConfirmationField}
         </form>
         <RaisedButton label="Save" onTouchTap={onEditUser} />
@@ -73,7 +81,7 @@ class UserSettingForm extends Component {
 
 UserSettingForm = reduxForm({
   form: 'userSetting',
-  fields: ['name', 'password', 'password_confirmation'], 
+  fields: ['name', 'description', 'password', 'password_confirmation'], 
   validate
 })(UserSettingForm)
 

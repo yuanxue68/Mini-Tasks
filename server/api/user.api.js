@@ -72,6 +72,7 @@ function setUpdatedAttributes(user, newUserInfo){
   if(newUserInfo.password && user.local){
     user.local.password = newUserInfo.password;
   }
+  user.description = newUserInfo.description;
 };
 
 router.get("/", passport.authenticate('bearer', { session: false }), function(req,res){

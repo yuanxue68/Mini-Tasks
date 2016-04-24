@@ -80,15 +80,17 @@ class App extends Component {
 
   render(){
     const { dispatch, authentication, router} = this.props
-    var header = authentication.authed ? <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/> : null
-    var children = authentication.authed || router.location.pathname === "/login" ||
+    const header = authentication.authed ? <Header authentication={authentication} onUserSignOut={()=> dispatch(userSignOut())}/> : null
+    const children = authentication.authed || router.location.pathname === "/login" ||
         router.location.pathname === "/signup"
         ? this.props.children : <LoggedOutHome/>
+    const margin = authentication.authed ? 60 : 0
+    
     return(
       <div>
         {header}
         <br/>
-        <div style={{marginTop:60}}>
+        <div style={{marginTop:margin}}>
           {this.renderErrorMessage()}
           {this.renderNotification()}
           {children}

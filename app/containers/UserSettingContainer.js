@@ -15,11 +15,12 @@ class UserSettingContainer extends Component {
     var newUserInfo = {}
     const token = getCookie('yulloToken')
     const {dispatch} = this.props
-    const {name, password, password_confirmation} = this.props.form.userSetting
+    const {name, description, password, password_confirmation} = this.props.form.userSetting
     if(password.value != password_confirmation.value || !name.value){
       return 
     }
     newUserInfo.name = name.value
+    newUserInfo.description = description.value
     newUserInfo._id = this.props.authentication.userInfo._id
     if(password.value && password_confirmation.value){
       newUserInfo.password = password.value
@@ -32,7 +33,7 @@ class UserSettingContainer extends Component {
   render(){
     const {authentication} = this.props
     const initial = {
-      initialValues: {name: authentication.userInfo.name},
+      initialValues: {name: authentication.userInfo.name, description: authentication.userInfo.description},
     }
     return (
       <div className="container text-center">

@@ -14,8 +14,6 @@ class UserCard extends Component {
         </CardActions> : 
         <CardTitle subtitle={<div><i className="fa fa-lock"> Owner</i></div>} />
 
-    console.log(boardInfo.owner)
-    console.log(user._id)
     return(
       <Card style={{width:200}}>
         <CardText>
