@@ -65,7 +65,6 @@ class UserSettingForm extends Component {
           <TextField
             {...description}
             style = {{width:'70%'}}
-            errorText = {errors.name}
             hintText = "Describe Yourself"
             floatingLabelText = "Description"
             type = "text"

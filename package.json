@@ -4,7 +4,7 @@
   "description": "trello like task management web app",
   "main": "index.js",
   "scripts": {
-    "start": "gulp",
+    "start": "npm start",
     "postinstall": "bower install",
     "test": "mocha --compilers js:babel-register --recursive",
     "test:watch": "npm test -- --watch"
@@ -46,7 +46,8 @@
     "passport-facebook": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
-    "react": "^0.14.0",
+    "react": "^0.14.8",
+    "react-addons-perf": "^0.14.8",
     "react-dnd": "^2.0.2",
     "react-dnd-html5-backend": "^2.0.2",
     "react-dom": "^0.14.0",

@@ -26,7 +26,7 @@ export function urlBuilder(url, params) {
 }
 
 export function getHost(){
-  return "http://localhost:3000"
+  return "https://localhost:3000"
 }
 export function getColorList(){
   return [
