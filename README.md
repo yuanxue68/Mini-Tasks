@@ -1,5 +1,8 @@
 # Mini-Tasks
 [Demo on Heroku](https://mighty-lake-63811.herokuapp.com) 
+Try log in with:
+username: 'username'
+password: 'password'
 A simple collaborative drag and drop task management site
 
 # How to run it locally:
