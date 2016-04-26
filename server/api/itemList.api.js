@@ -6,12 +6,15 @@ var ItemList = require('./../models/itemList.model');
 var Item = require('./../models/item.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 
-//this router this nested within itemList router
+//this router this nested within board router
 router.use(function(req, res, next){
 	if(req.method === "POST"){
 		req.checkBody("name","Your list must have a name").notEmpty();
 		req.checkBody("boardId","Your list must belong to a board").notEmpty();
+    req.checkBody("archived", "must be boolean").optional().isBoolean();
 	} else if (req.method === 'PUT'){
+		req.checkBody("name","Your list must have a name").notEmpty();
+		req.checkBody("boardId","Your list must belong to a board").notEmpty();
     req.checkBody("archived", "must be boolean").isBoolean();
   } else if (req.method === 'GET'){
     req.checkQuery('page', 'must be number').optional().isInt();
@@ -20,7 +23,7 @@ router.use(function(req, res, next){
 
 	var errors = req.validationErrors();
   if (errors) {
-    res.status(400).send("There have been validation errors: " + util.inspect(errors));
+    return res.status(400).send("There have been validation errors: " + util.inspect(errors));
   }
 
 	next();

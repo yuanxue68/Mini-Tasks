@@ -8,7 +8,7 @@ var verifyBoardOwner = require('./apiUtils').verifyBoardOwner;
 router.use('/:itemId/comments', require('./comment.api'));
 
 router.use(function(req, res, next){
-	if(req.method === "POST"){
+	if(req.method === "POST" || req.method === "PUT"){
 		req.checkBody("name","Your item must have a name").notEmpty();
 		req.checkBody("boardId","Your item must belong to a board").notEmpty();
 		req.checkBody("itemListId","Your item must belong to a board").notEmpty;

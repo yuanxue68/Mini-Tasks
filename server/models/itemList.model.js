@@ -6,8 +6,10 @@ var ItemList = new Schema({
 	name: {type: String, required: true},
 	boardId: {type: String, required: true},
   archived: {type: Boolean, default: false},
-  pos: {type: Number, required: true}
+  pos: {type: Number, required: true, index: true}
 });
+
+ItemList.index({ boardId: 1, archived: 1 });
 
 ItemList.pre('remove', function(next){
 	debugger

@@ -38,7 +38,7 @@ router.post("/", passport.authenticate('bearer', { session: false }), function(r
 		} else {
 			res.json(board);
 		}
-	})
+	});
 
 });
 

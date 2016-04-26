@@ -8,6 +8,19 @@ var User = require('./../models/user.model');
 var verifyBoardOwner = require('./apiUtils').verifyBoardOwner
 var ObjectId = require('mongoose').Types.ObjectId
 
+router.use(function(req, res, next){
+  if(req.method === "POST"){
+    req.checkBody("userId", "userId should not be empty").notEmpty();
+  }
+
+  var errors = req.validationErrors();
+  if(errors) {
+    return res.status(400).send("There have been validation errors: " + util.inspect(errors));
+  }
+  next()
+  
+});
+
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res){
 	var id = req.params.boardId;
 	req.userId = req.user._id.toString();

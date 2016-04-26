@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var CommentSchema = new Schema({
   owner: {type: Schema.ObjectId, required: true, ref: 'User'},
-  itemId: {type: String, required: true},
+  itemId: {type: String, required: true, index: true},
   postedOn: {type: Date, required: true},
   content: {type: String, required: true}
 });
