@@ -21,7 +21,7 @@ class SignUp extends Component {
         password: password.value
       },
       name: displayName.value,
-      description: description.value
+      description: description && description.value
     }
     dispatch(userSignUp(userInfo))
   }
