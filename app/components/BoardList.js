@@ -26,7 +26,11 @@ export default class Home extends Component {
 			return <BoardCard key={index} board={board} onDeleteBoard={onDeleteBoard}/>
 		}) 
 		return (
-			<div className="container dim-container">
+			<div className="container" style={{
+        marginBottom: 30,
+        paddingBottom: 15,
+        textAlign: 'center'
+      }}>
 				<h3 className="">My Boards</h3>
 				<BoardCreationModal/> 
 				<br/>

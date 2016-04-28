@@ -48,7 +48,7 @@ class App extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1 alert alert-danger">
+        <div className="col-md-10 col-md-offset-1 alert alert-danger" style={{borderRadius:0, backgroundColor: '#FFFFFF'}}>
           <span>{errorMessage}</span>
           <button type="button" className="close" onClick={ this.handleDismissErrorClick } >
             <span aria-hidden="true">&times;</span>
@@ -68,7 +68,7 @@ class App extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1 alert alert-info">
+        <div className="col-md-10 col-md-offset-1 alert alert-info" style={{borderRadius:0, backgroundColor: '#FFFFFF'}}>
           <span>{notificationMessage}</span>
           <button type="button" className="close" onClick={ this.handleDismissNotificationClick } >
             <span aria-hidden="true">&times;</span>

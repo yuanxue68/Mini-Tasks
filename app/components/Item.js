@@ -80,7 +80,11 @@ class Item extends Component{
     const itemColor = item.dueDate && new Date(item.dueDate) < new Date() ? Colors.red500 : Colors.blue500
     return connectDropTarget(connectDragSource(
       <div onClick={onOpenItemInfoModal.bind(this, item)} >
-        <div className="tag-container">
+        <div style={{
+          textAlign: 'left',
+          whiteSpace: 'normal',
+          lineHeight: '10px'
+        }}>
           {tags}
         </div>
 	      <div className="text-left" style={{backgroundColor: dragObj && dragObj.item && dragObj.item._id === item._id ? '#A9A9A9':''}}>

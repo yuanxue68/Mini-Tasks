@@ -9,7 +9,12 @@ class Tag extends Component {
   render(){
     const {color} = this.props
     return(
-      <div className="tag" style={{backgroundColor: color}}>
+      <div style={{
+        backgroundColor: color,
+        display: 'inline-block',
+        height: 10,
+        width: '20%'
+      }}>
       </div>
     )
   }

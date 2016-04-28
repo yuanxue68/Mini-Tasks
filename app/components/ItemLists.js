@@ -33,7 +33,11 @@ export default class ItemLists extends Component{
 		}
 		
 		return (
-			<div className="list-container" >
+			<div style={{
+        display: 'flex',
+        flexWrap: 'nowrap',
+        overflowX: 'auto'
+      }} >
 				  {listComponent}
       </div>
 		)

@@ -12,7 +12,13 @@ export default class LoggedOutHome extends Component {
 	
 	render(){
 		return (
-			<div className="flex-landing">
+			<div style={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center',
+        alignItems: 'center'
+      }}>
 				<div>
 					<h1>Mini Tasks</h1>
 					<h5><i className="fa fa-tasks"></i><span className="primary-font"> A Simple drag and drop task tracking site </span><i className="fa fa-tasks"></i></h5>

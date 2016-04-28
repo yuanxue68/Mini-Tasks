@@ -145,7 +145,13 @@ class ItemListContainer extends Component {
   render() {
     const { connectDropTarget, connectDragSource, dragObj, findItemIndex, onMoveItem } = this.props;
     return connectDropTarget(connectDragSource(
-      <div className="item-list">
+      <div style={{
+        textAlign: 'center',
+        display: 'inline-block',
+        verticalAlign: 'top',
+        minWidth: 300,
+        maxWidth: 300
+      }}>
         <ItemList 
           {...this.props} 
           onOpenItemInfoModal={this.onOpenItemInfoModal}
