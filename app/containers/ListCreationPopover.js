@@ -93,7 +93,7 @@ class ListCreationModal extends Component{
     }
     return(
       <div>
-        <FlatButton label={title} 
+        <FlatButton label={[title, " ", <i className="fa fa-pencil-square-o"></i>]} 
           onTouchTap={this.handleOpen}
           icon={<FontIcon className="fa fa-list-alt"/>}    
         />

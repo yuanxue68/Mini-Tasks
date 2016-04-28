@@ -79,20 +79,20 @@ class Item extends Component{
     {/* mark it red if the item is over due */}
     const itemColor = item.dueDate && new Date(item.dueDate) < new Date() ? Colors.red500 : Colors.blue500
     return connectDropTarget(connectDragSource(
-      <div>
+      <div onClick={onOpenItemInfoModal.bind(this, item)} >
         <div className="tag-container">
           {tags}
         </div>
 	      <div className="text-left" style={{backgroundColor: dragObj && dragObj.item && dragObj.item._id === item._id ? '#A9A9A9':''}}>
           <Avatar icon={<ActionAssignment />} backgroundColor={itemColor} style={{verticalAlign: 'top', margin:10}} />
-          <div onClick={onOpenItemInfoModal.bind(this, item)} 
-              style={{display:'inline-block', 
-                      marginTop:20, 
-                      width:178, 
-                      maxWidth:178,
-                      textOverflow: 'ellipsis', 
-                      overFlow: 'hidden',
-                      textAlign: 'center'}}>
+          <div 
+            style={{display:'inline-block', 
+            marginTop:20, 
+            width:178, 
+            maxWidth:178,
+            textOverflow: 'ellipsis', 
+            overFlow: 'hidden',
+            textAlign: 'center'}}>
             {item.name}
           </div>
           {assigner}

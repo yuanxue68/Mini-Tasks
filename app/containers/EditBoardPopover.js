@@ -69,7 +69,7 @@ export default class EditBoardPopover extends Component{
     return(
       <div>
         <FlatButton 
-          label={boardInfo.name||'board'}
+          label={[boardInfo.name||'board'," ",<i className="fa fa-pencil-square-o"></i>]}
           onTouchTap={this.handleOpen}
           icon={<FontIcon className="fa fa-clipboard" />}
         />

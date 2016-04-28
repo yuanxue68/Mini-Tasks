@@ -40,6 +40,7 @@ export default class ItemInfoModal extends Component{
   onSaveItem(){
     const {dispatch,form, itemInfo} = this.props
     const token = getCookie('yulloToken')
+    if(!form.itemInfo.name.value) return
     const newItemInfo = Object.assign({}, itemInfo, {
       name: form.itemInfo.name.value,
       description: form.itemInfo.description.value
@@ -124,15 +125,15 @@ export default class ItemInfoModal extends Component{
     if(itemInfo && itemInfo.dueDate){        
       const dateText = buildDateText(new Date(itemInfo.dueDate)) 
       dueDateTag = <FlatButton
-              onTouchTap={this.onRemoveDueDate}
-              label={"Due On: "+dateText}  
-              labelPosition="before"
-            />
+                    onTouchTap={this.onRemoveDueDate}
+                    label={["Due On: "+dateText+" ", <i className="fa fa-close"></i>]}  
+                    labelPosition="before"
+                  />
     }
     const assigner = itemInfo && itemInfo.assigner ? 
                         <FlatButton 
                           onTouchTap={this.onRemoveAssigner}
-                          label={"Assigned To: "+itemInfo.assigner.name}
+                          label={["Assigned To: "+itemInfo.assigner.name+" ", <i className="fa fa-close"></i>]}
                           labelPosition="before"  
                         />  
                         : null
