@@ -30,11 +30,12 @@ export default class ItemList extends Component{
     return (
       <div style={{backgroundColor: draggedListId === itemList._id ? '#A9A9A9':'', cursor:'move'}}>
         <ListCreationPopover edit={true} itemList={itemList} index={String(index)}/>
-        <List style={{
-          border: 'solid 1px #e9e9e9'
+        <div style={{
+          border: 'solid 1px #e9e9e9',
+          width: 300
         }}>
           {items} 
-        </List>
+        </div>
         <FlatButton label="Archive" onTouchTap={onArchiveItemList} icon={<FontIcon className="fa fa-archive"/>}/>
         <ItemCreationPopover index={String(index)} itemListId={itemList._id} boardId={boardId}/>
       </div>
